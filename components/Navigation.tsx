@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
-function Navigation() {
+export default function Navigation() {
   return (
-    <div className="container mx-auto flex justify-between text-lg">
+    <div className="container flex justify-between px-2 mx-auto text-lg">
       <Link href="/">
         <a>Memcards</a>
       </Link>
@@ -24,5 +24,3 @@ function Navigation() {
     </div>
   );
 }
-
-export default Navigation;

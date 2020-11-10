@@ -3,10 +3,10 @@ import Navigation from './Navigation';
 function Layout({ children }) {
   return (
     <div className="flex flex-col h-screen">
-      <div className="bg-gray-300 py-4">
+      <div className="py-4 bg-gray-300">
         <Navigation />
       </div>
-      <main className="flex-1 container mx-auto">{children}</main>
+      <main className="container relative flex-1 px-2 mx-auto">{children}</main>
     </div>
   );
 }
