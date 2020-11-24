@@ -13,17 +13,6 @@ export default function Home() {
         <h1 className="my-10 text-3xl">Memcards</h1>
         <div className="w-full max-w-xs">
           <form>
-            <label className="sr-only" htmlFor="email">
-              E-mail
-            </label>
-            <input
-              className="w-full mb-6 text-xl rounded"
-              type="text"
-              name="email"
-              id="email"
-              placeholder="Email"
-            />
-
             <label className="sr-only" htmlFor="username">
               Username
             </label>
@@ -49,12 +38,12 @@ export default function Home() {
               className="block w-full py-2 mx-auto mb-6 text-xl text-white bg-gray-600 rounded"
               type="submit"
             >
-              Register
+              Login
             </button>
 
             <Link href="#">
               <a className="block w-full py-2 mx-auto text-xl text-center text-black border-2 border-gray-600 rounded">
-                Login
+                Register
               </a>
             </Link>
           </form>
