@@ -1,4 +1,5 @@
 import Layout from 'components/Layout';
+import TextInput from 'components/TextInput';
 import Head from 'next/head';
 import Link from 'next/link';
 
@@ -13,26 +14,16 @@ export default function Home() {
         <h1 className="my-10 text-3xl">Memcards</h1>
         <div className="w-full max-w-xs">
           <form>
-            <label className="sr-only" htmlFor="username">
-              Username
-            </label>
-            <input
-              className="w-full mb-6 text-xl rounded"
-              type="text"
+            <TextInput
+              labelId="username"
               name="username"
-              id="username"
               placeholder="Username"
             />
-
-            <label className="sr-only" htmlFor="password">
-              Password
-            </label>
-            <input
-              className="w-full mb-6 text-xl rounded"
-              type="password"
+            <TextInput
+              labelId="password"
               name="password"
-              id="password"
               placeholder="Password"
+              type="password"
             />
             <button
               className="block w-full py-2 mx-auto mb-6 text-xl text-white bg-gray-600 rounded"

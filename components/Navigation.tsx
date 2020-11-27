@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Navigation() {
   return (
-    <div className="container flex justify-between px-2 mx-auto text-lg">
+    <div className="flex justify-between max-w-2xl px-4 mx-auto text-lg">
       <Link href="/">
         <a>Memcards</a>
       </Link>

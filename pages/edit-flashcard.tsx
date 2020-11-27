@@ -1,4 +1,5 @@
 import Layout from 'components/Layout';
+import TextInput from 'components/TextInput';
 import Head from 'next/head';
 
 export default function Home() {
@@ -23,27 +24,20 @@ export default function Home() {
               value="Deck 1"
               readOnly
             />
-
-            <label className="block mb-2" htmlFor="card-front">
-              Front:
-            </label>
-            <input
-              className="w-full mb-6 rounded"
-              type="text"
+            <TextInput
+              labelId="card-front"
               name="front"
-              id="card-front"
+              label="Front:"
+              hideLabel={false}
             />
 
             <input className="mb-6" type="file" name="image" id="" />
 
-            <label className="block mb-2" htmlFor="card-back">
-              Back:
-            </label>
-            <input
-              className="w-full mb-6 rounded"
-              type="text"
+            <TextInput
+              labelId="card-back"
               name="back"
-              id="card-back"
+              label="Back:"
+              hideLabel={false}
             />
             <button
               className="block px-16 py-3 mx-auto text-2xl text-white bg-gray-600 rounded-xl"

@@ -15,7 +15,7 @@ export default function Decks() {
       </Head>
       <section>
         <h1 className="sr-only">Deck List</h1>
-        <div className="max-w-xl mx-auto mt-8">
+        <div className="max-w-xs mx-auto mt-8">
           {deckList.map((deckName, i) => {
             return (
               <div
