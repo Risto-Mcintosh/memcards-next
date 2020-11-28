@@ -31,11 +31,9 @@ function makeServer(environment: string = 'test') {
           return `back ${i}`;
         },
         image: {
-          src:
-            'https://images.unsplash.com/photo-1550029330-8dbccaade873?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjc0NDk5fQ',
+          src: 'https://source.unsplash.com/random/400x400',
           alt: 'some text',
-          thumb:
-            'https://images.unsplash.com/photo-1550029330-8dbccaade873?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjc0NDk5fQ'
+          thumb: 'https://source.unsplash.com/random/400x400'
         }
       })
     },

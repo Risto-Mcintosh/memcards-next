@@ -20,7 +20,7 @@ export default function Decks() {
             return (
               <div
                 key={i}
-                className="flex items-center py-2 text-2xl transition-colors duration-200 border-b border-gray-400 focus-within:bg-gray-300 hover:bg-gray-300"
+                className="flex items-center py-2 text-2xl transition-colors duration-200 border-b border-gray-400 hover:bg-gray-300"
               >
                 <Link href="#">
                   <a className="flex items-center justify-between flex-1 pl-2">

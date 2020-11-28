@@ -1,9 +1,9 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Menu } from '@headlessui/react';
 import * as React from 'react';
+import Link from 'next/link';
 
 export default function CreateButton() {
-  const [isOpen, setIsOpen] = React.useState(false);
   const variants = {
     open: { rotate: 225 },
     closed: { rotate: 0 }
@@ -15,7 +15,7 @@ export default function CreateButton() {
           {({ open }) => (
             <>
               <Menu.Button
-                className="z-10 w-12 mt-3 focus:outline-none focus-visible:outline-black"
+                className="z-10 w-10 bg-gray-300 rounded-full shadow focus:outline-none focus-visible:outline-black"
                 aria-label="Create a new deck or new flashcard"
               >
                 <svg
@@ -23,14 +23,14 @@ export default function CreateButton() {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  className="origin-bottom-right stroke-1"
                 >
                   <motion.path
                     animate={open ? 'open' : 'closed'}
                     variants={variants}
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                    strokeWidth={2}
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                   />
                 </svg>
               </Menu.Button>
@@ -41,30 +41,33 @@ export default function CreateButton() {
                   as={motion.div}
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="absolute text-right border shadow right-1/4 focus:outline-none -top-full"
+                  className="absolute -mt-8 text-right border shadow right-1/4 focus:outline-none -top-full"
                 >
                   <Menu.Item>
                     {({ active }) => (
-                      <a
-                        href="#"
-                        className={`${
-                          active ? 'bg-gray-300' : ''
-                        } block whitespace-nowrap px-2 py-1`}
-                      >
-                        Create Deck
-                      </a>
+                      <Link href="/create-deck">
+                        <a
+                          href="#"
+                          className={`${
+                            active ? 'bg-gray-300' : ''
+                          } block whitespace-nowrap px-2 py-1`}
+                        >
+                          Create Deck
+                        </a>
+                      </Link>
                     )}
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }) => (
-                      <a
-                        href="#"
-                        className={`${
-                          active ? 'bg-gray-300' : ''
-                        } block whitespace-nowrap px-2 py-1`}
-                      >
-                        Create Flashcard
-                      </a>
+                      <Link href="/create-flashcard">
+                        <a
+                          className={`${
+                            active ? 'bg-gray-300' : ''
+                          } block whitespace-nowrap px-2 py-1`}
+                        >
+                          Create Flashcard
+                        </a>
+                      </Link>
                     )}
                   </Menu.Item>
                 </Menu.Items>
