@@ -1,5 +1,4 @@
-import 'styles/globals.css';
-// import { server } from 'server';
+import 'tailwindcss/tailwind.css';
 import { QueryCache, ReactQueryCacheProvider } from 'react-query';
 
 if (typeof window !== 'undefined') {
