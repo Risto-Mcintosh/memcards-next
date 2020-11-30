@@ -42,6 +42,14 @@ function makeServer(environment: string = 'test') {
       server.createList('deck', 2, { user }).forEach((deck) => {
         server.createList('flashcard', 3, { deck });
       });
+    },
+    routes() {
+      this.namespace = process.env.NEXT_PUBLIC_CLIENT_API;
+      this.get('/decks', (schema) => {
+        return schema.db.decks;
+      });
     }
   });
+  return server;
 }
+export { makeServer };
