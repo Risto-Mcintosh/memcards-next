@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { client } from 'utils/client';
-
+//
 export default function Decks() {
   const { data: deckList, isLoading } = useQuery('decks', () =>
     client('/decks')
