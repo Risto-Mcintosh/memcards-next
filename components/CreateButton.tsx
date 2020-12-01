@@ -3,7 +3,10 @@ import { Menu } from '@headlessui/react';
 import * as React from 'react';
 import Link from 'next/link';
 
-export default function CreateButton() {
+type props = {
+  showCreateDeckForm: () => void;
+};
+export default function CreateButton({ showCreateDeckForm }: props) {
   const variants = {
     open: { rotate: 225 },
     closed: { rotate: 0 }
@@ -45,16 +48,14 @@ export default function CreateButton() {
                 >
                   <Menu.Item>
                     {({ active }) => (
-                      <Link href="/create-deck">
-                        <a
-                          href="#"
-                          className={`${
-                            active ? 'bg-gray-300' : ''
-                          } block whitespace-nowrap px-2 py-1`}
-                        >
-                          Create Deck
-                        </a>
-                      </Link>
+                      <button
+                        onClick={() => showCreateDeckForm()}
+                        className={`${
+                          active ? 'bg-gray-300' : ''
+                        } w-full text-right px-2 py-1`}
+                      >
+                        Create Deck
+                      </button>
                     )}
                   </Menu.Item>
                   <Menu.Item>
@@ -63,7 +64,7 @@ export default function CreateButton() {
                         <a
                           className={`${
                             active ? 'bg-gray-300' : ''
-                          } block whitespace-nowrap px-2 py-1`}
+                          } block whitespace-nowrap hover:bg-gray-300 px-2 py-1`}
                         >
                           Create Flashcard
                         </a>

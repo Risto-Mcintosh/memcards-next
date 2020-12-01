@@ -18,18 +18,19 @@ export default function TextInput({
   placeholder,
   ...rest
 }: props & InputHTMLAttributes<HTMLInputElement>) {
+  const { className, ...props } = rest;
   return (
     <>
       <label className={hideLabel ? 'sr-only' : 'block mb-2'} htmlFor={labelId}>
         {label ?? placeholder}
       </label>
       <input
-        className="w-full mb-6 text-xl rounded"
+        className={className ?? 'w-full mb-6 text-xl rounded'}
         type={type}
         name={name}
         id={labelId}
         placeholder={placeholder}
-        {...rest}
+        {...props}
       />
     </>
   );

@@ -1,8 +1,10 @@
 import CreateButton from 'components/CreateButton';
 import DeckMenu from 'components/DeckMenu';
 import Layout from 'components/Layout';
+import TextInput from 'components/TextInput';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { client } from 'utils/client';
 
@@ -10,7 +12,7 @@ export default function Decks() {
   const { data: deckList, isLoading } = useQuery('decks', () =>
     client('/decks')
   );
-
+  const [isCreateDeckFormOpen, showCreateDeckFrom] = useState(false);
   return (
     <Layout>
       <Head>
@@ -40,9 +42,24 @@ export default function Decks() {
                   </div>
                 );
               })}
+          {isCreateDeckFormOpen && (
+            <div className="mt-2">
+              <form className="flex justify-items-center">
+                <TextInput
+                  className="w-full rounded-l"
+                  name="deck-name"
+                  labelId="deck-name"
+                  placeholder="Deck Name"
+                />
+                <button className="px-2 py-1 bg-gray-400 rounded-r">
+                  Submit
+                </button>
+              </form>
+            </div>
+          )}
         </div>
       </section>
-      <CreateButton />
+      <CreateButton showCreateDeckForm={() => showCreateDeckFrom(true)} />
     </Layout>
   );
 }
