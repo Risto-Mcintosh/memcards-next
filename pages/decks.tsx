@@ -1,13 +1,12 @@
 import CreateButton from 'components/CreateButton';
+import CreateDeckForm from 'components/CreateDeckForm';
 import DeckMenu from 'components/DeckMenu';
 import Layout from 'components/Layout';
-import TextInput from 'components/TextInput';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { client } from 'utils/client';
-//
 export default function Decks() {
   const { data: deckList, isLoading } = useQuery('decks', () =>
     client('/decks')
@@ -21,7 +20,7 @@ export default function Decks() {
       </Head>
       <section>
         <h1 className="sr-only">Deck List</h1>
-        <div className="max-w-xs mx-auto mt-8">
+        <div className="relative max-w-xs mx-auto mt-8">
           {isLoading
             ? 'Loading...'
             : deckList.map((deck, i) => {
@@ -43,19 +42,9 @@ export default function Decks() {
                 );
               })}
           {isCreateDeckFormOpen && (
-            <div className="mt-2">
-              <form className="flex justify-items-center">
-                <TextInput
-                  className="w-full rounded-l"
-                  name="deck-name"
-                  labelId="deck-name"
-                  placeholder="Deck Name"
-                />
-                <button className="px-2 py-1 bg-gray-400 rounded-r">
-                  Submit
-                </button>
-              </form>
-            </div>
+            <CreateDeckForm
+              hideCreateDeckForm={() => showCreateDeckFrom(false)}
+            />
           )}
         </div>
       </section>

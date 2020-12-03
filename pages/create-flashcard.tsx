@@ -19,17 +19,11 @@ export default function Home() {
               <option value="deck3">deck3</option>
             </select>
 
-            <TextInput name="front" labelId="card-front" placeholder="Front" />
+            <TextInput name="front" labelId="card-front" label="Front:" />
 
-            <input
-              className="mb-6"
-              type="file"
-              name="image"
-              id=""
-              placeholder="Image"
-            />
+            <input className="mb-6" type="file" name="image" id="" />
 
-            <TextInput name="back" labelId="card-back" placeholder="Back" />
+            <TextInput name="back" labelId="card-back" label="Back:" />
 
             <button
               className="block px-16 py-3 mx-auto text-2xl text-white bg-gray-600 rounded-xl"

@@ -14,15 +14,11 @@ export default function Home() {
         <h1 className="my-10 text-3xl">Memcards</h1>
         <div className="w-full max-w-xs">
           <form>
-            <TextInput
-              labelId="username"
-              name="username"
-              placeholder="Username"
-            />
+            <TextInput labelId="username" name="username" label="Username" />
             <TextInput
               labelId="password"
               name="password"
-              placeholder="Password"
+              label="Password"
               type="password"
             />
             <button

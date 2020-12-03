@@ -1,3 +1,4 @@
+import React, { RefObject } from 'react';
 import { InputHTMLAttributes } from 'react';
 
 type props = {
@@ -5,33 +6,36 @@ type props = {
   name: string;
   labelId: string;
   label?: string;
-  placeholder?: string;
-  hideLabel?: boolean;
 };
 
-export default function TextInput({
-  type = 'text',
-  name,
-  labelId,
-  label,
-  hideLabel = true,
-  placeholder,
-  ...rest
-}: props & InputHTMLAttributes<HTMLInputElement>) {
-  const { className, ...props } = rest;
-  return (
-    <>
-      <label className={hideLabel ? 'sr-only' : 'block mb-2'} htmlFor={labelId}>
-        {label ?? placeholder}
-      </label>
-      <input
-        className={className ?? 'w-full mb-6 text-xl rounded'}
-        type={type}
-        name={name}
-        id={labelId}
-        placeholder={placeholder}
-        {...props}
-      />
-    </>
-  );
-}
+const TextInput = React.forwardRef(
+  (
+    {
+      type = 'text',
+      name,
+      labelId,
+      label,
+      ...rest
+    }: props & InputHTMLAttributes<HTMLInputElement>,
+    ref: RefObject<HTMLInputElement>
+  ) => {
+    const { className, ...props } = rest;
+    return (
+      <>
+        <label className="block mb-2" htmlFor={labelId}>
+          {label}
+        </label>
+        <input
+          ref={ref}
+          className={className ?? 'w-full mb-6 text-xl rounded'}
+          type={type}
+          name={name}
+          id={labelId}
+          {...props}
+        />
+      </>
+    );
+  }
+);
+
+export default TextInput;

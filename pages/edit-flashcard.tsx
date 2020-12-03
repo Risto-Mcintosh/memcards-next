@@ -24,21 +24,11 @@ export default function Home() {
               value="Deck 1"
               readOnly
             />
-            <TextInput
-              labelId="card-front"
-              name="front"
-              label="Front:"
-              hideLabel={false}
-            />
+            <TextInput labelId="card-front" name="front" label="Front:" />
 
             <input className="mb-6" type="file" name="image" id="" />
 
-            <TextInput
-              labelId="card-back"
-              name="back"
-              label="Back:"
-              hideLabel={false}
-            />
+            <TextInput labelId="card-back" name="back" label="Back:" />
             <button
               className="block px-16 py-3 mx-auto text-2xl text-white bg-gray-600 rounded-xl"
               type="submit"
