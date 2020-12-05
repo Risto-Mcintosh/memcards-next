@@ -6,7 +6,7 @@ function Layout({ children }) {
       <div className="py-4 bg-gray-300">
         <Navigation />
       </div>
-      <main className="relative flex-1 w-full max-w-2xl px-2 mx-auto ">
+      <main className="flex-1 w-full px-2 py-8 overflow-y-auto">
         {children}
       </main>
     </div>

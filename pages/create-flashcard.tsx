@@ -1,3 +1,4 @@
+import ImageSearch from 'components/ImageSearch';
 import Layout from 'components/Layout';
 import TextInput from 'components/TextInput';
 import Head from 'next/head';
@@ -9,8 +10,8 @@ export default function Home() {
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <article className="flex flex-col items-center h-full ">
-        <h1 className="my-10 text-3xl">Create A New Flashcard</h1>
+      <article className="flex flex-col items-center">
+        <h1 className="mb-6 text-3xl">Create A New Flashcard</h1>
         <div className="w-full max-w-xs">
           <form>
             <select className="w-full mb-6 text-xl rounded" name="deck-name">
@@ -34,6 +35,7 @@ export default function Home() {
           </form>
         </div>
       </article>
+      <ImageSearch />
     </Layout>
   );
 }

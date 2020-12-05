@@ -18,9 +18,9 @@ export default function Decks() {
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <section>
+      <section className="relative h-full max-w-2xl mx-auto">
         <h1 className="sr-only">Deck List</h1>
-        <div className="relative max-w-xs mx-auto mt-8">
+        <div className="relative max-w-xs mx-auto">
           {isLoading
             ? 'Loading...'
             : deckList.map((deck, i) => {
@@ -47,8 +47,8 @@ export default function Decks() {
             />
           )}
         </div>
+        <CreateButton showCreateDeckForm={() => showCreateDeckFrom(true)} />
       </section>
-      <CreateButton showCreateDeckForm={() => showCreateDeckFrom(true)} />
     </Layout>
   );
 }
