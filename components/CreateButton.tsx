@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Menu } from '@headlessui/react';
 import * as React from 'react';
-import Link from 'next/link';
+import LinkWrapper from './LinkWrapper';
 
 type props = {
   showCreateDeckForm: () => void;
@@ -60,15 +60,14 @@ export default function CreateButton({ showCreateDeckForm }: props) {
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }) => (
-                      <Link href="/create-flashcard">
-                        <a
-                          className={`${
-                            active ? 'bg-gray-300' : ''
-                          } block whitespace-nowrap hover:bg-gray-300 px-2 py-1`}
-                        >
-                          Create Flashcard
-                        </a>
-                      </Link>
+                      <LinkWrapper
+                        href="/create-flashcard"
+                        className={`${
+                          active ? 'bg-gray-300' : ''
+                        } block whitespace-nowrap hover:bg-gray-300 px-2 py-1`}
+                      >
+                        Create Flashcard
+                      </LinkWrapper>
                     )}
                   </Menu.Item>
                 </Menu.Items>

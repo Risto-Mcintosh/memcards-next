@@ -2,8 +2,10 @@ import ImageSearch from 'components/ImageSearch';
 import Layout from 'components/Layout';
 import TextInput from 'components/TextInput';
 import Head from 'next/head';
+import React from 'react';
 
 export default function Home() {
+  const [isOpen, setOpen] = React.useState(false);
   return (
     <Layout>
       <Head>
@@ -22,7 +24,16 @@ export default function Home() {
 
             <TextInput name="front" labelId="card-front" label="Front:" />
 
-            <input className="mb-6" type="file" name="image" id="" />
+            <div className="flex mb-6">
+              <p className="">Image (optional):</p>
+              <button
+                onClick={() => setOpen(true)}
+                type="button"
+                className="px-3 py-2 ml-4 bg-gray-300 rounded"
+              >
+                Search
+              </button>
+            </div>
 
             <TextInput name="back" labelId="card-back" label="Back:" />
 
@@ -35,7 +46,7 @@ export default function Home() {
           </form>
         </div>
       </article>
-      <ImageSearch />
+      {isOpen && <ImageSearch closeSearch={() => setOpen(false)} />}
     </Layout>
   );
 }
