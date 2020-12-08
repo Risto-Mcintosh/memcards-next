@@ -6,6 +6,8 @@ import React from 'react';
 
 export default function Home() {
   const [isOpen, setOpen] = React.useState(false);
+  const buttonRef = React.useRef(null);
+
   return (
     <Layout>
       <Head>
@@ -27,6 +29,7 @@ export default function Home() {
             <div className="flex mb-6">
               <p className="">Image (optional):</p>
               <button
+                ref={buttonRef}
                 onClick={() => setOpen(true)}
                 type="button"
                 className="px-3 py-2 ml-4 bg-gray-300 rounded"
@@ -46,7 +49,9 @@ export default function Home() {
           </form>
         </div>
       </article>
-      {isOpen && <ImageSearch closeSearch={() => setOpen(false)} />}
+      {isOpen && (
+        <ImageSearch closeSearch={() => setOpen(false)} anchorEl={buttonRef} />
+      )}
     </Layout>
   );
 }

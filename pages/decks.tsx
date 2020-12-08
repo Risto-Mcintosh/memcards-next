@@ -4,14 +4,16 @@ import DeckMenu from 'components/DeckMenu';
 import Layout from 'components/Layout';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useState } from 'react';
+import * as React from 'react';
 import { useQuery } from 'react-query';
 import { client } from 'utils/client';
 export default function Decks() {
   const { data: deckList, isLoading } = useQuery('decks', () =>
     client('/decks')
   );
-  const [isCreateDeckFormOpen, showCreateDeckFrom] = useState(false);
+  const [isCreateDeckFormOpen, showCreateDeckFrom] = React.useState(false);
+  const createButtonRef = React.useRef(null);
+
   return (
     <Layout>
       <Head>
@@ -44,10 +46,14 @@ export default function Decks() {
           {isCreateDeckFormOpen && (
             <CreateDeckForm
               hideCreateDeckForm={() => showCreateDeckFrom(false)}
+              anchorEl={createButtonRef}
             />
           )}
         </div>
-        <CreateButton showCreateDeckForm={() => showCreateDeckFrom(true)} />
+        <CreateButton
+          ref={createButtonRef}
+          showCreateDeckForm={() => showCreateDeckFrom(true)}
+        />
       </section>
     </Layout>
   );

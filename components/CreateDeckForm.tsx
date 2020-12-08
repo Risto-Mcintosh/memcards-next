@@ -1,27 +1,25 @@
 import FocusTrap from 'focus-trap-react';
-import { useCallback, useEffect, useRef } from 'react';
-import { useOnClickOutside } from 'utils/useOnClickOutside';
+import * as React from 'react';
+import { usePopover } from 'utils/usePopover';
 import TextInput from './TextInput';
 
 type props = {
   hideCreateDeckForm: () => void;
+  anchorEl: React.MutableRefObject<any>;
 };
-export default function CreateDeckForm({ hideCreateDeckForm }: props) {
-  const containerRef = useRef();
-  const inputRef = useRef(null);
-  useOnClickOutside(containerRef, () => hideCreateDeckForm());
 
-  const escFunction = useCallback((e: KeyboardEvent) => {
-    if (e.code === 'Escape') {
-      hideCreateDeckForm();
-    }
-  }, []);
-
-  useEffect(() => {
-    inputRef.current.focus();
-    document.addEventListener('keydown', escFunction);
-    return () => document.removeEventListener('keydown', escFunction);
-  }, []);
+export default function CreateDeckForm({
+  hideCreateDeckForm,
+  anchorEl
+}: props) {
+  const containerRef = React.useRef();
+  const inputRef = React.useRef(null);
+  usePopover({
+    containerRef,
+    inputRef,
+    anchorEl,
+    onClose: hideCreateDeckForm
+  });
 
   return (
     <FocusTrap>

@@ -1,26 +1,20 @@
 import * as React from 'react';
-import { useOnClickOutside } from 'utils/useOnClickOutside';
+import { usePopover } from 'utils/usePopover';
 type props = {
   closeSearch: () => void;
+  anchorEl: React.MutableRefObject<any>;
 };
-export default function ImageSearch({ closeSearch }: props) {
+export default function ImageSearch({ closeSearch, anchorEl }: props) {
   const containerRef = React.useRef();
   const inputRef = React.useRef(null);
-  useOnClickOutside(containerRef, () => closeSearch());
+  usePopover({
+    containerRef,
+    inputRef,
+    anchorEl,
+    onClose: closeSearch
+  });
 
-  const escFunction = React.useCallback((e: KeyboardEvent) => {
-    if (e.code === 'Escape') {
-      closeSearch();
-    }
-  }, []);
-
-  React.useEffect(() => {
-    inputRef.current.focus();
-    document.addEventListener('keydown', escFunction);
-    return () => document.removeEventListener('keydown', escFunction);
-  }, []);
-
-  const images = Array.from({ length: 12 }, (_, i) => i * i);
+  const images = new Array(12).fill(null);
   return (
     <div
       ref={containerRef}
