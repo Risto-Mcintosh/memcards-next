@@ -59,9 +59,8 @@ export default function ImageSearch({ closeSearch, anchorEl }: props) {
           <div className="grid grid-cols-3 gap-4">
             {images.map((_, i) => {
               return (
-                <div className="" tabIndex={0} role="button">
+                <div key={i} className="" tabIndex={0} role="button">
                   <img
-                    key={i}
                     src="https://source.unsplash.com/random/400x400"
                     alt="random image"
                   />
