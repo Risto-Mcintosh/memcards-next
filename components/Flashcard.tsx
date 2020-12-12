@@ -6,44 +6,62 @@ type props = {
 
 const variants: Variants = {
   hidden: {
-    opacity: 0,
-    scale: 0
+    opacity: 0
   },
   show: {
     opacity: 1,
-    scale: 1
+    transition: {
+      when: 'afterChildren'
+    }
+  }
+};
+const overlay: Variants = {
+  show: {
+    opacity: 0
+  },
+  hidden: {
+    opacity: 1
   }
 };
 export function FlashcardContent({ isShowingFrontOfCard }: props) {
   return (
-    <AnimatePresence>
+    <>
       {isShowingFrontOfCard ? (
         <motion.div
           key="front"
           variants={variants}
-          exit={{ rotateX: 90, opacity: 0 }}
           initial="hidden"
           animate="show"
-          className="flex flex-col justify-center w-full p-4 "
+          transition={{ duration: 0 }}
+          className="flex flex-col items-center justify-center w-full p-4"
         >
           <p className="mb-2 text-4xl">Card Front</p>
+          <motion.div
+            variants={overlay}
+            className="absolute inset-0 bg-white"
+          />
         </motion.div>
       ) : (
         <motion.div
           key="back"
           variants={variants}
-          exit={{ rotateX: 90, opacity: 0 }}
           initial="hidden"
           animate="show"
-          className="flex flex-col justify-center w-full p-4 "
+          transition={{ duration: 0 }}
+          style={{ rotateY: 180 }}
+          className="flex flex-col items-center justify-center w-full p-4"
         >
           <p className="mb-2 text-4xl">Card Back</p>
           <img
             src="https://source.unsplash.com/random/400x400"
             alt="random image"
           />
+          <motion.div
+            variants={overlay}
+            className="absolute inset-0 bg-white"
+          />
         </motion.div>
       )}
-    </AnimatePresence>
+    </>
   );
 }
