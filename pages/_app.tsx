@@ -6,6 +6,10 @@ if (typeof window !== 'undefined') {
   server.start();
 }
 
+// if (process.env.NODE_ENV === 'development') {
+//   makeServer({ environment: 'development' });
+// }
+
 const queryCache = new QueryCache({
   defaultConfig: {
     queries: {

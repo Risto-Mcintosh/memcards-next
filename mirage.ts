@@ -1,6 +1,6 @@
 import { belongsTo, createServer, Factory, hasMany, Model } from 'miragejs';
 
-function makeServer(environment: string = 'test') {
+function makeServer({ environment = 'test' }) {
   const server = createServer({
     environment,
     models: {
@@ -48,6 +48,8 @@ function makeServer(environment: string = 'test') {
       this.get('/decks', (schema) => {
         return schema.db.decks;
       });
+
+      this.passthrough();
     }
   });
   return server;

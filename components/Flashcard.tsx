@@ -35,7 +35,7 @@ export function FlashcardContent({ isShowingFrontOfCard }: props) {
           transition={{ duration: 0 }}
           className="flex flex-col items-center justify-center w-full p-4"
         >
-          <p className="mb-2 text-4xl">Card Front</p>
+          <p className="mb-2 text-4xl text-center">Card Front</p>
           <motion.div
             variants={overlay}
             className="absolute inset-0 bg-white"
@@ -52,10 +52,12 @@ export function FlashcardContent({ isShowingFrontOfCard }: props) {
           className="flex flex-col items-center justify-center w-full p-4"
         >
           <p className="mb-2 text-4xl">Card Back</p>
-          <img
-            src="https://source.unsplash.com/random/400x400"
-            alt="random image"
-          />
+          <div className="max-w-xs">
+            <img
+              src="https://source.unsplash.com/random/400x400"
+              alt="random image"
+            />
+          </div>
           <motion.div
             variants={overlay}
             className="absolute inset-0 bg-white"

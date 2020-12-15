@@ -31,7 +31,7 @@ export default function Decks() {
                     key={i}
                     className="flex items-center py-2 text-2xl transition-colors duration-200 border-b border-gray-400 hover:bg-gray-300"
                   >
-                    <Link href="#">
+                    <Link href={`deck/${deck.id}`}>
                       <a className="flex items-center justify-between flex-1 pl-2">
                         <div>{deck.name}</div>
                         <span aria-label="card count 25" className="text-xl">
