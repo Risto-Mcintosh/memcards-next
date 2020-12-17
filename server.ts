@@ -25,7 +25,13 @@ const handlers = [
     );
   }),
   rest.get('/api/deck/:deckId', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(generateFlashcards(3)));
+    return res(
+      ctx.status(200),
+      ctx.json({
+        deckName: 'Test Deck',
+        cards: generateFlashcards(3)
+      })
+    );
   })
 ];
 

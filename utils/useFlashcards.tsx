@@ -18,7 +18,16 @@ function getFlashCardFromDeck(deck) {
   };
 }
 
-function flashcardReducer(state, action) {
+type flashcardState = {
+  currentDeck: any[];
+  shuffledDeck: any[];
+  flashcard: any;
+  isShowingFrontOfCard: boolean;
+  isEditing: boolean;
+  hasCardsLeftToStudy: boolean;
+};
+
+function flashcardReducer(state: flashcardState, action) {
   switch (action.type) {
     case actionTypes.initialize: {
       let currentDeck = state.currentDeck;
@@ -35,7 +44,7 @@ function flashcardReducer(state, action) {
         flashcard,
         isEditing: false,
         isShowingFrontOfCard: true,
-        CardsLeftToStudy: false
+        hasCardsLeftToStudy: true
       };
     }
     case actionTypes.nextCard: {
@@ -47,8 +56,8 @@ function flashcardReducer(state, action) {
         shuffledDeck,
         flashcard,
         isShowingFrontOfCard: true,
-        CardsLeftToStudy:
-          state.currentDeck.length >= 1 && !flashcard ? true : false
+        hasCardsLeftToStudy:
+          state.currentDeck.length >= 1 && !flashcard ? false : true
       };
     }
     case actionTypes.edit: {
@@ -71,11 +80,11 @@ function flashcardReducer(state, action) {
   }
 }
 
-function useFlashcard(deck = []) {
+function useFlashcards(deck = []) {
   const isDeckEmpty = deck.length <= 0;
 
   const [
-    { flashcard, isEditing, CardsLeftToStudy, isShowingFrontOfCard },
+    { flashcard, isEditing, hasCardsLeftToStudy, isShowingFrontOfCard },
     dispatch
   ] = React.useReducer(flashcardReducer, {
     currentDeck: deck,
@@ -83,7 +92,7 @@ function useFlashcard(deck = []) {
     flashcard: null,
     isShowingFrontOfCard: true,
     isEditing: false,
-    CardsLeftToStudy: false
+    hasCardsLeftToStudy: true
   });
 
   const initializeDeck = React.useCallback(
@@ -110,11 +119,11 @@ function useFlashcard(deck = []) {
     nextCard,
     clearCard,
     isDeckEmpty,
-    CardsLeftToStudy,
+    hasCardsLeftToStudy,
     isEditing,
     editFlashcard,
     initializeDeck
   };
 }
 
-export default useFlashcard;
+export { useFlashcards };
