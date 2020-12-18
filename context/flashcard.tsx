@@ -7,7 +7,6 @@ type flashcardContextType = {
   flipCard: () => void;
   nextCard: () => void;
   clearCard: () => void;
-  isEditing: boolean;
   editFlashcard: (flashcard?: any) => void;
   initializeDeck: (initialDeck?: any) => void;
 };

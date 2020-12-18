@@ -24,7 +24,7 @@ type flashcardState = {
   flashcard: any;
   isShowingFrontOfCard: boolean;
   isEditing: boolean;
-  hasCardsLeftToStudy: boolean;
+  noCardsLeftToStudy: boolean;
 };
 
 function flashcardReducer(state: flashcardState, action) {
@@ -44,7 +44,7 @@ function flashcardReducer(state: flashcardState, action) {
         flashcard,
         isEditing: false,
         isShowingFrontOfCard: true,
-        hasCardsLeftToStudy: true
+        noCardsLeftToStudy: false
       };
     }
     case actionTypes.nextCard: {
@@ -56,8 +56,8 @@ function flashcardReducer(state: flashcardState, action) {
         shuffledDeck,
         flashcard,
         isShowingFrontOfCard: true,
-        hasCardsLeftToStudy:
-          state.currentDeck.length >= 1 && !flashcard ? false : true
+        noCardsLeftToStudy:
+          state.currentDeck.length >= 1 && !flashcard ? true : false
       };
     }
     case actionTypes.edit: {
@@ -84,7 +84,7 @@ function useFlashcards(deck = []) {
   const isDeckEmpty = deck.length <= 0;
 
   const [
-    { flashcard, isEditing, hasCardsLeftToStudy, isShowingFrontOfCard },
+    { flashcard, isEditing, noCardsLeftToStudy, isShowingFrontOfCard },
     dispatch
   ] = React.useReducer(flashcardReducer, {
     currentDeck: deck,
@@ -92,7 +92,7 @@ function useFlashcards(deck = []) {
     flashcard: null,
     isShowingFrontOfCard: true,
     isEditing: false,
-    hasCardsLeftToStudy: true
+    noCardsLeftToStudy: false
   });
 
   const initializeDeck = React.useCallback(
@@ -119,7 +119,7 @@ function useFlashcards(deck = []) {
     nextCard,
     clearCard,
     isDeckEmpty,
-    hasCardsLeftToStudy,
+    noCardsLeftToStudy,
     isEditing,
     editFlashcard,
     initializeDeck

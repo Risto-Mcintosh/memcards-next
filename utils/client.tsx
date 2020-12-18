@@ -1,4 +1,5 @@
 function client(endpoint: string, { body, ...customConfig }: RequestInit = {}) {
+  console.count('called');
   const headers = { 'Content-Type': 'application/json' };
 
   const config = {

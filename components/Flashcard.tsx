@@ -45,6 +45,9 @@ export function Flashcard() {
     if (e.code === 'Space') {
       flipCard();
     }
+    if (e.code === 'KeyN') {
+      nextCard();
+    }
   }, []);
 
   React.useEffect(() => {
@@ -113,7 +116,7 @@ export function Flashcard() {
               )}
             </motion.div>
           </section>
-          <div className="flex mt-5">
+          <div className="flex justify-center mt-5">
             <button
               onClick={() => flipCard()}
               className="px-8 py-3 text-3xl text-white bg-gray-600 rounded-xl"
@@ -122,7 +125,7 @@ export function Flashcard() {
             </button>
             <button
               onClick={() => nextCard()}
-              className="px-8 py-3 text-3xl text-white bg-gray-600 rounded-xl"
+              className="px-8 py-3 ml-4 text-3xl text-white bg-gray-600 rounded-xl"
             >
               Next
             </button>

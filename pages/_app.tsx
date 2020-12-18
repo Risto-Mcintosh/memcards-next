@@ -1,5 +1,5 @@
 import 'tailwindcss/tailwind.css';
-import { QueryCache, ReactQueryCacheProvider } from 'react-query';
+import { QueryClientProvider, QueryClient } from 'react-query';
 
 if (typeof window !== 'undefined') {
   const { server } = require('server');
@@ -10,19 +10,25 @@ if (typeof window !== 'undefined') {
 //   makeServer({ environment: 'development' });
 // }
 
-const queryCache = new QueryCache({
-  defaultConfig: {
+const queryCache = new QueryClient({
+  defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
+      retry(count, err) {
+        if (err === 'no endpoint' || count >= 3) {
+          return false;
+        }
+        return true;
+      }
     }
   }
 });
 
 function MyApp({ Component, pageProps }) {
   return (
-    <ReactQueryCacheProvider queryCache={queryCache}>
+    <QueryClientProvider client={queryCache}>
       <Component {...pageProps} />
-    </ReactQueryCacheProvider>
+    </QueryClientProvider>
   );
 }
 

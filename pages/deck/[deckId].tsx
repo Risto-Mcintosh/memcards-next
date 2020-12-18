@@ -5,25 +5,40 @@ import { Flashcard } from '@components/Flashcard';
 import { FlashcardProvider } from '@context/flashcard';
 import { client } from '@utils/client';
 import { useFlashcards } from '@utils/useFlashcards';
+import { DeckCompleted } from '@components/DeckCompleted';
+import { EditFlashcard } from '@components/EditFlashcard';
+
+function useDeck(deckId: string | string[]) {
+  return useQuery(`deck ${deckId}`, () => {
+    if (!deckId) return Promise.reject('no endpoint');
+
+    return client(`/deck/${deckId}`);
+  });
+}
 
 export default function FlashcardPage() {
-  const { query, push } = useRouter();
+  const router = useRouter();
 
-  const { data, isFetchedAfterMount } = useQuery(`deck ${query.deckId}`, () =>
-    client(`/deck/${query.deckId}`)
-  );
-
-  const { isDeckEmpty, hasCardsLeftToStudy, ...rest } = useFlashcards(
+  const { data, isFetchedAfterMount } = useDeck(router.query.deckId);
+  const { isDeckEmpty, noCardsLeftToStudy, isEditing, ...rest } = useFlashcards(
     data?.cards
   );
 
-  if (isDeckEmpty && isFetchedAfterMount) {
-    return push('/decks');
-  }
+  React.useEffect(() => {
+    if (isDeckEmpty && isFetchedAfterMount && router.query.deckId) {
+      router.push('/decks');
+    }
+  }, [isDeckEmpty, isFetchedAfterMount, router]);
 
   return (
-    <FlashcardProvider state={{ deckName: data.deckName, ...rest }}>
-      {!hasCardsLeftToStudy ? <p>No Cards left</p> : <Flashcard />}
+    <FlashcardProvider state={{ deckName: data?.deckName, ...rest }}>
+      {noCardsLeftToStudy ? (
+        <DeckCompleted />
+      ) : isEditing ? (
+        <EditFlashcard />
+      ) : (
+        <Flashcard />
+      )}
     </FlashcardProvider>
   );
 }
