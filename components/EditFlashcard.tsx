@@ -2,9 +2,26 @@ import { useFlashcardContext } from '@context/flashcard';
 import Layout from 'components/Layout';
 import TextInput from 'components/TextInput';
 import Head from 'next/head';
+import { useForm } from 'react-hook-form';
+
+type FormInputs = {
+  deckName: string;
+  front: string;
+  back: string;
+  image: any;
+};
 
 export function EditFlashcard() {
   const { flashcard, deckName, editFlashcard } = useFlashcardContext();
+  console.log({ flashcard });
+  const { register } = useForm<FormInputs>({
+    defaultValues: {
+      deckName,
+      front: flashcard.front,
+      back: flashcard.back,
+      image: flashcard.image
+    }
+  });
 
   return (
     <Layout>
@@ -22,7 +39,7 @@ export function EditFlashcard() {
             <input
               className="w-full px-0 mb-6 border-0 border-b"
               type="text"
-              name="front"
+              name="deckName"
               id="deck-name"
               value={deckName}
               readOnly

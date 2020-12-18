@@ -3,6 +3,7 @@ import Layout from '@components/Layout';
 import Head from 'next/head';
 import { motion, Variants } from 'framer-motion';
 import { useFlashcardContext } from '@context/flashcard';
+import { Controls } from './Controls';
 
 const flashcardFlip: Variants = {
   front: {
@@ -40,7 +41,6 @@ export function Flashcard() {
     flashcard,
     deckName
   } = useFlashcardContext();
-
   const flashcardControls = React.useCallback((e: KeyboardEvent) => {
     if (e.code === 'Space') {
       flipCard();
@@ -116,21 +116,7 @@ export function Flashcard() {
               )}
             </motion.div>
           </section>
-          <div className="flex justify-center mt-5">
-            <button
-              onClick={() => flipCard()}
-              className="px-8 py-3 text-3xl text-white bg-gray-600 rounded-xl"
-            >
-              Flip
-            </button>
-            <button
-              onClick={() => nextCard()}
-              className="px-8 py-3 ml-4 text-3xl text-white bg-gray-600 rounded-xl"
-            >
-              Next
-            </button>
-            {/* add Edit Card button here */}
-          </div>
+          <Controls />
         </div>
       )}
     </Layout>
