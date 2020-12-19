@@ -1,0 +1,68 @@
+[
+  {
+    "id": "1",
+    "deckId": "1",
+    "front": "Front 1",
+    "back": "Back 1",
+    "image": {
+      "src": "https://source.unsplash.com/random/400x400",
+      "alt": "random image",
+      "thumb": null
+    }
+  },
+  {
+    "id": "2",
+    "deckId": "1",
+    "front": "Front 2",
+    "back": "Back 2",
+    "image": {
+      "src": "https://source.unsplash.com/random/400x400",
+      "alt": "random image",
+      "thumb": null
+    }
+  },
+  {
+    "id": "3",
+    "deckId": "1",
+    "front": "Front 3",
+    "back": "Back 3",
+    "image": {
+      "src": "https://source.unsplash.com/random/400x400",
+      "alt": "random image",
+      "thumb": null
+    }
+  },
+  {
+    "id": "4",
+    "deckId": "2",
+    "front": "Front 4",
+    "back": "Back 4",
+    "image": {
+      "src": "https://source.unsplash.com/random/400x400",
+      "alt": "random image",
+      "thumb": null
+    }
+  },
+  {
+    "id": "5",
+    "deckId": "2",
+    "front": "Front 5",
+    "back": "Back 5",
+    "image": {
+      "src": "https://source.unsplash.com/random/400x400",
+      "alt": "random image",
+      "thumb": null
+    }
+  },
+  {
+    "id": "6",
+    "deckId": "2",
+    "front": "Front 6",
+    "back": "Back 6",
+    "image": {
+      "src": "https://source.unsplash.com/random/400x400",
+      "alt": "random image",
+      "thumb": null
+    }
+  }
+]

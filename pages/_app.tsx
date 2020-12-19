@@ -2,7 +2,7 @@ import 'tailwindcss/tailwind.css';
 import { QueryClientProvider, QueryClient } from 'react-query';
 
 if (typeof window !== 'undefined') {
-  const { server } = require('server');
+  const { server } = require('test/server');
   server.start();
 }
 

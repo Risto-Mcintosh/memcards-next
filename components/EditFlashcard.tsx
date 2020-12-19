@@ -2,7 +2,7 @@ import { useFlashcardContext } from '@context/flashcard';
 import Layout from 'components/Layout';
 import TextInput from 'components/TextInput';
 import Head from 'next/head';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 type FormInputs = {
   deckName: string;
@@ -13,8 +13,7 @@ type FormInputs = {
 
 export function EditFlashcard() {
   const { flashcard, deckName, editFlashcard } = useFlashcardContext();
-  console.log({ flashcard });
-  const { register } = useForm<FormInputs>({
+  const { register, handleSubmit } = useForm<FormInputs>({
     defaultValues: {
       deckName,
       front: flashcard.front,
@@ -22,6 +21,11 @@ export function EditFlashcard() {
       image: flashcard.image
     }
   });
+
+  const onSubmit: SubmitHandler<FormInputs> = (data) => {
+    console.log({ ...flashcard, ...data });
+    editFlashcard({ ...flashcard, ...data });
+  };
 
   return (
     <Layout>
@@ -32,7 +36,7 @@ export function EditFlashcard() {
       <article className="flex flex-col items-center h-full ">
         <h1 className="my-10 text-3xl">Edit Flashcard</h1>
         <div className="w-full max-w-xs">
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <label className="block mb-2" htmlFor="deck-name">
               Deck Name:
             </label>
@@ -44,11 +48,21 @@ export function EditFlashcard() {
               value={deckName}
               readOnly
             />
-            <TextInput labelId="card-front" name="front" label="Front:" />
+            <TextInput
+              ref={register}
+              labelId="card-front"
+              name="front"
+              label="Front:"
+            />
 
             <input className="mb-6" type="file" name="image" id="" />
 
-            <TextInput labelId="card-back" name="back" label="Back:" />
+            <TextInput
+              ref={register}
+              labelId="card-back"
+              name="back"
+              label="Back:"
+            />
             <button
               className="block px-16 py-3 mx-auto text-2xl text-white bg-gray-600 rounded-xl"
               type="submit"

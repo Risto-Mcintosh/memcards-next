@@ -39,7 +39,8 @@ export function Flashcard() {
     flipCard,
     nextCard,
     flashcard,
-    deckName
+    deckName,
+    editFlashcard
   } = useFlashcardContext();
   const flashcardControls = React.useCallback((e: KeyboardEvent) => {
     if (e.code === 'Space') {
@@ -47,6 +48,10 @@ export function Flashcard() {
     }
     if (e.code === 'KeyN') {
       nextCard();
+    }
+
+    if (e.code === 'KeyE') {
+      editFlashcard();
     }
   }, []);
 
