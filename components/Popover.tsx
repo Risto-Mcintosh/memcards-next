@@ -10,10 +10,18 @@ interface children {
 type props = {
   anchorEl: React.MutableRefObject<any>;
   onClose: () => void;
-  children: ({ containerRef, focusOnMountEl }: children) => React.ReactNode;
+  container?: boolean;
+  children:
+    | React.ReactNode
+    | (({ containerRef, focusOnMountEl }: children) => React.ReactNode);
 };
 
-export function Popover({ anchorEl, onClose, children }: props) {
+export function Popover({
+  anchorEl,
+  onClose,
+  container = false,
+  children
+}: props) {
   const containerRef = React.useRef();
   const focusOnMountEl = React.useRef(null);
   usePopover({
@@ -23,5 +31,22 @@ export function Popover({ anchorEl, onClose, children }: props) {
     onClose
   });
 
-  return <FocusTrap>{children({ containerRef, focusOnMountEl })}</FocusTrap>;
+  const content =
+    typeof children === 'function'
+      ? children({ containerRef, focusOnMountEl })
+      : children;
+  return (
+    <FocusTrap>
+      {container ? (
+        <div
+          ref={containerRef}
+          className="absolute inset-x-0 top-0 z-10 px-3 py-6 bg-white border-2 rounded shadow-lg"
+        >
+          {content}
+        </div>
+      ) : (
+        <>content</>
+      )}
+    </FocusTrap>
+  );
 }

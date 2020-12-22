@@ -39,7 +39,7 @@ export default function Decks() {
                         </span>
                       </a>
                     </Link>
-                    <DeckMenu />
+                    <DeckMenu deck={deck} />
                   </div>
                 );
               })}

@@ -2,13 +2,20 @@ import * as React from 'react';
 import { Menu } from '@headlessui/react';
 import { motion } from 'framer-motion';
 import { Popover } from './Popover';
-export default function DeckMenu() {
+import { PopoverForm } from './PopoverForm';
+
+type props = {
+  deck: any;
+};
+
+export default function DeckMenu({ deck }: props) {
   const [isDeleteConfirmOpen, setDeleteConfirm] = React.useState(false);
+  const [isEditing, setEdit] = React.useState(false);
   const anchorEl = React.useRef(null);
 
   return (
-    <div className="relative" ref={anchorEl}>
-      <Menu>
+    <div>
+      <Menu as="div" className="relative">
         {({ open }) => (
           <>
             <Menu.Button
@@ -38,14 +45,14 @@ export default function DeckMenu() {
               >
                 <Menu.Item>
                   {({ active }) => (
-                    <a
-                      href="#"
+                    <button
+                      onClick={() => setEdit(true)}
                       className={`${
                         active ? 'bg-gray-300 ' : ''
-                      } block p-2 text-lg whitespace-nowrap`}
+                      } w-full p-2 text-lg whitespace-nowrap`}
                     >
                       Rename
-                    </a>
+                    </button>
                   )}
                 </Menu.Item>
                 <Menu.Item>
@@ -66,29 +73,40 @@ export default function DeckMenu() {
         )}
       </Menu>
       {isDeleteConfirmOpen && (
-        <div className="absolute top-0 right-0 p-4 bg-white border shadow">
-          <Popover anchorEl={anchorEl} onClose={() => setDeleteConfirm(false)}>
-            {({ containerRef }) => (
-              <div ref={containerRef}>
-                <p className="whitespace-nowrap">Are you sure?</p>
-                <div className="flex justify-around mt-2">
-                  <button
-                    className="px-2 py-1 text-white bg-gray-600 rounded"
-                    onClick={() => setDeleteConfirm(false)}
-                  >
-                    No
-                  </button>
-                  <button
-                    className="px-2 py-1 text-white bg-gray-600 rounded"
-                    onClick={() => console.log('deck deleted!')}
-                  >
-                    Yes
-                  </button>
-                </div>
-              </div>
-            )}
-          </Popover>
-        </div>
+        <Popover
+          anchorEl={anchorEl}
+          onClose={() => setDeleteConfirm(false)}
+          container
+        >
+          <p className="text-center">
+            Are you sure you want to delete <strong>{deck.name}</strong>?
+          </p>
+          <div className="flex justify-around mt-2">
+            <button
+              className="px-5 py-1 text-lg bg-gray-400 rounded"
+              onClick={() => console.log('deck deleted!')}
+            >
+              Yes
+            </button>
+            <button
+              className="px-5 py-1 text-lg border-2 border-gray-400 rounded"
+              onClick={() => setDeleteConfirm(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </Popover>
+      )}
+
+      {isEditing && (
+        <PopoverForm
+          anchorEl={anchorEl}
+          formId="edit-deck-name"
+          inputName="deck-name"
+          label="Deck Name"
+          hideForm={() => setEdit(false)}
+          // TODO Pass down deckName for input value
+        />
       )}
     </div>
   );
