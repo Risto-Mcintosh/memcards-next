@@ -1,5 +1,4 @@
-import { rest } from 'msw';
-import { setupWorker } from 'msw';
+import { rest, setupWorker } from 'msw';
 import deckData from 'test/data/decks.json';
 import flashcardData from 'test/data/flashcards.json';
 
@@ -19,6 +18,21 @@ const handlers = [
         cards: flashcards.filter((flashcard) => flashcard.deckId === deckId)
       })
     );
+  }),
+  rest.delete('/api/deck/:deckId', (req, res, ctx) => {
+    return res(ctx.status(500), ctx.text('route not configured'));
+  }),
+  rest.post('/api/deck', (req, res, ctx) => {
+    return res(ctx.status(500), ctx.text('route not configured'));
+  }),
+  rest.post('/api/deck/:deckId/card', (req, res, ctx) => {
+    return res(ctx.status(500), ctx.text('route not configured'));
+  }),
+  rest.put('/api/deck/:deckId/card/:cardId', (req, res, ctx) => {
+    return res(ctx.status(500), ctx.text('route not configured'));
+  }),
+  rest.delete('/api/deck/:deckId/card/:cardId', (req, res, ctx) => {
+    return res(ctx.status(500), ctx.text('route not configured'));
   })
 ];
 

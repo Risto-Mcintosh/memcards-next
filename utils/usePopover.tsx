@@ -11,7 +11,7 @@ function usePopover({ containerRef, onClose, anchorEl, focusOnMountEl }) {
   }, []);
 
   React.useEffect(() => {
-    focusOnMountEl.current?.focus();
+    focusOnMountEl?.current?.focus();
     document.addEventListener('keydown', escFunction);
     return () => {
       anchorEl.current.focus();

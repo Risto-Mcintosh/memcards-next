@@ -10,7 +10,7 @@ export default function ImageSearch({ closeSearch, anchorEl }: props) {
   const inputRef = React.useRef(null);
   usePopover({
     containerRef,
-    inputRef,
+    focusOnMountEl: inputRef,
     anchorEl,
     onClose: closeSearch
   });

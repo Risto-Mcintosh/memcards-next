@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
 import { Flashcard } from '@components/Flashcard';
 import { FlashcardProvider } from '@context/flashcard';
-import { client } from '@utils/client';
+import { client } from '@utils/fetch-wrapper';
 import { useFlashcards } from '@utils/useFlashcards';
 import { DeckCompleted } from '@components/DeckCompleted';
 import { EditFlashcard } from '@components/EditFlashcard';

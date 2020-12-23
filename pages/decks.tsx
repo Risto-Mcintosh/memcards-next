@@ -5,12 +5,9 @@ import Layout from 'components/Layout';
 import Head from 'next/head';
 import Link from 'next/link';
 import * as React from 'react';
-import { useQuery } from 'react-query';
-import { client } from 'utils/client';
+import { useDeckList } from 'utils/client';
 export default function Decks() {
-  const { data: deckList, isLoading } = useQuery('decks', () =>
-    client('/decks')
-  );
+  const { data: deckList, isLoading } = useDeckList();
   const [isCreateDeckFormOpen, showCreateDeckFrom] = React.useState(false);
   const createButtonRef = React.useRef(null);
 
