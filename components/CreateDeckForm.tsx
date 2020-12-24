@@ -1,4 +1,6 @@
+import { useDeckCreate } from '@utils/client';
 import * as React from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { Popover } from './Popover';
 import TextInput from './TextInput';
 
@@ -7,18 +9,37 @@ type props = {
   anchorEl: React.MutableRefObject<any>;
 };
 
+type FormInput = {
+  deckName: string;
+};
+
 export default function CreateDeckForm({
   hideCreateDeckForm,
   anchorEl
 }: props) {
+  const { mutate } = useDeckCreate();
+  const { register, handleSubmit } = useForm<FormInput>();
+
+  const onSubmit: SubmitHandler<FormInput> = (data) => {
+    console.log({ data });
+    mutate(data, {
+      onSuccess() {
+        hideCreateDeckForm();
+      }
+    });
+  };
+
   return (
     <Popover anchorEl={anchorEl} onClose={hideCreateDeckForm} container>
       {({ focusOnMountEl }) => (
         <>
-          <form id="create-deck-form">
+          <form id="create-deck-form" onSubmit={handleSubmit(onSubmit)}>
             <TextInput
-              ref={focusOnMountEl}
-              name="deck-name"
+              ref={(ref) => {
+                focusOnMountEl.current = ref;
+                register(ref);
+              }}
+              name="deckName"
               labelId="deck-name"
               label="Deck Name"
             />

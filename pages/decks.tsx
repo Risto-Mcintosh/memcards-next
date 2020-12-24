@@ -23,15 +23,24 @@ export default function Decks() {
           {isLoading
             ? 'Loading...'
             : deckList.map((deck, i) => {
+                const isDeckEmpty = deck.cardCount === 0;
                 return (
                   <div
                     key={i}
                     className="flex items-center py-2 text-2xl transition-colors duration-200 border-b border-gray-400 hover:bg-gray-300"
                   >
                     <Link href={`deck/${deck.id}`}>
-                      <a className="flex items-center justify-between flex-1 pl-2">
+                      <a
+                        className={`flex items-center justify-between flex-1 pl-2 ${
+                          isDeckEmpty && 'pointer-events-none'
+                        }`}
+                        aria-disabled={isDeckEmpty ? true : false}
+                      >
                         <div>{deck.name}</div>
-                        <span aria-label="card count 25" className="text-xl">
+                        <span
+                          aria-label={`card count ${deck.cardCount}`}
+                          className="text-xl"
+                        >
                           {deck.cardCount}
                         </span>
                       </a>

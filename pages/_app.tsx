@@ -1,6 +1,6 @@
 import 'tailwindcss/tailwind.css';
 import { QueryClientProvider, QueryClient } from 'react-query';
-
+import { ReactQueryDevtools } from 'react-query/devtools';
 if (typeof window !== 'undefined') {
   const { server } = require('test/server');
   server.start();
@@ -28,6 +28,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <QueryClientProvider client={queryCache}>
       <Component {...pageProps} />
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }

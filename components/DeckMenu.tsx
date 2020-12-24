@@ -3,6 +3,7 @@ import { Menu } from '@headlessui/react';
 import { motion } from 'framer-motion';
 import { Popover } from './Popover';
 import { PopoverForm } from './PopoverForm';
+import { useDeckDelete } from '@utils/client';
 
 type props = {
   deck: any;
@@ -10,6 +11,7 @@ type props = {
 
 export default function DeckMenu({ deck }: props) {
   const [isDeleteConfirmOpen, setDeleteConfirm] = React.useState(false);
+  const { mutate: onDeckDelete } = useDeckDelete();
   const [isEditing, setEdit] = React.useState(false);
   const anchorEl = React.useRef(null);
 
@@ -84,7 +86,11 @@ export default function DeckMenu({ deck }: props) {
           <div className="flex justify-around mt-2">
             <button
               className="px-5 py-1 text-lg bg-gray-400 rounded"
-              onClick={() => console.log('deck deleted!')}
+              onClick={() =>
+                onDeckDelete(deck.id, {
+                  onSuccess: () => setDeleteConfirm(false)
+                })
+              }
             >
               Yes
             </button>

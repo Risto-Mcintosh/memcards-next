@@ -14,7 +14,7 @@ function usePopover({ containerRef, onClose, anchorEl, focusOnMountEl }) {
     focusOnMountEl?.current?.focus();
     document.addEventListener('keydown', escFunction);
     return () => {
-      anchorEl.current.focus();
+      anchorEl?.current?.focus();
       document.removeEventListener('keydown', escFunction);
     };
   }, []);

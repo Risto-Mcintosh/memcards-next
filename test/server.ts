@@ -20,10 +20,20 @@ const handlers = [
     );
   }),
   rest.delete('/api/deck/:deckId', (req, res, ctx) => {
-    return res(ctx.status(500), ctx.text('route not configured'));
+    const deckId = req.params.deckId;
+    decks = decks.filter((deck) => deck.id !== deckId);
+    return res(ctx.status(204));
   }),
-  rest.post('/api/deck', (req, res, ctx) => {
-    return res(ctx.status(500), ctx.text('route not configured'));
+  rest.post<{ deckName: string }>('/api/deck', (req, res, ctx) => {
+    console.log({ reqBody: req.body });
+    const { deckName } = req.body;
+    const newDeck = {
+      id: decks.length.toString(),
+      cardCount: 0,
+      name: deckName
+    };
+    decks.push(newDeck);
+    return res(ctx.status(201), ctx.json(newDeck));
   }),
   rest.post('/api/deck/:deckId/card', (req, res, ctx) => {
     return res(ctx.status(500), ctx.text('route not configured'));
