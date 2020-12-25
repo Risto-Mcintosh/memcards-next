@@ -27,7 +27,6 @@ function useDeckCreate() {
   const queryClient = useQueryClient();
   return useMutation(
     (newDeck: any) => {
-      console.log({ newThing: newDeck });
       return client('/deck', { body: newDeck });
     },
     {
@@ -41,4 +40,29 @@ function useDeckCreate() {
   );
 }
 
-export { useDeckList, useDeckDelete, useDeckCreate };
+interface UpdateDeckMutation {
+  deckId: string;
+  newDeck: any;
+}
+
+function useDeckUpdate() {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ({ deckId, newDeck }: UpdateDeckMutation) =>
+      client(`/deck/${deckId}`, {
+        body: newDeck,
+        method: 'Put'
+      }),
+    {
+      onSuccess(data, { deckId }) {
+        queryClient.setQueryData('decks', (oldData: any[]) => {
+          console.log({ data, oldData, deckId });
+          if (!oldData) return;
+          return oldData?.map((deck) => (deck.id === deckId ? data : deck));
+        });
+      }
+    }
+  );
+}
+
+export { useDeckList, useDeckDelete, useDeckCreate, useDeckUpdate };

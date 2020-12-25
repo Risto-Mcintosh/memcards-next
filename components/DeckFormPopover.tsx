@@ -1,36 +1,27 @@
-import { useDeckCreate } from '@utils/client';
-import * as React from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { Popover } from './Popover';
+import { Popover } from '@components/Popover';
+import { SubmitHandler, UseFormMethods } from 'react-hook-form';
 import TextInput from './TextInput';
 
-type props = {
-  hideCreateDeckForm: () => void;
-  anchorEl: React.MutableRefObject<any>;
-};
-
-type FormInput = {
+export type FormInputs = {
   deckName: string;
 };
 
-export default function CreateDeckForm({
-  hideCreateDeckForm,
-  anchorEl
+type props = {
+  reactHookForm: UseFormMethods<FormInputs>;
+  onSubmit: SubmitHandler<FormInputs>;
+  hideForm: () => void;
+  anchorEl: React.MutableRefObject<any>;
+};
+
+export function DeckFormPopover({
+  anchorEl,
+  onSubmit,
+  hideForm,
+  reactHookForm
 }: props) {
-  const { mutate } = useDeckCreate();
-  const { register, handleSubmit } = useForm<FormInput>();
-
-  const onSubmit: SubmitHandler<FormInput> = (data) => {
-    console.log({ data });
-    mutate(data, {
-      onSuccess() {
-        hideCreateDeckForm();
-      }
-    });
-  };
-
+  const { register, handleSubmit } = reactHookForm;
   return (
-    <Popover anchorEl={anchorEl} onClose={hideCreateDeckForm} container>
+    <Popover anchorEl={anchorEl} onClose={hideForm} container>
       {({ focusOnMountEl }) => (
         <>
           <form id="create-deck-form" onSubmit={handleSubmit(onSubmit)}>
@@ -54,7 +45,7 @@ export default function CreateDeckForm({
             </button>
             <button
               className="px-5 py-1 text-lg border-2 border-gray-400 rounded"
-              onClick={() => hideCreateDeckForm()}
+              onClick={() => hideForm()}
             >
               Cancel
             </button>

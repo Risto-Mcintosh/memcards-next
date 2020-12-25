@@ -24,6 +24,14 @@ const handlers = [
     decks = decks.filter((deck) => deck.id !== deckId);
     return res(ctx.status(204));
   }),
+  rest.put<{ deckName: string }>('/api/deck/:deckId', (req, res, ctx) => {
+    const deckId = req.params.deckId;
+    const { deckName: name, ...rest } = req.body;
+    const oldDeckIdx = decks.findIndex((deck) => deck.id === deckId);
+    const newDeck = { ...decks[oldDeckIdx], name, ...rest };
+    decks[oldDeckIdx] = newDeck;
+    return res(ctx.status(200), ctx.json(newDeck));
+  }),
   rest.post<{ deckName: string }>('/api/deck', (req, res, ctx) => {
     console.log({ reqBody: req.body });
     const { deckName } = req.body;

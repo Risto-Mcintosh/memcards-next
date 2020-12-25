@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Menu } from '@headlessui/react';
 import { motion } from 'framer-motion';
 import { Popover } from './Popover';
-import { PopoverForm } from './PopoverForm';
+import { DeckUpdateForm } from './DeckUpdateForm';
 import { useDeckDelete } from '@utils/client';
 
 type props = {
@@ -105,13 +105,10 @@ export default function DeckMenu({ deck }: props) {
       )}
 
       {isEditing && (
-        <PopoverForm
-          anchorEl={anchorEl}
-          formId="edit-deck-name"
-          inputName="deck-name"
-          label="Deck Name"
+        <DeckUpdateForm
+          focusOnCloseEl={anchorEl}
           hideForm={() => setEdit(false)}
-          // TODO Pass down deckName for input value
+          deck={deck}
         />
       )}
     </div>

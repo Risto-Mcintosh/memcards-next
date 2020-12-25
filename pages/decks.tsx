@@ -1,5 +1,5 @@
 import CreateButton from 'components/CreateButton';
-import CreateDeckForm from 'components/CreateDeckForm';
+import CreateDeckForm from '@components/DeckCreateForm';
 import DeckMenu from 'components/DeckMenu';
 import Layout from 'components/Layout';
 import Head from 'next/head';
@@ -51,8 +51,8 @@ export default function Decks() {
               })}
           {isCreateDeckFormOpen && (
             <CreateDeckForm
-              hideCreateDeckForm={() => showCreateDeckFrom(false)}
-              anchorEl={createButtonRef}
+              hideForm={() => showCreateDeckFrom(false)}
+              focusOnCloseEl={createButtonRef}
             />
           )}
         </div>
