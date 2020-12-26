@@ -11,10 +11,11 @@ const handlers = [
   }),
   rest.get('/api/deck/:deckId', (req, res, ctx) => {
     const deckId = req.params.deckId;
+    const deck = decks.find((deck) => deck.id === deckId);
     return res(
       ctx.status(200),
       ctx.json({
-        deckName: decks.find((deck) => deck.id === deckId).name,
+        deck: { id: deck.id, name: deck.name },
         cards: flashcards.filter((flashcard) => flashcard.deckId === deckId)
       })
     );
@@ -47,7 +48,17 @@ const handlers = [
     return res(ctx.status(500), ctx.text('route not configured'));
   }),
   rest.put('/api/deck/:deckId/card/:cardId', (req, res, ctx) => {
-    return res(ctx.status(500), ctx.text('route not configured'));
+    const cardId = req.params.cardId;
+    const newFlashcard: any = req.body;
+    const cardToEditIdx = flashcards.findIndex((card) => card.id === cardId);
+    flashcardData[cardToEditIdx] = {
+      ...flashcardData[cardToEditIdx],
+      ...newFlashcard
+    };
+    return res(
+      ctx.status(200),
+      ctx.json({ ...flashcardData[cardToEditIdx], ...newFlashcard })
+    );
   }),
   rest.delete('/api/deck/:deckId/card/:cardId', (req, res, ctx) => {
     return res(ctx.status(500), ctx.text('route not configured'));

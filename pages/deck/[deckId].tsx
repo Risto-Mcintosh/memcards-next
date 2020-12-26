@@ -31,7 +31,7 @@ export default function FlashcardPage() {
   }, [isDeckEmpty, isFetchedAfterMount, router]);
 
   return (
-    <FlashcardProvider state={{ deckName: data?.deckName, ...rest }}>
+    <FlashcardProvider state={{ deck: data?.deck, ...rest }}>
       {noCardsLeftToStudy ? (
         <DeckCompleted />
       ) : isEditing ? (

@@ -1,7 +1,10 @@
 import * as React from 'react';
 
 type flashcardContextType = {
-  deckName: string;
+  deck: {
+    id: string;
+    name: string;
+  };
   flashcard: any;
   isShowingFrontOfCard: any;
   flipCard: () => void;

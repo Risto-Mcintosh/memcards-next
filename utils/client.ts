@@ -65,4 +65,33 @@ function useDeckUpdate() {
   );
 }
 
-export { useDeckList, useDeckDelete, useDeckCreate, useDeckUpdate };
+function useFlashcardEdit() {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ({ deck, flashcard }: any) =>
+      client(`/deck/${deck.id}/card/${flashcard.id}`, {
+        method: 'put',
+        body: flashcard
+      }),
+    {
+      onSuccess(flashcard, { deck }) {
+        queryClient.setQueryData(`deck ${deck.id}`, (oldData: any) => {
+          let result = oldData;
+          const cardToEditIdx = oldData.cards.findIndex(
+            (card) => card.id === flashcard.id
+          );
+          result.cards[cardToEditIdx] = flashcard;
+          return result;
+        });
+      }
+    }
+  );
+}
+
+export {
+  useDeckList,
+  useDeckDelete,
+  useDeckCreate,
+  useDeckUpdate,
+  useFlashcardEdit
+};

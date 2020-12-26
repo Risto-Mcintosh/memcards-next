@@ -1,4 +1,5 @@
 import { useFlashcardContext } from '@context/flashcard';
+import { useFlashcardEdit } from '@utils/client';
 import Layout from 'components/Layout';
 import TextInput from 'components/TextInput';
 import Head from 'next/head';
@@ -12,10 +13,11 @@ type FormInputs = {
 };
 
 export function EditFlashcard() {
-  const { flashcard, deckName, editFlashcard } = useFlashcardContext();
+  const { flashcard, deck, editFlashcard } = useFlashcardContext();
+  const { mutate } = useFlashcardEdit();
   const { register, handleSubmit } = useForm<FormInputs>({
     defaultValues: {
-      deckName,
+      deckName: deck.name,
       front: flashcard.front,
       back: flashcard.back,
       image: flashcard.image
@@ -23,8 +25,14 @@ export function EditFlashcard() {
   });
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
-    console.log({ ...flashcard, ...data });
-    editFlashcard({ ...flashcard, ...data });
+    mutate(
+      { deck, flashcard: { ...flashcard, ...data } },
+      {
+        onSuccess(newFlashcard) {
+          editFlashcard(newFlashcard);
+        }
+      }
+    );
   };
 
   return (
@@ -34,7 +42,7 @@ export function EditFlashcard() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <article className="flex flex-col items-center h-full ">
-        <h1 className="my-10 text-3xl">Edit Flashcard</h1>
+        <h1 className="mb-5 text-3xl">Edit Flashcard</h1>
         <div className="w-full max-w-xs">
           <form onSubmit={handleSubmit(onSubmit)}>
             <label className="block mb-2" htmlFor="deck-name">
@@ -45,7 +53,7 @@ export function EditFlashcard() {
               type="text"
               name="deckName"
               id="deck-name"
-              value={deckName}
+              value={deck.name}
               readOnly
             />
             <TextInput
