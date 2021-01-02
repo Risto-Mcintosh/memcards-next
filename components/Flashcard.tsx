@@ -39,7 +39,7 @@ export function Flashcard() {
     flipCard,
     nextCard,
     flashcard,
-    deckName,
+    deck,
     editFlashcard
   } = useFlashcardContext();
   const flashcardControls = React.useCallback((e: KeyboardEvent) => {
@@ -71,7 +71,7 @@ export function Flashcard() {
       ) : (
         <div className="flex flex-col min-h-full">
           <h1 className="mb-5 text-3xl text-center text-green-600">
-            {deckName}
+            {deck.name}
           </h1>
           <section className="flex items-start justify-center flex-1">
             <motion.div

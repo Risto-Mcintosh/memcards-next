@@ -41,7 +41,7 @@ export function EditFlashcard() {
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <article className="flex flex-col items-center h-full ">
+      <article className="flex flex-col items-center h-full">
         <h1 className="mb-5 text-3xl">Edit Flashcard</h1>
         <div className="w-full max-w-xs">
           <form onSubmit={handleSubmit(onSubmit)}>

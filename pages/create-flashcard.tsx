@@ -4,10 +4,12 @@ import Layout from 'components/Layout';
 import TextInput from 'components/TextInput';
 import Head from 'next/head';
 import React from 'react';
+import { FlashcardImage } from 'types';
 
 export default function CreateFlashcard() {
   const { data, isLoading } = useDeckList();
-  const [isOpen, setOpen] = React.useState(false);
+  const [isImageSearchOpen, setOpen] = React.useState(false);
+  const [image, setImage] = React.useState<FlashcardImage | null>();
   const buttonRef = React.useRef(null);
 
   return (
@@ -43,6 +45,11 @@ export default function CreateFlashcard() {
                 >
                   Search
                 </button>
+                {image && (
+                  <div>
+                    <img src={image.thumb} alt={image.alt} />
+                  </div>
+                )}
               </div>
 
               <TextInput name="back" labelId="card-back" label="Back:" />
@@ -57,8 +64,12 @@ export default function CreateFlashcard() {
           </div>
         </article>
       )}
-      {isOpen && (
-        <ImageSearch closeSearch={() => setOpen(false)} anchorEl={buttonRef} />
+      {isImageSearchOpen && (
+        <ImageSearch
+          closeSearch={() => setOpen(false)}
+          anchorEl={buttonRef}
+          setImage={setImage}
+        />
       )}
     </Layout>
   );

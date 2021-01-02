@@ -5,6 +5,18 @@ import flashcardData from 'test/data/flashcards.json';
 let decks = [...deckData];
 let flashcards = [...flashcardData];
 
+type Flashcards = {
+  id: string;
+  deckId: string;
+  front: string;
+  back: string;
+  image: {
+    src: string;
+    alt: string;
+    thumb: any;
+  };
+};
+
 const handlers = [
   rest.get('/api/decks', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(decks));
@@ -34,7 +46,6 @@ const handlers = [
     return res(ctx.status(200), ctx.json(newDeck));
   }),
   rest.post<{ deckName: string }>('/api/deck', (req, res, ctx) => {
-    console.log({ reqBody: req.body });
     const { deckName } = req.body;
     const newDeck = {
       id: decks.length.toString(),
@@ -44,8 +55,14 @@ const handlers = [
     decks.push(newDeck);
     return res(ctx.status(201), ctx.json(newDeck));
   }),
-  rest.post('/api/deck/:deckId/card', (req, res, ctx) => {
-    return res(ctx.status(500), ctx.text('route not configured'));
+  rest.post<Flashcards>('/api/deck/:deckId/card', (req, res, ctx) => {
+    const newFlashcard = {
+      id: flashcards.length.toString(),
+      deckId: req.params.deckId,
+      ...req.body
+    };
+    flashcards.push(newFlashcard);
+    return res(ctx.status(201), ctx.json(newFlashcard));
   }),
   rest.put('/api/deck/:deckId/card/:cardId', (req, res, ctx) => {
     const cardId = req.params.cardId;
