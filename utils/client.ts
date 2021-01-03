@@ -2,7 +2,9 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { client } from './fetch-wrapper';
 
 function useDeckList() {
-  return useQuery('decks', () => client('/decks'));
+  return useQuery('deckList', () => client('/decks'), {
+    staleTime: Infinity
+  });
 }
 
 function useDeckDelete() {
@@ -14,7 +16,7 @@ function useDeckDelete() {
       }),
     {
       onSuccess(data, deckId) {
-        queryClient.setQueryData('decks', (oldData: any[]) => {
+        queryClient.setQueryData('deckList', (oldData: any[]) => {
           if (!oldData) return;
           return oldData?.filter((deck) => deck.id !== deckId);
         });
@@ -31,7 +33,7 @@ function useDeckCreate() {
     },
     {
       onSuccess(data) {
-        queryClient.setQueryData('decks', (oldData: any[]) => {
+        queryClient.setQueryData('deckList', (oldData: any[]) => {
           if (!oldData) return;
           return [...oldData, data];
         });
@@ -55,8 +57,7 @@ function useDeckUpdate() {
       }),
     {
       onSuccess(data, { deckId }) {
-        queryClient.setQueryData('decks', (oldData: any[]) => {
-          console.log({ data, oldData, deckId });
+        queryClient.setQueryData('deckList', (oldData: any[]) => {
           if (!oldData) return;
           return oldData?.map((deck) => (deck.id === deckId ? data : deck));
         });
@@ -76,6 +77,8 @@ function useFlashcardEdit() {
     {
       onSuccess(flashcard, { deck }) {
         queryClient.setQueryData(`deck ${deck.id}`, (oldData: any) => {
+          if (!oldData) return;
+
           let result = oldData;
           const cardToEditIdx = oldData.cards.findIndex(
             (card) => card.id === flashcard.id
@@ -88,10 +91,33 @@ function useFlashcardEdit() {
   );
 }
 
+function useFlashcardCreate() {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ({ deckId, flashcard }: any) =>
+      client(`/deck/${deckId}/card`, {
+        body: flashcard
+      }),
+    {
+      onSuccess: (flashcard, { deckId }) => {
+        queryClient.setQueryData('deckList', (oldData: any[]) => {
+          console.log({ oldData });
+          if (!oldData) return [];
+          let result = oldData;
+          const deckToEditIdx = oldData.findIndex((deck) => deck.id === deckId);
+          result[deckToEditIdx].cardCount++;
+          return result;
+        });
+      }
+    }
+  );
+}
+
 export {
   useDeckList,
   useDeckDelete,
   useDeckCreate,
   useDeckUpdate,
-  useFlashcardEdit
+  useFlashcardEdit,
+  useFlashcardCreate
 };

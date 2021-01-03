@@ -1,21 +1,10 @@
 import { rest, setupWorker } from 'msw';
 import deckData from 'test/data/decks.json';
 import flashcardData from 'test/data/flashcards.json';
+import { Flashcard } from 'types';
 
 let decks = [...deckData];
 let flashcards = [...flashcardData];
-
-type Flashcards = {
-  id: string;
-  deckId: string;
-  front: string;
-  back: string;
-  image: {
-    src: string;
-    alt: string;
-    thumb: any;
-  };
-};
 
 const handlers = [
   rest.get('/api/decks', (req, res, ctx) => {
@@ -55,7 +44,7 @@ const handlers = [
     decks.push(newDeck);
     return res(ctx.status(201), ctx.json(newDeck));
   }),
-  rest.post<Flashcards>('/api/deck/:deckId/card', (req, res, ctx) => {
+  rest.post<Flashcard>('/api/deck/:deckId/card', (req, res, ctx) => {
     const newFlashcard = {
       id: flashcards.length.toString(),
       deckId: req.params.deckId,

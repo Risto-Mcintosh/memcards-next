@@ -11,3 +11,9 @@ export type FlashcardImage = {
   alt: string;
   thumb: any;
 };
+
+export type FlashcardFormInputs = {
+  deckName: string;
+  front: string;
+  back: string;
+};

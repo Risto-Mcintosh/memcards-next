@@ -4,6 +4,7 @@ import Layout from 'components/Layout';
 import TextInput from 'components/TextInput';
 import Head from 'next/head';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { FlashcardFormInputs } from 'types';
 
 type FormInputs = {
   deckName: string;
@@ -15,16 +16,15 @@ type FormInputs = {
 export function EditFlashcard() {
   const { flashcard, deck, editFlashcard } = useFlashcardContext();
   const { mutate } = useFlashcardEdit();
-  const { register, handleSubmit } = useForm<FormInputs>({
+  const { register, handleSubmit } = useForm<FlashcardFormInputs>({
     defaultValues: {
       deckName: deck.name,
       front: flashcard.front,
-      back: flashcard.back,
-      image: flashcard.image
+      back: flashcard.back
     }
   });
 
-  const onSubmit: SubmitHandler<FormInputs> = (data) => {
+  const onSubmit: SubmitHandler<FlashcardFormInputs> = (data) => {
     mutate(
       { deck, flashcard: { ...flashcard, ...data } },
       {
