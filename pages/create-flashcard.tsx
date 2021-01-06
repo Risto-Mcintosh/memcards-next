@@ -1,5 +1,5 @@
+import { ImageField } from '@components/ImageField';
 import { useDeckList, useFlashcardCreate } from '@utils/client';
-import ImageSearch from 'components/ImageSearch';
 import Layout from 'components/Layout';
 import TextInput from 'components/TextInput';
 import Head from 'next/head';
@@ -10,20 +10,20 @@ import { FlashcardFormInputs, FlashcardImage } from 'types';
 export default function CreateFlashcard() {
   const { data, isLoading } = useDeckList();
   const { register, handleSubmit } = useForm<FlashcardFormInputs>();
-  const { mutate } = useFlashcardCreate();
-  const [isImageSearchOpen, setOpen] = React.useState(false);
   const [image, setImage] = React.useState<FlashcardImage | null>();
-  const buttonRef = React.useRef(null);
+  const { mutate } = useFlashcardCreate();
 
   const onSubmit: SubmitHandler<FlashcardFormInputs> = (
     { deckName, ...card },
     e
   ) => {
+    /* Getting the 'deckId' data attribute 
+    from the selected option in the 'deckName' select field */
     const selectEl = e.target.elements['deckName'];
     const selectedIndex = selectEl.options?.selectedIndex;
     const deckId = selectEl[selectedIndex].dataset.deckid;
     mutate(
-      { deckId, flashcard: { ...image, ...card } },
+      { deckId, flashcard: { ...card, image } },
       {
         onSuccess: () => {
           e.target.reset();
@@ -65,33 +65,7 @@ export default function CreateFlashcard() {
                 ref={register}
               />
 
-              <div className="flex items-start mb-6">
-                <p className="">Image (optional):</p>
-                {image && (
-                  <div className="flex-1 ml-2">
-                    <img src={image.thumb} alt={image.alt} />
-                  </div>
-                )}
-                <div className="flex flex-col ml-2">
-                  <button
-                    ref={buttonRef}
-                    onClick={() => setOpen(true)}
-                    type="button"
-                    className="px-3 py-2 bg-gray-300 rounded"
-                  >
-                    Search
-                  </button>
-                  {image && (
-                    <button
-                      onClick={() => setImage(null)}
-                      type="button"
-                      className="px-3 py-2 mt-3 bg-gray-300 rounded"
-                    >
-                      Clear
-                    </button>
-                  )}
-                </div>
-              </div>
+              <ImageField image={image} setImage={setImage} />
 
               <TextInput
                 name="back"
@@ -109,13 +83,6 @@ export default function CreateFlashcard() {
             </form>
           </div>
         </article>
-      )}
-      {isImageSearchOpen && (
-        <ImageSearch
-          closeSearch={() => setOpen(false)}
-          anchorEl={buttonRef}
-          setImage={setImage}
-        />
       )}
     </Layout>
   );

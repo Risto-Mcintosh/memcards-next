@@ -23,7 +23,7 @@ export default function FlashcardPage() {
   const { isDeckEmpty, noCardsLeftToStudy, isEditing, ...rest } = useFlashcards(
     data?.cards
   );
-
+  console.log({ cards: data?.cards });
   React.useEffect(() => {
     if (isDeckEmpty && isFetchedAfterMount && router.query.deckId) {
       router.push('/decks');

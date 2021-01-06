@@ -7,7 +7,7 @@
     "image": {
       "src": "https://source.unsplash.com/random/400x400",
       "alt": "random image",
-      "thumb": null
+      "thumb": "https://source.unsplash.com/random/400x400"
     }
   },
   {
@@ -18,7 +18,7 @@
     "image": {
       "src": "https://source.unsplash.com/random/400x400",
       "alt": "random image",
-      "thumb": null
+      "thumb": "https://source.unsplash.com/random/400x400"
     }
   },
   {
@@ -29,7 +29,7 @@
     "image": {
       "src": "https://source.unsplash.com/random/400x400",
       "alt": "random image",
-      "thumb": null
+      "thumb": "https://source.unsplash.com/random/400x400"
     }
   },
   {
@@ -40,7 +40,7 @@
     "image": {
       "src": "https://source.unsplash.com/random/400x400",
       "alt": "random image",
-      "thumb": null
+      "thumb": "https://source.unsplash.com/random/400x400"
     }
   },
   {
@@ -51,7 +51,7 @@
     "image": {
       "src": "https://source.unsplash.com/random/400x400",
       "alt": "random image",
-      "thumb": null
+      "thumb": "https://source.unsplash.com/random/400x400"
     }
   },
   {
@@ -62,7 +62,7 @@
     "image": {
       "src": "https://source.unsplash.com/random/400x400",
       "alt": "random image",
-      "thumb": null
+      "thumb": "https://source.unsplash.com/random/400x400"
     }
   }
 ]

@@ -107,12 +107,14 @@ export function Flashcard() {
                   className="flex flex-col items-center justify-center w-full p-4"
                 >
                   <p className="mb-2 text-4xl">{flashcard.back}</p>
-                  <div className="max-w-xs">
-                    <img
-                      src="https://source.unsplash.com/random/400x400"
-                      alt="random image"
-                    />
-                  </div>
+                  {flashcard.image && (
+                    <div className="max-w-xs">
+                      <img
+                        src={flashcard.image.src}
+                        alt={flashcard.image.alt}
+                      />
+                    </div>
+                  )}
                   <motion.div
                     variants={overlay}
                     className="absolute inset-0 bg-white"

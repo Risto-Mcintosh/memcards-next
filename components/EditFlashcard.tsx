@@ -1,21 +1,19 @@
+import * as React from 'react';
 import { useFlashcardContext } from '@context/flashcard';
 import { useFlashcardEdit } from '@utils/client';
 import Layout from 'components/Layout';
 import TextInput from 'components/TextInput';
 import Head from 'next/head';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FlashcardFormInputs } from 'types';
-
-type FormInputs = {
-  deckName: string;
-  front: string;
-  back: string;
-  image: any;
-};
+import { FlashcardFormInputs, FlashcardImage } from 'types';
+import { ImageField } from './ImageField';
 
 export function EditFlashcard() {
   const { flashcard, deck, editFlashcard } = useFlashcardContext();
   const { mutate } = useFlashcardEdit();
+  const [image, setImage] = React.useState<FlashcardImage | null>(
+    flashcard.image
+  );
   const { register, handleSubmit } = useForm<FlashcardFormInputs>({
     defaultValues: {
       deckName: deck.name,
@@ -26,7 +24,7 @@ export function EditFlashcard() {
 
   const onSubmit: SubmitHandler<FlashcardFormInputs> = (data) => {
     mutate(
-      { deck, flashcard: { ...flashcard, ...data } },
+      { deckId: deck.id, flashcard: { id: flashcard.id, ...data, image } },
       {
         onSuccess(newFlashcard) {
           editFlashcard(newFlashcard);
@@ -63,7 +61,7 @@ export function EditFlashcard() {
               label="Front:"
             />
 
-            <input className="mb-6" type="file" name="image" id="" />
+            <ImageField image={image} setImage={setImage} />
 
             <TextInput
               ref={register}

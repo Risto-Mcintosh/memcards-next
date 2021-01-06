@@ -3,12 +3,12 @@ import Link from 'next/link';
 import Layout from './Layout';
 
 export function DeckCompleted() {
-  const { deckName, initializeDeck } = useFlashcardContext();
+  const { deck, initializeDeck } = useFlashcardContext();
   return (
     <Layout>
       <div className="flex items-center justify-center w-full h-full">
         <div className="p-8 text-center border border-gray-300 rounded shadow-lg">
-          <h1 className="mb-2 text-2xl">{deckName}</h1>
+          <h1 className="mb-2 text-2xl">{deck.name}</h1>
           <p className="mb-4 text-lg">
             Congratulations! You have finished this deck.
           </p>

@@ -55,16 +55,17 @@ const handlers = [
   }),
   rest.put('/api/deck/:deckId/card/:cardId', (req, res, ctx) => {
     const cardId = req.params.cardId;
-    const newFlashcard: any = req.body;
     const cardToEditIdx = flashcards.findIndex((card) => card.id === cardId);
-    flashcardData[cardToEditIdx] = {
-      ...flashcardData[cardToEditIdx],
-      ...newFlashcard
+    const oldCard = flashcardData[cardToEditIdx];
+    const reqBody: any = req.body;
+    console.log({ reqBody });
+    const newFlashcard = {
+      id: oldCard.id,
+      deckId: oldCard.deckId,
+      ...reqBody
     };
-    return res(
-      ctx.status(200),
-      ctx.json({ ...flashcardData[cardToEditIdx], ...newFlashcard })
-    );
+    flashcardData[cardToEditIdx] = newFlashcard;
+    return res(ctx.status(200), ctx.json(newFlashcard));
   }),
   rest.delete('/api/deck/:deckId/card/:cardId', (req, res, ctx) => {
     return res(ctx.status(500), ctx.text('route not configured'));

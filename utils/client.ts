@@ -69,16 +69,15 @@ function useDeckUpdate() {
 function useFlashcardEdit() {
   const queryClient = useQueryClient();
   return useMutation(
-    ({ deck, flashcard }: any) =>
-      client(`/deck/${deck.id}/card/${flashcard.id}`, {
+    ({ deckId, flashcard }: any) =>
+      client(`/deck/${deckId}/card/${flashcard.id}`, {
         method: 'put',
         body: flashcard
       }),
     {
-      onSuccess(flashcard, { deck }) {
-        queryClient.setQueryData(`deck ${deck.id}`, (oldData: any) => {
+      onSuccess(flashcard, { deckId }) {
+        queryClient.setQueryData(`deck ${deckId}`, (oldData: any) => {
           if (!oldData) return;
-
           let result = oldData;
           const cardToEditIdx = oldData.cards.findIndex(
             (card) => card.id === flashcard.id
