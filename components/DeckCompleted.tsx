@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Layout from './Layout';
 
 export function DeckCompleted() {
-  const { deck, initializeDeck } = useFlashcardContext();
+  const { deck, initialize } = useFlashcardContext();
   return (
     <Layout>
       <div className="flex items-center justify-center w-full h-full">
@@ -14,7 +14,7 @@ export function DeckCompleted() {
           </p>
           <div className="flex justify-evenly">
             <button
-              onClick={() => initializeDeck()}
+              onClick={() => initialize()}
               className="px-8 py-3 text-base text-white bg-gray-600 rounded-lg"
             >
               Study Again?

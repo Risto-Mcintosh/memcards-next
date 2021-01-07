@@ -1,9 +1,32 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import {
+  QueryClientProvider,
+  useMutation,
+  useQuery,
+  useQueryClient
+} from 'react-query';
+import { Deck, Flashcard } from 'types';
 import { client } from './fetch-wrapper';
+
+interface ClientTypes {
+  deckId: string;
+  cardId: string;
+  flashcard: Flashcard;
+  deck: Deck;
+}
+
+export type DeckQuery = Partial<Deck> & { flashcards: Flashcard[] };
+
+function useDeck(deckId: string | string[]) {
+  return useQuery(`deck ${deckId}`, () => {
+    if (!deckId) return Promise.reject('no endpoint');
+
+    return client(`/deck/${deckId}`);
+  });
+}
 
 function useDeckList() {
   return useQuery('deckList', () => client('/decks'), {
-    staleTime: Infinity
+    staleTime: 1000 * 60 * 60 * 2
   });
 }
 
@@ -42,17 +65,12 @@ function useDeckCreate() {
   );
 }
 
-interface UpdateDeckMutation {
-  deckId: string;
-  newDeck: any;
-}
-
 function useDeckUpdate() {
   const queryClient = useQueryClient();
   return useMutation(
-    ({ deckId, newDeck }: UpdateDeckMutation) =>
+    ({ deckId, flashcard }: Pick<ClientTypes, 'deckId' | 'flashcard'>) =>
       client(`/deck/${deckId}`, {
-        body: newDeck,
+        data: flashcard,
         method: 'Put'
       }),
     {
@@ -66,23 +84,23 @@ function useDeckUpdate() {
   );
 }
 
-function useFlashcardEdit() {
+function useFlashcardUpdate() {
   const queryClient = useQueryClient();
   return useMutation(
-    ({ deckId, flashcard }: any) =>
+    ({ deckId, flashcard }: Pick<ClientTypes, 'deckId' | 'flashcard'>) =>
       client(`/deck/${deckId}/card/${flashcard.id}`, {
         method: 'put',
-        body: flashcard
+        data: flashcard
       }),
     {
       onSuccess(flashcard, { deckId }) {
         queryClient.setQueryData(`deck ${deckId}`, (oldData: any) => {
           if (!oldData) return;
-          let result = oldData;
-          const cardToEditIdx = oldData.cards.findIndex(
+          let result = { ...oldData };
+          const cardToEditIdx = oldData.flashcards.findIndex(
             (card) => card.id === flashcard.id
           );
-          result.cards[cardToEditIdx] = flashcard;
+          result.flashcards[cardToEditIdx] = flashcard;
           return result;
         });
       }
@@ -93,14 +111,13 @@ function useFlashcardEdit() {
 function useFlashcardCreate() {
   const queryClient = useQueryClient();
   return useMutation(
-    ({ deckId, flashcard }: any) =>
+    ({ deckId, flashcard }: Pick<ClientTypes, 'deckId' | 'flashcard'>) =>
       client(`/deck/${deckId}/card`, {
-        body: flashcard
+        data: flashcard
       }),
     {
       onSuccess: (flashcard, { deckId }) => {
         queryClient.setQueryData('deckList', (oldData: any[]) => {
-          console.log({ oldData });
           if (!oldData) return [];
           let result = oldData;
           const deckToEditIdx = oldData.findIndex((deck) => deck.id === deckId);
@@ -112,11 +129,36 @@ function useFlashcardCreate() {
   );
 }
 
+function useFlashcardDelete() {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ({ deckId, cardId }: Pick<ClientTypes, 'deckId' | 'cardId'>) =>
+      client(`/deck/${deckId}/card/${cardId}`, {
+        method: 'delete'
+      }),
+    {
+      onSuccess: (data, { deckId, cardId }) => {
+        queryClient.removeQueries('deckList');
+        // delete flashcard in cache
+        queryClient.setQueryData<DeckQuery>(`deck ${deckId}`, (oldData) => {
+          const result = { ...oldData };
+          result.flashcards = result.flashcards.filter(
+            (card) => card.id !== cardId
+          );
+          return result;
+        });
+      }
+    }
+  );
+}
+
 export {
+  useDeck,
   useDeckList,
   useDeckDelete,
   useDeckCreate,
   useDeckUpdate,
-  useFlashcardEdit,
-  useFlashcardCreate
+  useFlashcardUpdate,
+  useFlashcardCreate,
+  useFlashcardDelete
 };

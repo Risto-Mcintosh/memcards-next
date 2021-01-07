@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Flashcard } from 'types';
 
 type flashcardContextType = {
   deck: {
@@ -9,9 +10,10 @@ type flashcardContextType = {
   isShowingFrontOfCard: any;
   flipCard: () => void;
   nextCard: () => void;
+  deleteCard: (currentDeck: Flashcard[]) => void;
   clearCard: () => void;
   editFlashcard: (flashcard?: any) => void;
-  initializeDeck: (initialDeck?: any) => void;
+  initialize: (initialDeck?: any) => void;
 };
 
 const FlashcardContext = React.createContext<flashcardContextType>(null);

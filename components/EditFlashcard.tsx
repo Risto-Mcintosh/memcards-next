@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useFlashcardContext } from '@context/flashcard';
-import { useFlashcardEdit } from '@utils/client';
+import { useFlashcardUpdate } from '@utils/client';
 import Layout from 'components/Layout';
 import TextInput from 'components/TextInput';
 import Head from 'next/head';
@@ -10,7 +10,7 @@ import { ImageField } from './ImageField';
 
 export function EditFlashcard() {
   const { flashcard, deck, editFlashcard } = useFlashcardContext();
-  const { mutate } = useFlashcardEdit();
+  const { mutate } = useFlashcardUpdate();
   const [image, setImage] = React.useState<FlashcardImage | null>(
     flashcard.image
   );
@@ -24,11 +24,12 @@ export function EditFlashcard() {
 
   const onSubmit: SubmitHandler<FlashcardFormInputs> = (data) => {
     mutate(
-      { deckId: deck.id, flashcard: { id: flashcard.id, ...data, image } },
       {
-        onSuccess(newFlashcard) {
-          editFlashcard(newFlashcard);
-        }
+        deckId: deck.id,
+        flashcard: { id: flashcard.id, ...data, image }
+      },
+      {
+        onSuccess: (newFlashcard) => editFlashcard(newFlashcard)
       }
     );
   };

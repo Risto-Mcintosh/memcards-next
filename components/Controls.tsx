@@ -1,9 +1,32 @@
 import { Menu } from '@headlessui/react';
 import { useFlashcardContext } from '@context/flashcard';
 import { motion } from 'framer-motion';
+import { DeckQuery, useFlashcardDelete } from '@utils/client';
+import { useQueryClient } from 'react-query';
 
 export function Controls() {
-  const { flipCard, nextCard, editFlashcard } = useFlashcardContext();
+  const {
+    flipCard,
+    nextCard,
+    deleteCard,
+    editFlashcard,
+    flashcard,
+    deck
+  } = useFlashcardContext();
+  const queryClient = useQueryClient();
+  const { mutate } = useFlashcardDelete();
+
+  function onDelete() {
+    mutate(
+      { deckId: deck.id, cardId: flashcard.id },
+      {
+        onSuccess: (data, { deckId }) => {
+          const newDeck = queryClient.getQueryData<DeckQuery>(`deck ${deckId}`);
+          deleteCard(newDeck.flashcards);
+        }
+      }
+    );
+  }
   return (
     <div className="flex justify-center mt-5">
       <button
@@ -52,6 +75,7 @@ export function Controls() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
+                        onClick={onDelete}
                         className={`text-lg p-1 text-left w-full ${
                           active ? 'bg-gray-400' : ''
                         }`}

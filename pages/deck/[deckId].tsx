@@ -3,32 +3,31 @@ import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
 import { Flashcard } from '@components/Flashcard';
 import { FlashcardProvider } from '@context/flashcard';
-import { client } from '@utils/fetch-wrapper';
 import { useFlashcards } from '@utils/useFlashcards';
 import { DeckCompleted } from '@components/DeckCompleted';
 import { EditFlashcard } from '@components/EditFlashcard';
-
-function useDeck(deckId: string | string[]) {
-  return useQuery(`deck ${deckId}`, () => {
-    if (!deckId) return Promise.reject('no endpoint');
-
-    return client(`/deck/${deckId}`);
-  });
-}
+import { useDeck } from '@utils/client';
 
 export default function FlashcardPage() {
   const router = useRouter();
 
-  const { data, isFetchedAfterMount } = useDeck(router.query.deckId);
+  const { data, isFetchedAfterMount, isSuccess } = useDeck(router.query.deckId);
+  const flashcards = data?.flashcards;
   const { isDeckEmpty, noCardsLeftToStudy, isEditing, ...rest } = useFlashcards(
-    data?.cards
+    flashcards
   );
-  console.log({ cards: data?.cards });
+
   React.useEffect(() => {
-    if (isDeckEmpty && isFetchedAfterMount && router.query.deckId) {
+    if (isSuccess) {
+      rest.initialize(flashcards);
+    }
+  }, [isSuccess, rest.initialize, flashcards]);
+
+  React.useEffect(() => {
+    if (isDeckEmpty && isFetchedAfterMount) {
       router.push('/decks');
     }
-  }, [isDeckEmpty, isFetchedAfterMount, router]);
+  }, [isFetchedAfterMount, isDeckEmpty]);
 
   return (
     <FlashcardProvider state={{ deck: data?.deck, ...rest }}>

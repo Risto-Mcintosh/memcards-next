@@ -17,7 +17,9 @@ const handlers = [
       ctx.status(200),
       ctx.json({
         deck: { id: deck.id, name: deck.name },
-        cards: flashcards.filter((flashcard) => flashcard.deckId === deckId)
+        flashcards: flashcards.filter(
+          (flashcard) => flashcard.deckId === deckId
+        )
       })
     );
   }),
@@ -68,7 +70,8 @@ const handlers = [
     return res(ctx.status(200), ctx.json(newFlashcard));
   }),
   rest.delete('/api/deck/:deckId/card/:cardId', (req, res, ctx) => {
-    return res(ctx.status(500), ctx.text('route not configured'));
+    flashcards = flashcards.filter((card) => card.id !== req.params.cardId);
+    return res(ctx.status(204));
   })
 ];
 

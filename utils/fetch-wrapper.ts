@@ -1,8 +1,11 @@
-function client(endpoint: string, { body, ...customConfig }: RequestInit = {}) {
+function client(
+  endpoint: string,
+  { data, ...customConfig }: RequestInit & { data?: any } = {}
+) {
   const headers = { 'Content-Type': 'application/json' };
   const config: RequestInit = {
-    method: body ? 'POST' : 'GET',
-    body: body ? JSON.stringify(body) : undefined,
+    method: data ? 'POST' : 'GET',
+    body: data ? JSON.stringify(data) : undefined,
     ...customConfig,
     headers: {
       ...headers,

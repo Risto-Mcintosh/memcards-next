@@ -1,6 +1,12 @@
+export interface Deck {
+  id: string;
+  name: string;
+  cardCount: number;
+}
+
 export type Flashcard = {
   id: string;
-  deckId: string;
+  deckId?: string;
   front: string;
   back: string;
   image: FlashcardImage;

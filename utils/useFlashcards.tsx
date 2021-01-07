@@ -1,11 +1,13 @@
 import React from 'react';
 import shuffle from 'lodash.shuffle';
+import { Flashcard } from 'types';
 
 const actionTypes = {
   initialize: 'INITIALIZE_DECK',
   flip: 'FLIP_CARD',
   edit: 'EDIT_FLASHCARD',
   nextCard: 'GET_NEXT_FLASHCARD',
+  deleteCard: 'DELETE_CARD',
   clear: 'CLEAR_CARD'
 };
 
@@ -18,10 +20,24 @@ function getFlashCardFromDeck(deck) {
   };
 }
 
+function getNextCard(state: flashcardState) {
+  const { shuffledDeck, flashcard } = getFlashCardFromDeck(state.shuffledDeck);
+  return {
+    ...state,
+    shuffledDeck,
+    flashcard,
+    isShowingFrontOfCard: true,
+    isDeckEmpty: state.currentDeck.length === 0,
+    noCardsLeftToStudy:
+      state.currentDeck.length >= 1 && !flashcard ? true : false
+  };
+}
+
 type flashcardState = {
-  currentDeck: any[];
-  shuffledDeck: any[];
-  flashcard: any;
+  currentDeck: Flashcard[];
+  shuffledDeck: Flashcard[];
+  flashcard: Flashcard;
+  isDeckEmpty: boolean;
   isShowingFrontOfCard: boolean;
   isEditing: boolean;
   noCardsLeftToStudy: boolean;
@@ -44,20 +60,19 @@ function flashcardReducer(state: flashcardState, action) {
         flashcard,
         isEditing: false,
         isShowingFrontOfCard: true,
-        noCardsLeftToStudy: false
+        noCardsLeftToStudy: false,
+        isDeckEmpty: currentDeck.length === 0
       };
     }
     case actionTypes.nextCard: {
-      const { shuffledDeck, flashcard } = getFlashCardFromDeck(
-        state.shuffledDeck
-      );
+      return getNextCard(state);
+    }
+    case actionTypes.deleteCard: {
+      const currentDeck = action.currentDeck;
       return {
-        ...state,
-        shuffledDeck,
-        flashcard,
-        isShowingFrontOfCard: true,
-        noCardsLeftToStudy:
-          state.currentDeck.length >= 1 && !flashcard ? true : false
+        ...getNextCard(state),
+        currentDeck,
+        isDeckEmpty: currentDeck.length === 0
       };
     }
     case actionTypes.edit: {
@@ -81,48 +96,50 @@ function flashcardReducer(state: flashcardState, action) {
 }
 
 function useFlashcards(deck = []) {
-  const isDeckEmpty = deck.length <= 0;
-
   const [
-    { flashcard, isEditing, noCardsLeftToStudy, isShowingFrontOfCard },
+    {
+      flashcard,
+      isEditing,
+      noCardsLeftToStudy,
+      isShowingFrontOfCard,
+      isDeckEmpty
+    },
     dispatch
   ] = React.useReducer(flashcardReducer, {
     currentDeck: deck,
     shuffledDeck: [],
     flashcard: null,
+    isDeckEmpty: false,
     isShowingFrontOfCard: true,
     isEditing: false,
     noCardsLeftToStudy: false
   });
 
-  const initializeDeck = React.useCallback(
+  const initialize = React.useCallback(
     (initialDeck = []) =>
       dispatch({ type: actionTypes.initialize, initialDeck }),
     [dispatch]
   );
   const nextCard = () => dispatch({ type: actionTypes.nextCard });
+  const deleteCard = (currentDeck: Flashcard[]) =>
+    dispatch({ type: actionTypes.deleteCard, currentDeck });
   const editFlashcard = (flashcard = null) =>
     dispatch({ type: actionTypes.edit, flashcard });
   const flipCard = () => dispatch({ type: actionTypes.flip });
   const clearCard = () => dispatch({ type: actionTypes.clear });
-
-  React.useEffect(() => {
-    if (deck.length) {
-      initializeDeck(deck);
-    }
-  }, [deck, initializeDeck]);
 
   return {
     flashcard,
     isShowingFrontOfCard,
     flipCard,
     nextCard,
+    deleteCard,
     clearCard,
     isDeckEmpty,
     noCardsLeftToStudy,
     isEditing,
     editFlashcard,
-    initializeDeck
+    initialize
   };
 }
 
