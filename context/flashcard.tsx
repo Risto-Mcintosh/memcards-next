@@ -6,14 +6,13 @@ type flashcardContextType = {
     id: string;
     name: string;
   };
-  flashcard: any;
-  isShowingFrontOfCard: any;
+  flashcard: Flashcard;
+  isShowingFrontOfCard: boolean;
   flipCard: () => void;
   nextCard: () => void;
-  deleteCard: (currentDeck: Flashcard[]) => void;
-  clearCard: () => void;
+  deleteCard: () => void;
+  initialize: () => void;
   editFlashcard: (flashcard?: any) => void;
-  initialize: (initialDeck?: any) => void;
 };
 
 const FlashcardContext = React.createContext<flashcardContextType>(null);

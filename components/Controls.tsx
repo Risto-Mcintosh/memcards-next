@@ -2,8 +2,7 @@ import * as React from 'react';
 import { Menu } from '@headlessui/react';
 import { useFlashcardContext } from '@context/flashcard';
 import { motion } from 'framer-motion';
-import { DeckQuery, useFlashcardDelete } from '@utils/client';
-import { useQueryClient } from 'react-query';
+import { useFlashcardDelete } from '@utils/client';
 
 const KeyboardCtrl = {
   flip: 'Space',
@@ -27,34 +26,32 @@ export function Controls() {
     mutate(
       { deckId: deck.id, cardId: flashcard.id },
       {
-        onSuccess: (data, { deckId, cardId }, context) => {
-          deleteCard(context.flashcards);
-        }
+        onSuccess: () => deleteCard()
       }
     );
   }
 
-  const flashcardControls = (e: KeyboardEvent) => {
-    switch (e.code) {
-      case KeyboardCtrl.flip:
-        flipCard();
-        break;
-      case KeyboardCtrl.next:
-        nextCard();
-        break;
-      case KeyboardCtrl.edit:
-        editFlashcard();
-        break;
-      case KeyboardCtrl.delete:
-        handleDelete();
-        break;
-    }
-  };
-
   React.useEffect(() => {
+    // console.count('controls');
+    function flashcardControls(e: KeyboardEvent) {
+      switch (e.code) {
+        case KeyboardCtrl.flip:
+          flipCard();
+          break;
+        case KeyboardCtrl.next:
+          nextCard();
+          break;
+        case KeyboardCtrl.edit:
+          editFlashcard();
+          break;
+        case KeyboardCtrl.delete:
+          handleDelete();
+          break;
+      }
+    }
     document.addEventListener('keydown', flashcardControls);
     return () => document.removeEventListener('keydown', flashcardControls);
-  }, [flashcard]);
+  }, [flipCard, nextCard, editFlashcard, handleDelete]);
 
   return (
     <div className="flex justify-center mt-5">

@@ -3,6 +3,7 @@ import shuffle from 'lodash.shuffle';
 import { Flashcard } from 'types';
 
 const actionTypes = {
+  setCurrentDeck: 'SET_CURRENT_DECK',
   initialize: 'INITIALIZE_DECK',
   flip: 'FLIP_CARD',
   edit: 'EDIT_FLASHCARD',
@@ -20,16 +21,15 @@ function getFlashCardFromDeck(deck) {
   };
 }
 
-function getNextCard(state: flashcardState, deck?: Flashcard[]) {
+function getNextCard(state: flashcardState) {
   const { shuffledDeck, flashcard } = getFlashCardFromDeck(state.shuffledDeck);
-  const currentDeckLength = deck?.length ?? state.currentDeck.length;
-  console.log({ currentDeckLength, deck, flashcard });
+  const currentDeckLength = state.currentDeck.length;
   return {
     ...state,
     shuffledDeck,
     flashcard,
     isShowingFrontOfCard: true,
-    isDeckEmpty: state.currentDeck.length === 0,
+    isDeckEmpty: currentDeckLength === 0,
     noCardsLeftToStudy: currentDeckLength >= 1 && !flashcard ? true : false
   };
 }
@@ -47,34 +47,23 @@ type flashcardState = {
 function flashcardReducer(state: flashcardState, action) {
   switch (action.type) {
     case actionTypes.initialize: {
-      let currentDeck = state.currentDeck;
-      if (action.initialDeck.length) {
-        currentDeck = action.initialDeck;
-      }
       const { shuffledDeck, flashcard } = getFlashCardFromDeck(
-        shuffle(currentDeck)
+        shuffle(state.currentDeck)
       );
       return {
         ...state,
-        currentDeck,
         shuffledDeck,
         flashcard,
-        isEditing: false,
         isShowingFrontOfCard: true,
         noCardsLeftToStudy: false,
-        isDeckEmpty: currentDeck.length === 0
+        isDeckEmpty: state.currentDeck.length === 0
       };
     }
     case actionTypes.nextCard: {
       return getNextCard(state);
     }
     case actionTypes.deleteCard: {
-      const currentDeck = action.currentDeck;
-      return {
-        ...getNextCard(state, currentDeck),
-        currentDeck,
-        isDeckEmpty: currentDeck.length === 0
-      };
+      return getNextCard(state);
     }
     case actionTypes.edit: {
       if (action.flashcard) {
@@ -86,17 +75,17 @@ function flashcardReducer(state: flashcardState, action) {
       }
       return { ...state, isEditing: true };
     }
-    case actionTypes.clear:
-      return { ...state, flashcard: null };
     case actionTypes.flip:
       return { ...state, isShowingFrontOfCard: !state.isShowingFrontOfCard };
+    case actionTypes.setCurrentDeck:
+      return { ...state, currentDeck: action.currentDeck };
     default: {
       throw new Error(`Unhandled type: ${action.type}`);
     }
   }
 }
 
-function useFlashcards(deck = []) {
+function useFlashcards(currentDeck = []) {
   const [
     {
       flashcard,
@@ -107,7 +96,7 @@ function useFlashcards(deck = []) {
     },
     dispatch
   ] = React.useReducer(flashcardReducer, {
-    currentDeck: deck,
+    currentDeck,
     shuffledDeck: [],
     flashcard: null,
     isDeckEmpty: false,
@@ -117,28 +106,38 @@ function useFlashcards(deck = []) {
   });
 
   const initialize = React.useCallback(
-    (initialDeck = []) =>
-      dispatch({ type: actionTypes.initialize, initialDeck }),
+    () => dispatch({ type: actionTypes.initialize }),
     [dispatch]
   );
-  const nextCard = () => dispatch({ type: actionTypes.nextCard });
-  const deleteCard = (currentDeck: Flashcard[]) =>
-    dispatch({ type: actionTypes.deleteCard, currentDeck });
+
   const editFlashcard = (flashcard = null) =>
     dispatch({ type: actionTypes.edit, flashcard });
+
+  const deleteCard = () => dispatch({ type: actionTypes.deleteCard });
+
+  const nextCard = () => dispatch({ type: actionTypes.nextCard });
+
   const flipCard = () => dispatch({ type: actionTypes.flip });
-  const clearCard = () => dispatch({ type: actionTypes.clear });
+
+  const currentDeckLength = currentDeck.length;
+  const prevDeckLength = React.useRef<number>(currentDeckLength);
+  React.useEffect(() => {
+    if (prevDeckLength.current !== currentDeckLength) {
+      // console.count('setDeck');
+      prevDeckLength.current = currentDeckLength;
+      dispatch({ type: actionTypes.setCurrentDeck, currentDeck });
+    }
+  }, [currentDeckLength, prevDeckLength, dispatch, currentDeck]);
 
   return {
-    flashcard,
     isShowingFrontOfCard,
+    isDeckEmpty,
+    isEditing,
+    noCardsLeftToStudy,
+    flashcard,
     flipCard,
     nextCard,
     deleteCard,
-    clearCard,
-    isDeckEmpty,
-    noCardsLeftToStudy,
-    isEditing,
     editFlashcard,
     initialize
   };

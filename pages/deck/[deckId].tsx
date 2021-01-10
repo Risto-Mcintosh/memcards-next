@@ -13,27 +13,34 @@ export default function FlashcardPage() {
   const { data, isFetchedAfterMount, isSuccess, remove: clearCache } = useDeck(
     router.query.deckId
   );
-  const flashcards = data?.flashcards;
-  const { isDeckEmpty, noCardsLeftToStudy, isEditing, ...rest } = useFlashcards(
-    flashcards
-  );
+
+  const {
+    isDeckEmpty,
+    noCardsLeftToStudy,
+    isEditing,
+    initialize,
+    ...rest
+  } = useFlashcards(data?.flashcards);
 
   React.useEffect(() => {
+    // console.count('effect1');
     if (isSuccess) {
-      console.count('initialize');
-      rest.initialize(flashcards);
+      initialize();
     }
-  }, [isSuccess, rest.initialize]);
+  }, [isSuccess, initialize]);
 
   React.useEffect(() => {
+    // console.count('effect2');
+
     if (isDeckEmpty && isFetchedAfterMount) {
-      clearCache();
       router.push('/decks');
+
+      return () => clearCache();
     }
   }, [isFetchedAfterMount, isDeckEmpty]);
 
   return (
-    <FlashcardProvider state={{ deck: data?.deck, ...rest }}>
+    <FlashcardProvider state={{ deck: data?.deck, initialize, ...rest }}>
       {noCardsLeftToStudy ? (
         <DeckCompleted />
       ) : isEditing ? (
