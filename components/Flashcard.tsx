@@ -34,38 +34,9 @@ const overlay: Variants = {
   }
 };
 export function Flashcard() {
-  const {
-    isShowingFrontOfCard,
-    flipCard,
-    nextCard,
-    flashcard,
-    deck,
-    editFlashcard
-  } = useFlashcardContext();
-  const flashcardControls = React.useCallback((e: KeyboardEvent) => {
-    if (e.code === 'Space') {
-      flipCard();
-    }
-    if (e.code === 'KeyN') {
-      nextCard();
-    }
-
-    if (e.code === 'KeyE') {
-      editFlashcard();
-    }
-  }, []);
-
-  React.useEffect(() => {
-    document.addEventListener('keydown', flashcardControls);
-    return () => document.removeEventListener('keydown', flashcardControls);
-  }, []);
-
+  const { isShowingFrontOfCard, flashcard, deck } = useFlashcardContext();
   return (
     <Layout>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       {!flashcard ? (
         <p>Loading....</p>
       ) : (

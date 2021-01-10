@@ -52,13 +52,13 @@ const handlers = [
       deckId: req.params.deckId,
       ...req.body
     };
-    flashcards.push(newFlashcard);
+    flashcards = [...flashcards, newFlashcard];
     return res(ctx.status(201), ctx.json(newFlashcard));
   }),
   rest.put('/api/deck/:deckId/card/:cardId', (req, res, ctx) => {
     const cardId = req.params.cardId;
     const cardToEditIdx = flashcards.findIndex((card) => card.id === cardId);
-    const oldCard = flashcardData[cardToEditIdx];
+    const oldCard = flashcards[cardToEditIdx];
     const reqBody: any = req.body;
     console.log({ reqBody });
     const newFlashcard = {
@@ -66,11 +66,15 @@ const handlers = [
       deckId: oldCard.deckId,
       ...reqBody
     };
-    flashcardData[cardToEditIdx] = newFlashcard;
+    flashcards[cardToEditIdx] = newFlashcard;
     return res(ctx.status(200), ctx.json(newFlashcard));
   }),
   rest.delete('/api/deck/:deckId/card/:cardId', (req, res, ctx) => {
     flashcards = flashcards.filter((card) => card.id !== req.params.cardId);
+    const deckToEditIdx = deckData.findIndex(
+      (deck) => deck.id === req.params.deckId
+    );
+    --deckData[deckToEditIdx].cardCount;
     return res(ctx.status(204));
   })
 ];

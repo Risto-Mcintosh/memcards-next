@@ -137,16 +137,15 @@ function useFlashcardDelete() {
         method: 'delete'
       }),
     {
+      onMutate: ({ deckId, cardId }) => {
+        const data = queryClient.getQueryData<DeckQuery>(`deck ${deckId}`);
+        // delete flashcard in cache
+        data.flashcards = data.flashcards.filter((card) => card.id !== cardId);
+        queryClient.setQueryData<DeckQuery>(`deck ${deckId}`, data);
+        return data;
+      },
       onSuccess: (data, { deckId, cardId }) => {
         queryClient.removeQueries('deckList');
-        // delete flashcard in cache
-        queryClient.setQueryData<DeckQuery>(`deck ${deckId}`, (oldData) => {
-          const result = { ...oldData };
-          result.flashcards = result.flashcards.filter(
-            (card) => card.id !== cardId
-          );
-          return result;
-        });
       }
     }
   );

@@ -1,8 +1,16 @@
+import * as React from 'react';
 import { Menu } from '@headlessui/react';
 import { useFlashcardContext } from '@context/flashcard';
 import { motion } from 'framer-motion';
 import { DeckQuery, useFlashcardDelete } from '@utils/client';
 import { useQueryClient } from 'react-query';
+
+const KeyboardCtrl = {
+  flip: 'Space',
+  next: 'KeyN',
+  edit: 'KeyE',
+  delete: 'KeyD'
+};
 
 export function Controls() {
   const {
@@ -13,20 +21,41 @@ export function Controls() {
     flashcard,
     deck
   } = useFlashcardContext();
-  const queryClient = useQueryClient();
   const { mutate } = useFlashcardDelete();
 
-  function onDelete() {
+  function handleDelete() {
     mutate(
       { deckId: deck.id, cardId: flashcard.id },
       {
-        onSuccess: (data, { deckId }) => {
-          const newDeck = queryClient.getQueryData<DeckQuery>(`deck ${deckId}`);
-          deleteCard(newDeck.flashcards);
+        onSuccess: (data, { deckId, cardId }, context) => {
+          deleteCard(context.flashcards);
         }
       }
     );
   }
+
+  const flashcardControls = (e: KeyboardEvent) => {
+    switch (e.code) {
+      case KeyboardCtrl.flip:
+        flipCard();
+        break;
+      case KeyboardCtrl.next:
+        nextCard();
+        break;
+      case KeyboardCtrl.edit:
+        editFlashcard();
+        break;
+      case KeyboardCtrl.delete:
+        handleDelete();
+        break;
+    }
+  };
+
+  React.useEffect(() => {
+    document.addEventListener('keydown', flashcardControls);
+    return () => document.removeEventListener('keydown', flashcardControls);
+  }, [flashcard]);
+
   return (
     <div className="flex justify-center mt-5">
       <button
@@ -75,7 +104,7 @@ export function Controls() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        onClick={onDelete}
+                        onClick={handleDelete}
                         className={`text-lg p-1 text-left w-full ${
                           active ? 'bg-gray-400' : ''
                         }`}

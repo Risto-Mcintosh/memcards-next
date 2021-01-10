@@ -20,16 +20,17 @@ function getFlashCardFromDeck(deck) {
   };
 }
 
-function getNextCard(state: flashcardState) {
+function getNextCard(state: flashcardState, deck?: Flashcard[]) {
   const { shuffledDeck, flashcard } = getFlashCardFromDeck(state.shuffledDeck);
+  const currentDeckLength = deck?.length ?? state.currentDeck.length;
+  console.log({ currentDeckLength, deck, flashcard });
   return {
     ...state,
     shuffledDeck,
     flashcard,
     isShowingFrontOfCard: true,
     isDeckEmpty: state.currentDeck.length === 0,
-    noCardsLeftToStudy:
-      state.currentDeck.length >= 1 && !flashcard ? true : false
+    noCardsLeftToStudy: currentDeckLength >= 1 && !flashcard ? true : false
   };
 }
 
@@ -70,7 +71,7 @@ function flashcardReducer(state: flashcardState, action) {
     case actionTypes.deleteCard: {
       const currentDeck = action.currentDeck;
       return {
-        ...getNextCard(state),
+        ...getNextCard(state, currentDeck),
         currentDeck,
         isDeckEmpty: currentDeck.length === 0
       };
