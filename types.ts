@@ -5,7 +5,7 @@ export interface Deck {
 }
 
 export type Flashcard = {
-  id: string;
+  id?: string;
   deckId?: string;
   front: string;
   back: string;

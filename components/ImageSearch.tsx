@@ -3,22 +3,17 @@ import Portal from '@reach/portal';
 import FocusTrap from 'focus-trap-react';
 import { FlashcardImage } from 'types';
 import { usePopover } from 'utils/usePopover';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useUnsplash } from '@utils/useUnsplash';
 type props = {
   closeSearch: () => void;
   anchorEl: React.MutableRefObject<any>;
   setImage: React.Dispatch<React.SetStateAction<FlashcardImage>>;
 };
 
-function fetchImages(pageNumber, searchTerm) {
-  return fetch(
-    `https://api.unsplash.com/search/photos?page=${pageNumber}&query=${searchTerm}&orientation=landscape`,
-    {
-      headers: {
-        Authorization: `Client-ID ${process.env.NEXT_PUBLIC_UNSPLASH_API_ID}`
-      }
-    }
-  );
-}
+type FormValues = {
+  imageSearch: string;
+};
 
 export default function ImageSearch({
   closeSearch,
@@ -33,23 +28,21 @@ export default function ImageSearch({
     anchorEl,
     onClose: closeSearch
   });
-  React.useEffect(() => {
-    fetchImages(1, 'people')
-      .then((res) => res.json())
-      .then(console.log);
-  });
   function handleSlashKeyPress(e: KeyboardEvent) {
     if (e.code === 'Slash' && document.activeElement !== inputRef.current) {
       inputRef.current.focus();
     }
   }
-
   React.useEffect(() => {
     document.addEventListener('keyup', handleSlashKeyPress);
     return () => document.removeEventListener('keyup', handleSlashKeyPress);
   }, []);
-
-  const images = new Array(12).fill(null);
+  const { fetchMore, getImages, status, images } = useUnsplash();
+  const { register, handleSubmit } = useForm<FormValues>();
+  const onSubmit: SubmitHandler<FormValues> = ({ imageSearch }, event) => {
+    getImages(imageSearch);
+  };
+  console.log({ status, images });
   return (
     <Portal>
       <FocusTrap>
@@ -64,15 +57,21 @@ export default function ImageSearch({
             >
               Close
             </button>
-            <form className="flex flex-col items-center flex-1">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex flex-col items-center flex-1"
+            >
               <label htmlFor="image-search" className="sr-only">
                 Image Search
               </label>
               <input
-                ref={inputRef}
+                ref={(ref) => {
+                  inputRef.current = ref;
+                  register(ref);
+                }}
                 className="py-1"
                 type="search"
-                name="image-search"
+                name="imageSearch"
                 id="image-search"
                 aria-describedby="describe-search"
               />
@@ -105,7 +104,7 @@ export default function ImageSearch({
                 );
               })}
             </div>
-            <span>Loading...</span>
+            {status === 'loading' && <span>Loading...</span>}
           </div>
         </div>
       </FocusTrap>

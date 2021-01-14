@@ -17,6 +17,8 @@ export default function CreateFlashcard() {
     { deckName, ...card },
     e
   ) => {
+    if (!e.target.elements['deckName']) return;
+
     /* Getting the 'deckId' data attribute 
     from the selected option in the 'deckName' select field */
     const selectEl = e.target.elements['deckName'];
