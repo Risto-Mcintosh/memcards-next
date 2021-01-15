@@ -1,16 +1,5 @@
 import * as React from 'react';
 
-function fetchImages(pageNumber, searchTerm) {
-  return fetch(
-    `https://api.unsplash.com/search/photos?page=${pageNumber}&query=${searchTerm}&orientation=landscape`,
-    {
-      headers: {
-        Authorization: `Client-ID ${process.env.NEXT_PUBLIC_UNSPLASH_API_ID}`
-      }
-    }
-  );
-}
-
 const actionTypes = {
   getImages: 'GET_ITEMS',
   getImagesSuccess: 'GET_ITEMS_SUCCESS'
@@ -22,12 +11,14 @@ function reducer(state, action) {
       return {
         ...state,
         searchTerm: action.searchTerm ?? state.searchTerm,
+        images: action.searchTerm ? [] : state.images,
+        page: action.searchTerm ? 1 : state.page + 1,
         status: 'loading'
       };
     case actionTypes.getImagesSuccess:
       return {
         ...state,
-        page: state.page++,
+        prevSearchTerm: state.searchTerm,
         status: 'idle',
         images: state.images.concat(action.images)
       };
@@ -45,33 +36,42 @@ export function useUnsplash() {
     status: 'idle',
     searchTerm: '',
     prevSearchTerm: '',
-    page: 0
+    page: 1
   });
 
   const fetchSuccess = (images) =>
     dispatch({ type: actionTypes.getImagesSuccess, images });
 
-  function fetchMore() {
-    if (prevSearchTerm === searchTerm) return;
-    dispatch({ type: actionTypes.getImages });
-    fetchImages(page, searchTerm)
-      .then((res) => res.json())
-      .then((data) => fetchSuccess(data.results));
-  }
-
-  function getImages(searchTerm) {
+  const initialize = (searchTerm = null) =>
     dispatch({ type: actionTypes.getImages, searchTerm });
-    fetchImages(page, searchTerm)
-      .then((res) => res.json())
-      .then((data) => {
-        fetchSuccess(data.results);
-      });
-  }
+
+  const getImages = React.useCallback(
+    ({ term = null, pageNumber = 1 }) => {
+      console.count('rendered');
+
+      console.log({ searchTerm, pageNumber, term });
+      return fetch(
+        `https://api.unsplash.com/search/photos?page=${pageNumber}&query=${
+          term ?? searchTerm
+        }&orientation=landscape`,
+        {
+          headers: {
+            Authorization: `Client-ID ${process.env.NEXT_PUBLIC_UNSPLASH_API_ID}`
+          }
+        }
+      );
+    },
+    [searchTerm]
+  );
 
   return {
     getImages,
-    fetchMore,
+    prevSearchTerm,
+    fetchSuccess,
+    searchTerm,
     status,
-    images
+    images,
+    page,
+    initialize
   };
 }

@@ -5,6 +5,7 @@ import { FlashcardImage } from 'types';
 import { usePopover } from 'utils/usePopover';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useUnsplash } from '@utils/useUnsplash';
+import { useObserver } from '@utils/useObserver';
 type props = {
   closeSearch: () => void;
   anchorEl: React.MutableRefObject<any>;
@@ -37,12 +38,48 @@ export default function ImageSearch({
     document.addEventListener('keyup', handleSlashKeyPress);
     return () => document.removeEventListener('keyup', handleSlashKeyPress);
   }, []);
-  const { fetchMore, getImages, status, images } = useUnsplash();
+
+  const {
+    fetchSuccess,
+    page,
+    prevSearchTerm,
+    searchTerm,
+    status,
+    images,
+    getImages,
+    initialize
+  } = useUnsplash();
+
+  const fetchMore = React.useCallback(() => {
+    initialize();
+    getImages({ pageNumber: page + 1 })
+      .then((res) => res.json())
+      .then((data) => {
+        fetchSuccess(data.results);
+      });
+  }, [page]);
+
+  const loadMoreRef = React.useRef();
+
+  useObserver({
+    callback: () => console.log('callback'),
+    ref: loadMoreRef,
+    root: containerRef?.current
+  });
+
   const { register, handleSubmit } = useForm<FormValues>();
+
   const onSubmit: SubmitHandler<FormValues> = ({ imageSearch }, event) => {
-    getImages(imageSearch);
+    console.log({ prevSearchTerm, imageSearch });
+    if (prevSearchTerm === imageSearch) return;
+    initialize(imageSearch);
+    getImages({ term: imageSearch })
+      .then((res) => res.json())
+      .then((data) => {
+        fetchSuccess(data.results);
+      });
   };
-  console.log({ status, images });
+  // console.log({ images });
   return (
     <Portal>
       <FocusTrap>
@@ -80,30 +117,32 @@ export default function ImageSearch({
           </div>
           <div className="flex-1 px-4 overflow-y-auto">
             <div className="grid grid-cols-3 gap-4">
-              {images.map((_, i) => {
-                return (
-                  <div
-                    key={i}
-                    className=""
-                    tabIndex={0}
-                    role="button"
-                    onClick={() => {
-                      setImage({
-                        alt: 'random image',
-                        src: 'https://source.unsplash.com/random/400x400',
-                        thumb: 'https://source.unsplash.com/random/400x400'
-                      });
-                      closeSearch();
-                    }}
-                  >
-                    <img
-                      src="https://source.unsplash.com/random/400x400"
-                      alt="random image"
-                    />
-                  </div>
-                );
-              })}
+              {images &&
+                images.map(({ urls, alt_description: alt }, i) => {
+                  return (
+                    <div
+                      key={i}
+                      className=""
+                      tabIndex={0}
+                      role="button"
+                      onClick={() => {
+                        setImage({
+                          alt,
+                          src: urls.small,
+                          thumb: urls.thumb
+                        });
+                        closeSearch();
+                      }}
+                    >
+                      <img src={urls.thumb} alt={alt} />
+                    </div>
+                  );
+                })}
             </div>
+            <button ref={loadMoreRef} onClick={() => fetchMore()}>
+              Load More
+            </button>
+
             {status === 'loading' && <span>Loading...</span>}
           </div>
         </div>
