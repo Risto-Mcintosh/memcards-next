@@ -10,8 +10,8 @@ export function useObserver({
   callback,
   ref,
   // hasMore,
-  rootMargin = '0px',
-  threshold = 1.0,
+  rootMargin = '100% 0px 0px 0px',
+  threshold = 0.1,
   root
 }: UseObserver & IntersectionObserverInit) {
   React.useEffect(() => {
@@ -34,5 +34,5 @@ export function useObserver({
 
     observer.observe(el);
     return () => observer.unobserve(el);
-  }, [ref.current]);
+  }, [ref.current, callback]);
 }
