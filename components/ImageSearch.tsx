@@ -1,10 +1,9 @@
 import * as React from 'react';
 import Portal from '@reach/portal';
-import FocusTrap from 'focus-trap-react';
 import { FlashcardImage } from 'types';
-import { usePopover } from 'utils/usePopover';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useUnsplash } from '@utils/useUnsplash';
+import { Popover } from './Popover';
 type props = {
   closeSearch: () => void;
   anchorEl: React.MutableRefObject<any>;
@@ -20,14 +19,8 @@ export default function ImageSearch({
   anchorEl,
   setImage
 }: props) {
-  const containerRef = React.useRef();
-  const inputRef = React.useRef(null);
-  usePopover({
-    containerRef,
-    focusOnMountEl: inputRef,
-    anchorEl,
-    onClose: closeSearch
-  });
+  const inputRef = React.useRef<HTMLInputElement>();
+
   function handleSlashKeyPress(e: KeyboardEvent) {
     if (e.code === 'Slash' && document.activeElement !== inputRef.current) {
       inputRef.current.focus();
@@ -48,68 +41,72 @@ export default function ImageSearch({
   // console.log({ images });
   return (
     <Portal>
-      <FocusTrap>
-        <div
-          ref={containerRef}
-          className="absolute top-0 bottom-0 right-0 flex flex-col w-full max-w-screen-sm py-4 bg-gray-200"
-        >
-          <div className="relative flex px-4 mb-4">
-            <button
-              onClick={() => closeSearch()}
-              className="absolute px-3 py-2 bg-gray-300"
-            >
-              Close
-            </button>
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col items-center flex-1"
-            >
-              <label htmlFor="image-search" className="sr-only">
-                Image Search
-              </label>
-              <input
-                ref={(ref) => {
-                  inputRef.current = ref;
-                  register(ref);
-                }}
-                className="py-1"
-                type="search"
-                name="imageSearch"
-                id="image-search"
-                aria-describedby="describe-search"
-              />
-              <p id="describe-search">Search for an image...</p>
-            </form>
-          </div>
-          <div className="flex flex-col flex-1 px-4 overflow-y-auto">
-            <div className="grid flex-1 grid-cols-3 gap-4">
-              {images &&
-                images.map(({ urls, alt_description: alt }, i) => {
-                  return (
-                    <div
-                      key={i}
-                      className=""
-                      tabIndex={0}
-                      role="button"
-                      onClick={() => {
-                        setImage({
-                          alt,
-                          src: urls.small,
-                          thumb: urls.thumb
-                        });
-                        closeSearch();
-                      }}
-                    >
-                      <img src={urls.thumb} alt={alt} />
-                    </div>
-                  );
-                })}
+      <Popover anchorEl={anchorEl} onClose={closeSearch}>
+        {(containerRef) => (
+          <div
+            ref={containerRef}
+            className="absolute top-0 bottom-0 right-0 flex flex-col w-full max-w-screen-sm py-4 bg-gray-200"
+          >
+            <div className="relative flex px-4 mb-4">
+              <button
+                onClick={() => closeSearch()}
+                className="absolute px-3 py-2 bg-gray-300"
+              >
+                Close
+              </button>
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex flex-col items-center flex-1"
+              >
+                <label htmlFor="image-search" className="sr-only">
+                  Image Search
+                </label>
+                <input
+                  ref={(ref) => {
+                    register(ref);
+                  }}
+                  autoFocus
+                  className="py-1"
+                  type="search"
+                  name="imageSearch"
+                  id="image-search"
+                  aria-describedby="describe-search"
+                />
+                <p id="describe-search">Search for an image...</p>
+              </form>
             </div>
-            {status === 'loading' && <span>Loading...</span>}
-            {hasMore && <button onClick={() => getImages()}>Load More</button>}
+            <div className="flex flex-col flex-1 px-4 overflow-y-auto">
+              <div className="grid flex-1 grid-cols-3 gap-4">
+                {images &&
+                  images.map(({ urls, alt_description: alt }, i) => {
+                    return (
+                      <div
+                        key={i}
+                        className=""
+                        tabIndex={0}
+                        role="button"
+                        onClick={() => {
+                          setImage({
+                            alt,
+                            src: urls.small,
+                            thumb: urls.thumb
+                          });
+                          closeSearch();
+                        }}
+                      >
+                        <img src={urls.thumb} alt={alt} />
+                      </div>
+                    );
+                  })}
+              </div>
+              {status === 'loading' && <span>Loading...</span>}
+              {hasMore && (
+                <button onClick={() => getImages()}>Load More</button>
+              )}
+            </div>
           </div>
-        </div>
-      </FocusTrap>
+        )}
+      </Popover>
     </Portal>
   );
 }

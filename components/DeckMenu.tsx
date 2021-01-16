@@ -13,7 +13,7 @@ export default function DeckMenu({ deck }: props) {
   const [isDeleteConfirmOpen, setDeleteConfirm] = React.useState(false);
   const { mutate: onDeckDelete } = useDeckDelete();
   const [isEditing, setEdit] = React.useState(false);
-  const anchorEl = React.useRef(null);
+  const anchorEl = React.useRef();
 
   return (
     <div>

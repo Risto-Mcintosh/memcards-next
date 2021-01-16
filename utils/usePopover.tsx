@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useOnClickOutside } from './useOnClickOutside';
 
-function usePopover({ containerRef, onClose, anchorEl, focusOnMountEl }) {
+function usePopover({ containerRef, onClose, anchorEl }) {
   useOnClickOutside(containerRef, () => onClose());
 
   const escFunction = React.useCallback((e: KeyboardEvent) => {
@@ -11,13 +11,12 @@ function usePopover({ containerRef, onClose, anchorEl, focusOnMountEl }) {
   }, []);
 
   React.useEffect(() => {
-    focusOnMountEl?.current?.focus();
     document.addEventListener('keydown', escFunction);
     return () => {
-      anchorEl?.current?.focus();
+      anchorEl.current.focus();
       document.removeEventListener('keydown', escFunction);
     };
-  }, []);
+  }, [anchorEl]);
 }
 
 export { usePopover };
