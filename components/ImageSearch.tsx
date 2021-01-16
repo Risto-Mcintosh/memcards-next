@@ -5,7 +5,6 @@ import { FlashcardImage } from 'types';
 import { usePopover } from 'utils/usePopover';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useUnsplash } from '@utils/useUnsplash';
-import { useObserver } from '@utils/useObserver';
 type props = {
   closeSearch: () => void;
   anchorEl: React.MutableRefObject<any>;
@@ -39,45 +38,12 @@ export default function ImageSearch({
     return () => document.removeEventListener('keyup', handleSlashKeyPress);
   }, []);
 
-  const {
-    fetchSuccess,
-    page,
-    prevSearchTerm,
-    searchTerm,
-    status,
-    images,
-    getImages,
-    initialize
-  } = useUnsplash();
-
-  const fetchMore = React.useCallback(() => {
-    initialize();
-    getImages({ pageNumber: page + 1 })
-      .then((res) => res.json())
-      .then((data) => {
-        fetchSuccess(data.results);
-      });
-  }, [page]);
-
-  const loadMoreRef = React.useRef();
-
-  useObserver({
-    callback: () => console.log('callback'),
-    ref: loadMoreRef,
-    root: containerRef?.current
-  });
+  const { status, images, getImages, hasMore } = useUnsplash();
 
   const { register, handleSubmit } = useForm<FormValues>();
 
-  const onSubmit: SubmitHandler<FormValues> = ({ imageSearch }, event) => {
-    console.log({ prevSearchTerm, imageSearch });
-    if (prevSearchTerm === imageSearch) return;
-    initialize(imageSearch);
-    getImages({ term: imageSearch })
-      .then((res) => res.json())
-      .then((data) => {
-        fetchSuccess(data.results);
-      });
+  const onSubmit: SubmitHandler<FormValues> = ({ imageSearch }) => {
+    getImages(imageSearch);
   };
   // console.log({ images });
   return (
@@ -115,8 +81,8 @@ export default function ImageSearch({
               <p id="describe-search">Search for an image...</p>
             </form>
           </div>
-          <div className="flex-1 px-4 overflow-y-auto">
-            <div className="grid grid-cols-3 gap-4">
+          <div className="flex flex-col flex-1 px-4 overflow-y-auto">
+            <div className="grid flex-1 grid-cols-3 gap-4">
               {images &&
                 images.map(({ urls, alt_description: alt }, i) => {
                   return (
@@ -139,11 +105,8 @@ export default function ImageSearch({
                   );
                 })}
             </div>
-            <button ref={loadMoreRef} onClick={() => fetchMore()}>
-              Load More
-            </button>
-
             {status === 'loading' && <span>Loading...</span>}
+            {hasMore && <button onClick={() => getImages()}>Load More</button>}
           </div>
         </div>
       </FocusTrap>
