@@ -20,6 +20,11 @@ type UseUnsplash = {
   prevSearchTerm: string | null;
   page: number;
   hasMore: boolean;
+  errorMsg: string | null;
+};
+
+type Options = {
+  limit?: number;
 };
 
 type Action = {
@@ -27,8 +32,9 @@ type Action = {
 } & Partial<UseUnsplash>;
 
 const actionTypes = {
-  getImages: 'GET_ITEMS',
-  getImagesSuccess: 'GET_ITEMS_SUCCESS'
+  getImages: 'GET_IMAGES',
+  getImagesSuccess: 'GET_IMAGES_SUCCESS',
+  getImagesError: 'GET_IMAGES_ERROR'
 };
 
 function reducer(state: UseUnsplash, action: Action): UseUnsplash {
@@ -50,14 +56,21 @@ function reducer(state: UseUnsplash, action: Action): UseUnsplash {
         images: state.images.concat(action.images),
         hasMore: action.hasMore
       };
+    case actionTypes.getImagesError:
+      return {
+        ...state,
+        prevSearchTerm: state.searchTerm,
+        status: 'error',
+        hasMore: false
+      };
     default:
       throw new Error(`Unhandled type: ${action.type}`);
   }
 }
 
-export function useUnsplash() {
+export function useUnsplash({ limit = 9 }: Options = {}) {
   const [
-    { images, status, searchTerm, prevSearchTerm, page, hasMore },
+    { images, status, searchTerm, prevSearchTerm, page, hasMore, errorMsg },
     dispatch
   ] = React.useReducer<(state: UseUnsplash, action: Action) => UseUnsplash>(
     reducer,
@@ -67,15 +80,13 @@ export function useUnsplash() {
       searchTerm: '',
       prevSearchTerm: '',
       page: 1,
-      hasMore: false
+      hasMore: false,
+      errorMsg: null
     }
   );
 
-  const fetchSuccess = ({ images, hasMore }: Partial<UseUnsplash>) =>
-    dispatch({ type: actionTypes.getImagesSuccess, images, hasMore });
-
-  const initialize = (searchTerm = null) =>
-    dispatch({ type: actionTypes.getImages, searchTerm });
+  const setError = ({ errorMsg }: Partial<UseUnsplash>) =>
+    dispatch({ type: actionTypes.getImagesError, errorMsg });
 
   const getImages = React.useCallback(
     (term: string = null) => {
@@ -83,10 +94,9 @@ export function useUnsplash() {
         console.log('same term as last');
         return;
       }
-      initialize(term);
-      console.log({ searchTerm, page, term });
+      dispatch({ type: actionTypes.getImages, searchTerm: term });
       fetch(
-        `https://api.unsplash.com/search/photos?page=${page}&query=${
+        `https://api.unsplash.com/search/photos?per_page=${limit}&page=${page}&query=${
           term ?? searchTerm
         }&orientation=landscape`,
         {
@@ -98,10 +108,15 @@ export function useUnsplash() {
         .then((res) => res.json())
         .then((data: UnsplashResponse) => {
           console.log(data);
-          fetchSuccess({
+          dispatch({
+            type: actionTypes.getImagesSuccess,
             images: data.results,
             hasMore: page < data.total_pages
           });
+        })
+        .catch((error) => {
+          console.log(error);
+          setError({ errorMsg: error });
         });
     },
     [prevSearchTerm, searchTerm, page]
@@ -111,6 +126,7 @@ export function useUnsplash() {
     getImages,
     status,
     images,
-    hasMore
+    hasMore,
+    errorMsg
   };
 }

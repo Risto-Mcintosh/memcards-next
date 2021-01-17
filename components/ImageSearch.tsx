@@ -4,6 +4,7 @@ import { FlashcardImage } from 'types';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useUnsplash } from '@utils/useUnsplash';
 import { Popover } from './Popover';
+import { useObserver } from '@utils/useObserver';
 type props = {
   closeSearch: () => void;
   anchorEl: React.MutableRefObject<any>;
@@ -20,12 +21,14 @@ export default function ImageSearch({
   setImage
 }: props) {
   const inputRef = React.useRef<HTMLInputElement>();
+  const imagesContainerRef = React.useRef<HTMLDivElement>();
 
   function handleSlashKeyPress(e: KeyboardEvent) {
     if (e.code === 'Slash' && document.activeElement !== inputRef.current) {
       inputRef.current.focus();
     }
   }
+
   React.useEffect(() => {
     document.addEventListener('keyup', handleSlashKeyPress);
     return () => document.removeEventListener('keyup', handleSlashKeyPress);
@@ -36,9 +39,14 @@ export default function ImageSearch({
   const { register, handleSubmit } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = ({ imageSearch }) => {
+    imagesContainerRef.current.scrollTo(0, 0);
     getImages(imageSearch);
   };
-  // console.log({ images });
+
+  const { observerEl } = useObserver({
+    onIntersect: getImages,
+    canRun: hasMore && status === 'idle'
+  });
   return (
     <Portal>
       <Popover anchorEl={anchorEl} onClose={closeSearch}>
@@ -63,6 +71,7 @@ export default function ImageSearch({
                 </label>
                 <input
                   ref={(ref) => {
+                    inputRef.current = ref;
                     register(ref);
                   }}
                   autoFocus
@@ -75,8 +84,11 @@ export default function ImageSearch({
                 <p id="describe-search">Search for an image...</p>
               </form>
             </div>
-            <div className="flex flex-col flex-1 px-4 overflow-y-auto">
-              <div className="grid flex-1 grid-cols-3 gap-4">
+            <div
+              className="flex-1 px-4 overflow-y-auto"
+              ref={imagesContainerRef}
+            >
+              <div className="grid min-h-full grid-cols-3 gap-4">
                 {images &&
                   images.map(({ urls, alt_description: alt }, i) => {
                     return (
@@ -94,15 +106,27 @@ export default function ImageSearch({
                           closeSearch();
                         }}
                       >
-                        <img src={urls.thumb} alt={alt} />
+                        <img
+                          className="object-fill h-full"
+                          src={urls.small}
+                          alt={alt}
+                        />
                       </div>
                     );
                   })}
+                {status === 'loading' && <span>Loading...</span>}
               </div>
-              {status === 'loading' && <span>Loading...</span>}
-              {hasMore && (
-                <button onClick={() => getImages()}>Load More</button>
-              )}
+              <div className={`w-full ${hasMore && 'mt-8'}`}>
+                {hasMore && status === 'idle' && (
+                  <button
+                    ref={observerEl}
+                    className="block"
+                    onClick={() => getImages()}
+                  >
+                    Load More
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         )}

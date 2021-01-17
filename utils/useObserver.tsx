@@ -1,38 +1,37 @@
 import * as React from 'react';
 
 type UseObserver = {
-  ref: React.MutableRefObject<any>;
-  callback: () => void;
-  // hasMore: boolean;
+  onIntersect: () => void;
+  canRun: boolean;
 };
 
 export function useObserver({
-  callback,
-  ref,
-  // hasMore,
-  rootMargin = '100% 0px 0px 0px',
-  threshold = 0.1,
-  root
+  onIntersect,
+  canRun,
+  rootMargin = '0px',
+  threshold = 0,
+  root = null
 }: UseObserver & IntersectionObserverInit) {
+  const observerEl = React.useRef();
+
   React.useEffect(() => {
-    const el = ref && ref.current;
+    const el = observerEl && observerEl.current;
 
     const observer = new IntersectionObserver(
       ([entry], ob) => {
-        if (entry.isIntersecting) {
-          callback();
+        if (entry.isIntersecting && canRun) {
           console.log('intersecting');
+          onIntersect();
         }
-        // console.log('intersecting');
       },
       { root, rootMargin, threshold }
     );
 
     if (!el) return;
 
-    console.count('observer');
-
     observer.observe(el);
     return () => observer.unobserve(el);
-  }, [ref.current, callback]);
+  }, [observerEl, onIntersect, canRun]);
+
+  return { observerEl };
 }
