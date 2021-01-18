@@ -3,7 +3,7 @@ import * as React from 'react';
 import { usePopover } from 'utils/usePopover';
 
 type props = {
-  anchorEl: React.MutableRefObject<any>;
+  anchorEl?: React.MutableRefObject<any>;
   onClose: () => void;
   container?: boolean;
   children:

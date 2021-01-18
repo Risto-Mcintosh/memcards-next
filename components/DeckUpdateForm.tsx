@@ -16,9 +16,9 @@ export function DeckUpdateForm({ hideForm, focusOnCloseEl, deck }: props) {
       deckName: deck.name
     }
   });
-  const onSubmit: SubmitHandler<FormInputs> = (data) => {
+  const onSubmit: SubmitHandler<FormInputs> = ({ deckName }) => {
     mutate(
-      { deckId: deck.id, newDeck: data },
+      { deckId: deck.id, deckName },
       {
         onSuccess() {
           hideForm();

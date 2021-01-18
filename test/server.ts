@@ -32,7 +32,7 @@ const handlers = [
     const deckId = req.params.deckId;
     const { deckName: name, ...rest } = req.body;
     const oldDeckIdx = decks.findIndex((deck) => deck.id === deckId);
-    const newDeck = { ...decks[oldDeckIdx], name, ...rest };
+    const newDeck = { ...decks[oldDeckIdx], ...rest, name };
     decks[oldDeckIdx] = newDeck;
     return res(ctx.status(200), ctx.json(newDeck));
   }),

@@ -75,11 +75,7 @@ export default function DeckMenu({ deck }: props) {
         )}
       </Menu>
       {isDeleteConfirmOpen && (
-        <Popover
-          anchorEl={anchorEl}
-          onClose={() => setDeleteConfirm(false)}
-          container
-        >
+        <Popover onClose={() => setDeleteConfirm(false)} container>
           <p className="text-center">
             Are you sure you want to delete <strong>{deck.name}</strong>?
           </p>

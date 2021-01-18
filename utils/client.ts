@@ -11,7 +11,7 @@ interface ClientTypes {
   deckId: string;
   cardId: string;
   flashcard: Flashcard;
-  deck: Deck;
+  deckName: string;
 }
 
 export type DeckQuery = Partial<Deck> & { flashcards: Flashcard[] };
@@ -51,8 +51,8 @@ function useDeckDelete() {
 function useDeckCreate() {
   const queryClient = useQueryClient();
   return useMutation(
-    (newDeck: any) => {
-      return client('/deck', { body: newDeck });
+    (newDeck: Pick<ClientTypes, 'deckName'>) => {
+      return client('/deck', { data: newDeck });
     },
     {
       onSuccess(data) {
@@ -68,9 +68,9 @@ function useDeckCreate() {
 function useDeckUpdate() {
   const queryClient = useQueryClient();
   return useMutation(
-    ({ deckId, flashcard }: Pick<ClientTypes, 'deckId' | 'flashcard'>) =>
+    ({ deckId, deckName }: Pick<ClientTypes, 'deckId' | 'deckName'>) =>
       client(`/deck/${deckId}`, {
-        data: flashcard,
+        data: { deckName },
         method: 'Put'
       }),
     {
@@ -139,6 +139,7 @@ function useFlashcardDelete() {
     {
       onMutate: ({ deckId, cardId }) => {
         const data = queryClient.getQueryData<DeckQuery>(`deck ${deckId}`);
+        if (!data) return;
         // delete flashcard in cache
         data.flashcards = data.flashcards.filter((card) => card.id !== cardId);
         queryClient.setQueryData<DeckQuery>(`deck ${deckId}`, data);

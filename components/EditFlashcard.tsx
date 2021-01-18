@@ -22,7 +22,9 @@ export function EditFlashcard() {
     }
   });
 
-  const onSubmit: SubmitHandler<FlashcardFormInputs> = (data) => {
+  const onSubmit: SubmitHandler<FlashcardFormInputs> = (data, event) => {
+    if (event.isPropagationStopped()) return;
+
     mutate(
       {
         deckId: deck.id,

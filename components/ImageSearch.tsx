@@ -30,15 +30,16 @@ export default function ImageSearch({
   }
 
   React.useEffect(() => {
-    document.addEventListener('keyup', handleSlashKeyPress);
-    return () => document.removeEventListener('keyup', handleSlashKeyPress);
+    document.addEventListener('keydown', handleSlashKeyPress);
+    return () => document.removeEventListener('keydown', handleSlashKeyPress);
   }, []);
 
   const { status, images, getImages, hasMore } = useUnsplash();
 
   const { register, handleSubmit } = useForm<FormValues>();
 
-  const onSubmit: SubmitHandler<FormValues> = ({ imageSearch }) => {
+  const onSubmit: SubmitHandler<FormValues> = ({ imageSearch }, e) => {
+    e.stopPropagation();
     imagesContainerRef.current.scrollTo(0, 0);
     getImages(imageSearch);
   };
@@ -47,6 +48,16 @@ export default function ImageSearch({
     onIntersect: getImages,
     canRun: hasMore && status === 'idle'
   });
+
+  function handleImageSelect({ urls, alt }) {
+    setImage({
+      alt,
+      src: urls.small,
+      thumb: urls.thumb
+    });
+    console.log('called');
+    closeSearch();
+  }
   return (
     <Portal>
       <Popover anchorEl={anchorEl} onClose={closeSearch}>
@@ -97,14 +108,10 @@ export default function ImageSearch({
                         className=""
                         tabIndex={0}
                         role="button"
-                        onClick={() => {
-                          setImage({
-                            alt,
-                            src: urls.small,
-                            thumb: urls.thumb
-                          });
-                          closeSearch();
-                        }}
+                        onClick={() => handleImageSelect({ urls, alt })}
+                        onKeyUp={(e) =>
+                          e.key === 'Enter' && handleImageSelect({ urls, alt })
+                        }
                       >
                         <img
                           className="object-fill h-full"
