@@ -9,10 +9,9 @@ import { FlashcardFormInputs, FlashcardImage } from 'types';
 
 export default function CreateFlashcard() {
   const { data, isLoading } = useDeckList();
-  const { register, handleSubmit } = useForm<FlashcardFormInputs>();
+  const { register, handleSubmit, reset } = useForm<FlashcardFormInputs>();
   const [image, setImage] = React.useState<FlashcardImage | null>();
   const { mutate } = useFlashcardCreate();
-
   const onSubmit: SubmitHandler<FlashcardFormInputs> = (
     { deckName, ...card },
     e
@@ -28,7 +27,7 @@ export default function CreateFlashcard() {
       { deckId, flashcard: { ...card, image } },
       {
         onSuccess: () => {
-          e.target.reset();
+          reset({ deckName });
           setImage(null);
         }
       }

@@ -39,7 +39,7 @@ const handlers = [
   rest.post<{ deckName: string }>('/api/deck', (req, res, ctx) => {
     const { deckName } = req.body;
     const newDeck = {
-      id: decks.length.toString(),
+      id: (decks.length + 1).toString(),
       cardCount: 0,
       name: deckName
     };
