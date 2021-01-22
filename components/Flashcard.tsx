@@ -59,7 +59,7 @@ export function Flashcard() {
       {!flashcard ? (
         <p>Loading....</p>
       ) : (
-        <div className="flex flex-col min-h-full">
+        <div className="flex flex-col min-h-full py-4">
           <h1 className="mb-5 text-3xl text-center text-green-600">
             {deck.name}
           </h1>

@@ -2,7 +2,6 @@ import { ImageField } from '@components/ImageField';
 import { useDeckList, useFlashcardCreate } from '@utils/client';
 import Layout from 'components/Layout';
 import TextInput from 'components/TextInput';
-import Head from 'next/head';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FlashcardFormInputs, FlashcardImage } from 'types';
@@ -36,14 +35,10 @@ export default function CreateFlashcard() {
 
   return (
     <Layout>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       {isLoading ? (
         <p>Loading...</p>
       ) : (
-        <article className="flex flex-col items-center">
+        <div className="flex flex-col items-center py-4">
           <h1 className="mb-6 text-3xl">Create A New Flashcard</h1>
           <div className="w-full max-w-xs">
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -83,7 +78,7 @@ export default function CreateFlashcard() {
               </button>
             </form>
           </div>
-        </article>
+        </div>
       )}
     </Layout>
   );

@@ -6,7 +6,7 @@ export function DeckCompleted() {
   const { deck, initialize } = useFlashcardContext();
   return (
     <Layout>
-      <div className="flex items-center justify-center w-full h-full">
+      <div className="flex items-center justify-center w-full min-h-full">
         <div className="p-8 text-center border border-gray-300 rounded shadow-lg">
           <h1 className="mb-2 text-2xl">{deck.name}</h1>
           <p className="mb-4 text-lg">

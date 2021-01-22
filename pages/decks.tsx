@@ -2,7 +2,6 @@ import CreateButton from 'components/CreateButton';
 import CreateDeckForm from '@components/DeckCreateForm';
 import DeckMenu from 'components/DeckMenu';
 import Layout from 'components/Layout';
-import Head from 'next/head';
 import Link from 'next/link';
 import * as React from 'react';
 import { useDeckList } from 'utils/client';
@@ -13,11 +12,7 @@ export default function Decks() {
 
   return (
     <Layout>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <section className="relative h-full max-w-2xl mx-auto">
+      <div className="relative max-w-2xl min-h-full py-4 mx-auto">
         <h1 className="sr-only">Deck List</h1>
         <div className="relative max-w-xs mx-auto">
           {isLoading
@@ -60,7 +55,7 @@ export default function Decks() {
           ref={createButtonRef}
           showCreateDeckForm={() => showCreateDeckFrom(true)}
         />
-      </section>
+      </div>
     </Layout>
   );
 }
