@@ -1,5 +1,5 @@
 import Layout from 'components/Layout';
-import TextInput from 'components/TextInput';
+import TextInput from '@ui/TextInput';
 import Link from 'next/link';
 
 export default function Home() {

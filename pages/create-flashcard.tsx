@@ -1,10 +1,11 @@
 import { ImageField } from '@components/ImageField';
 import { useDeckList, useFlashcardCreate } from '@utils/client';
 import Layout from 'components/Layout';
-import TextInput from 'components/TextInput';
+import TextInput from '@ui/TextInput';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FlashcardFormInputs, FlashcardImage } from 'types';
+import { Button } from '@components/ui-elements/Buttons';
 
 export default function CreateFlashcard() {
   const { data, isLoading } = useDeckList();
@@ -70,12 +71,9 @@ export default function CreateFlashcard() {
                 ref={register}
               />
 
-              <button
-                className="block px-16 py-3 mx-auto text-2xl text-white bg-gray-600 rounded-xl"
-                type="submit"
-              >
+              <Button size="lg" className="block mx-auto" type="submit">
                 Create
-              </button>
+              </Button>
             </form>
           </div>
         </div>

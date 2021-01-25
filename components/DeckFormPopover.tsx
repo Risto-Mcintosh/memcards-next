@@ -1,6 +1,7 @@
 import { Popover } from '@components/Popover';
 import { SubmitHandler, UseFormMethods } from 'react-hook-form';
-import TextInput from './TextInput';
+import TextInput from '@ui/TextInput';
+import { Button } from './ui-elements/Buttons';
 
 export type FormInputs = {
   deckName: string;
@@ -32,19 +33,12 @@ export function DeckFormPopover({
         />
       </form>
       <div className="flex justify-around">
-        <button
-          type="submit"
-          form="create-deck-form"
-          className="px-5 py-1 text-lg bg-gray-400 rounded"
-        >
+        <Button type="submit" form="create-deck-form">
           Submit
-        </button>
-        <button
-          className="px-5 py-1 text-lg border-2 border-gray-400 rounded"
-          onClick={() => hideForm()}
-        >
+        </Button>
+        <Button variant="outline" onClick={() => hideForm()}>
           Cancel
-        </button>
+        </Button>
       </div>
     </Popover>
   );

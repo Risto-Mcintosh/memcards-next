@@ -3,6 +3,7 @@ import { Menu } from '@headlessui/react';
 import { useFlashcardContext } from '@context/flashcard';
 import { motion } from 'framer-motion';
 import { useFlashcardDelete } from '@utils/client';
+import { Button } from '@ui/Buttons';
 
 const KeyboardCtrl = {
   flip: 'Space',
@@ -55,18 +56,12 @@ export function Controls() {
 
   return (
     <div className="flex justify-center mt-5">
-      <button
-        onClick={() => flipCard()}
-        className="px-8 py-3 text-3xl text-white bg-gray-600 rounded-xl"
-      >
+      <Button size="lg" onClick={() => flipCard()}>
         Flip
-      </button>
-      <button
-        onClick={() => nextCard()}
-        className="px-8 py-3 ml-4 text-3xl text-white bg-gray-600 rounded-xl"
-      >
+      </Button>
+      <Button size="lg" onClick={() => nextCard()} className="ml-4">
         Next
-      </button>
+      </Button>
       <div className="relative ml-4">
         <Menu>
           {({ open }) => (

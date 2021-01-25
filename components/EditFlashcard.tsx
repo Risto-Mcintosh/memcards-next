@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { useFlashcardContext } from '@context/flashcard';
 import { useFlashcardUpdate } from '@utils/client';
-import Layout from 'components/Layout';
-import TextInput from 'components/TextInput';
+import Layout from '@components/Layout';
+import TextInput from '@ui/TextInput';
 import Head from 'next/head';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FlashcardFormInputs, FlashcardImage } from 'types';
 import { ImageField } from './ImageField';
+import { Button } from '@ui/Buttons';
 
 export function EditFlashcard() {
   const { flashcard, deck, editFlashcard } = useFlashcardContext();
@@ -42,8 +43,8 @@ export function EditFlashcard() {
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <article className="flex flex-col items-center h-full">
-        <h1 className="mb-5 text-3xl">Edit Flashcard</h1>
+      <div className="flex flex-col items-center py-4">
+        <h1 className="mb-6 text-3xl">Edit Flashcard</h1>
         <div className="w-full max-w-xs">
           <form onSubmit={handleSubmit(onSubmit)}>
             <label className="block mb-2" htmlFor="deck-name">
@@ -72,15 +73,22 @@ export function EditFlashcard() {
               name="back"
               label="Back:"
             />
-            <button
-              className="block px-16 py-3 mx-auto text-2xl text-white bg-gray-600 rounded-xl"
-              type="submit"
-            >
-              Edit
-            </button>
+            <div className="flex justify-around">
+              <Button size="lg" className="block w-1/3 mx-auto" type="submit">
+                Edit
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="block w-1/3 mx-auto"
+                onClick={() => editFlashcard(flashcard)}
+              >
+                Cancel
+              </Button>
+            </div>
           </form>
         </div>
-      </article>
+      </div>
     </Layout>
   );
 }

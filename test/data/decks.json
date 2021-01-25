@@ -1,12 +1,12 @@
 [
   {
     "id": "1",
-    "name": "deck 1",
+    "name": "Deck 1",
     "cardCount": 3
   },
   {
     "id": "2",
-    "name": "deck 2",
+    "name": "Deck 2",
     "cardCount": 4
   }
 ]

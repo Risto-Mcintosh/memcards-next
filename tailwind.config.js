@@ -2,7 +2,11 @@ module.exports = {
   purge: ['./components/**/*.tsx', './pages/**/*.tsx'],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {}
+    extend: {
+      maxWidth: {
+        xxs: '15rem'
+      }
+    }
   },
   variants: {
     extend: {

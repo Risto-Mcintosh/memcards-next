@@ -60,9 +60,7 @@ export function Flashcard() {
         <p>Loading....</p>
       ) : (
         <div className="flex flex-col min-h-full py-4">
-          <h1 className="mb-5 text-3xl text-center text-green-600">
-            {deck.name}
-          </h1>
+          <h1 className="mb-5 text-3xl text-center">{deck.name}</h1>
           <motion.section
             variants={flashcardAnimationVariants}
             animate={animateControl}
@@ -71,7 +69,7 @@ export function Flashcard() {
             <motion.div
               variants={flashcardAnimationVariants}
               animate={sideToShow}
-              className="relative flex flex-col items-center justify-center w-3/4 max-w-screen-sm border-2 border-gray-100 shadow-lg rounded-xl"
+              className="relative flex flex-col items-center justify-center w-3/4 max-w-md border-2 border-gray-100 shadow-lg rounded-xl"
               style={{ minHeight: '250px' }}
             >
               {isShowingFrontOfCard ? (
@@ -97,7 +95,7 @@ export function Flashcard() {
                 >
                   <p className="mb-2 text-4xl">{flashcard.back}</p>
                   {flashcard.image && (
-                    <div className="max-w-xs">
+                    <div className="max-w-xxs">
                       <img
                         src={flashcard.image.src}
                         alt={flashcard.image.alt}

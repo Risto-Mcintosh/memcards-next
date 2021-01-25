@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { FlashcardImage } from 'types';
 import ImageSearch from './ImageSearch';
+import { Button } from './ui-elements/Buttons';
 
 type props = {
   image: FlashcardImage;
@@ -18,22 +19,23 @@ export function ImageField({ image, setImage }: props) {
         </div>
       )}
       <div className="flex flex-col ml-2">
-        <button
+        <Button
+          size="sm"
           ref={buttonRef}
           onClick={() => setOpen(true)}
           type="button"
-          className="px-3 py-2 bg-gray-300 rounded"
         >
           Search
-        </button>
+        </Button>
         {image && (
-          <button
+          <Button
+            size="sm"
             onClick={() => setImage(null)}
             type="button"
-            className="px-3 py-2 mt-3 bg-gray-300 rounded"
+            className="mt-3"
           >
             Clear
-          </button>
+          </Button>
         )}
       </div>
       {isImageSearchOpen && (
