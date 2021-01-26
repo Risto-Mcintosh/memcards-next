@@ -7,17 +7,16 @@ import React from 'react';
 
 type props = {
   href: string;
-  className?: string;
   children: React.ReactNode;
-};
+} & React.AnchorHTMLAttributes<HTMLAnchorElement>;
 const LinkWrapper = React.forwardRef(
   (
-    { href, children, ...props }: props,
+    { href, children, ...delegated }: props,
     ref: React.RefObject<HTMLAnchorElement>
   ) => {
     return (
       <Link href={href}>
-        <a ref={ref} {...props}>
+        <a ref={ref} {...delegated}>
           {children}
         </a>
       </Link>

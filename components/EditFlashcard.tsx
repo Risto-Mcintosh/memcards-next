@@ -8,6 +8,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { FlashcardFormInputs, FlashcardImage } from 'types';
 import { ImageField } from './ImageField';
 import { Button } from '@ui/Buttons';
+import { Spacer } from '@ui/Spacer';
 
 export function EditFlashcard() {
   const { flashcard, deck, editFlashcard } = useFlashcardContext();
@@ -47,17 +48,19 @@ export function EditFlashcard() {
         <h1 className="mb-6 text-3xl">Edit Flashcard</h1>
         <div className="w-full max-w-xs">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <label className="block mb-2" htmlFor="deck-name">
-              Deck Name:
-            </label>
-            <input
-              className="w-full px-0 mb-6 border-0 border-b"
-              type="text"
+            <TextInput
+              labelId="deck-name"
               name="deckName"
-              id="deck-name"
+              label="Deck Name:"
               value={deck.name}
               readOnly
+              disabled
+              className="border-0 border-b"
+              style={{
+                borderRadius: 0
+              }}
             />
+
             <TextInput
               ref={register}
               labelId="card-front"
@@ -73,14 +76,11 @@ export function EditFlashcard() {
               name="back"
               label="Back:"
             />
-            <div className="flex justify-around">
-              <Button size="lg" className="block w-1/3 mx-auto" type="submit">
-                Edit
-              </Button>
+            <div className="flex flex-col justify-around">
+              <Button type="submit">Edit</Button>
+              <Spacer size={10} />
               <Button
-                size="lg"
                 variant="outline"
-                className="block w-1/3 mx-auto"
                 onClick={() => editFlashcard(flashcard)}
               >
                 Cancel

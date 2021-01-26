@@ -59,12 +59,12 @@ export function Flashcard() {
       {!flashcard ? (
         <p>Loading....</p>
       ) : (
-        <div className="flex flex-col min-h-full py-4">
-          <h1 className="mb-5 text-3xl text-center">{deck.name}</h1>
+        <div className="flex flex-col min-h-full pt-4 pb-6">
+          <h1 className="text-3xl text-center">{deck.name}</h1>
           <motion.section
             variants={flashcardAnimationVariants}
             animate={animateControl}
-            className="flex items-start justify-center flex-1"
+            className="flex items-center justify-center flex-1"
           >
             <motion.div
               variants={flashcardAnimationVariants}

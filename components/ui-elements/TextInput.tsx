@@ -1,25 +1,17 @@
-import React, { RefObject } from 'react';
-import { InputHTMLAttributes } from 'react';
+import * as React from 'react';
 
 type props = {
   type?: string;
   name: string;
   labelId: string;
   label?: string;
-};
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
 const TextInput = React.forwardRef(
   (
-    {
-      type = 'text',
-      name,
-      labelId,
-      label,
-      ...rest
-    }: props & InputHTMLAttributes<HTMLInputElement>,
-    ref: RefObject<HTMLInputElement>
+    { type = 'text', name, labelId, label, className, ...delegated }: props,
+    ref: React.RefObject<HTMLInputElement>
   ) => {
-    const { className, ...props } = rest;
     return (
       <>
         <label className="block mb-2" htmlFor={labelId}>
@@ -27,11 +19,11 @@ const TextInput = React.forwardRef(
         </label>
         <input
           ref={ref}
-          className={className ?? 'w-full mb-6 text-xl rounded'}
+          className={`w-full h-12 mb-5 text-xl rounded md:h-auto ${className}`}
           type={type}
           name={name}
           id={labelId}
-          {...props}
+          {...delegated}
         />
       </>
     );

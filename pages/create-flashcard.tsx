@@ -44,7 +44,7 @@ export default function CreateFlashcard() {
           <div className="w-full max-w-xs">
             <form onSubmit={handleSubmit(onSubmit)}>
               <select
-                className="w-full mb-6 text-xl rounded"
+                className="w-full mb-5 text-xl rounded"
                 name="deckName"
                 ref={register}
               >
@@ -71,7 +71,7 @@ export default function CreateFlashcard() {
                 ref={register}
               />
 
-              <Button size="lg" className="block mx-auto" type="submit">
+              <Button className="w-full" type="submit">
                 Create
               </Button>
             </form>

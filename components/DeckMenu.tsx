@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Popover } from './Popover';
 import { DeckUpdateForm } from './DeckUpdateForm';
 import { useDeckDelete } from '@utils/client';
+import { Button } from '@ui/Buttons';
 
 type props = {
   deck: any;
@@ -80,8 +81,7 @@ export default function DeckMenu({ deck }: props) {
             Are you sure you want to delete <strong>{deck.name}</strong>?
           </p>
           <div className="flex justify-around mt-2">
-            <button
-              className="px-5 py-1 text-lg bg-gray-400 rounded"
+            <Button
               onClick={() =>
                 onDeckDelete(deck.id, {
                   onSuccess: () => setDeleteConfirm(false)
@@ -89,13 +89,10 @@ export default function DeckMenu({ deck }: props) {
               }
             >
               Yes
-            </button>
-            <button
-              className="px-5 py-1 text-lg border-2 border-gray-400 rounded"
-              onClick={() => setDeleteConfirm(false)}
-            >
+            </Button>
+            <Button variant="outline" onClick={() => setDeleteConfirm(false)}>
               Cancel
-            </button>
+            </Button>
           </div>
         </Popover>
       )}
