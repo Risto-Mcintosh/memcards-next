@@ -99,7 +99,7 @@ export default function ImageSearch({
               className="flex-1 px-4 overflow-y-auto"
               ref={imagesContainerRef}
             >
-              <div className="grid min-h-full grid-cols-2 gap-4 md:grid-cols-3">
+              <div className="grid min-h-full gap-4 md:grid-cols-3">
                 {images &&
                   images.map(({ urls, alt_description: alt }, i) => {
                     return (

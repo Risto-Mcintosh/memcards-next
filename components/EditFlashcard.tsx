@@ -49,6 +49,7 @@ export function EditFlashcard() {
         <div className="w-full max-w-xs">
           <form onSubmit={handleSubmit(onSubmit)}>
             <TextInput
+              ref={register}
               labelId="deck-name"
               name="deckName"
               label="Deck Name:"
