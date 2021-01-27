@@ -17,19 +17,20 @@ const sizes = {
 type props = {
   size?: 'md' | 'lg' | 'sm';
   variant?: 'default' | 'outline';
-  ref?: React.MutableRefObject<HTMLButtonElement>;
   children: React.ReactChild;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const Button = React.forwardRef(
-  ({
-    size = 'md',
-    variant = 'default',
-    children,
-    ref,
-    className,
-    ...delegated
-  }: props) => {
+  (
+    {
+      size = 'md',
+      variant = 'default',
+      children,
+      className,
+      ...delegated
+    }: props,
+    ref: React.MutableRefObject<HTMLButtonElement>
+  ) => {
     const classes = `${baseStyles} ${sizes[size]} ${variants[variant]} ${className}`;
     return (
       <button ref={ref} className={classes} {...delegated}>

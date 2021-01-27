@@ -5,6 +5,7 @@ import Layout from 'components/Layout';
 import Link from 'next/link';
 import * as React from 'react';
 import { useDeckList } from 'utils/client';
+import { Spacer } from '@ui/Spacer';
 export default function Decks() {
   const { data: deckList, isLoading } = useDeckList();
   const [isCreateDeckFormOpen, showCreateDeckFrom] = React.useState(false);
@@ -22,7 +23,7 @@ export default function Decks() {
                 return (
                   <div
                     key={i}
-                    className="flex items-center py-2 text-2xl transition-colors duration-200 border-b border-gray-400 hover:bg-gray-300"
+                    className="flex items-center text-2xl border-b-2 border-gray-200"
                   >
                     <Link href={`deck/${deck.id}`}>
                       <a
@@ -40,6 +41,7 @@ export default function Decks() {
                         </span>
                       </a>
                     </Link>
+                    <Spacer size={15} />
                     <DeckMenu deck={deck} />
                   </div>
                 );

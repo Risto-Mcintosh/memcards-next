@@ -17,7 +17,7 @@ export default function DeckMenu({ deck }: props) {
   const anchorEl = React.useRef();
 
   return (
-    <div>
+    <>
       <Menu as="div" className="relative">
         {({ open }) => (
           <>
@@ -104,6 +104,6 @@ export default function DeckMenu({ deck }: props) {
           deck={deck}
         />
       )}
-    </div>
+    </>
   );
 }
