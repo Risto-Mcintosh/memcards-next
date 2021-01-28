@@ -5,6 +5,7 @@ import { Popover } from './Popover';
 import { DeckUpdateForm } from './DeckUpdateForm';
 import { useDeckDelete } from '@utils/client';
 import { Button } from '@ui/Buttons';
+import { CustomMenuItem } from '@ui/MenuItem';
 
 type props = {
   deck: any;
@@ -32,6 +33,7 @@ export default function DeckMenu({ deck }: props) {
                 viewBox="0 0 20 20"
                 fill="currentColor"
                 focusable="false"
+                aria-hidden="true"
               >
                 <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
               </svg>
@@ -46,30 +48,12 @@ export default function DeckMenu({ deck }: props) {
                 static
                 className="absolute top-0 right-0 z-10 bg-white border shadow focus:outline-none"
               >
-                <Menu.Item>
-                  {({ active }) => (
-                    <button
-                      onClick={() => setEdit(true)}
-                      className={`${
-                        active ? 'bg-gray-300 ' : ''
-                      } w-full p-2 text-lg whitespace-nowrap`}
-                    >
-                      Rename
-                    </button>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <button
-                      onClick={() => setDeleteConfirm(true)}
-                      className={`${
-                        active ? 'bg-gray-300 ' : ''
-                      } w-full p-2 text-lg whitespace-nowrap`}
-                    >
-                      Delete
-                    </button>
-                  )}
-                </Menu.Item>
+                <CustomMenuItem onClick={() => setEdit(true)}>
+                  Rename
+                </CustomMenuItem>
+                <CustomMenuItem onClick={() => setDeleteConfirm(true)}>
+                  Delete
+                </CustomMenuItem>
               </Menu.Items>
             )}
           </>

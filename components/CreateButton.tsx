@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Menu } from '@headlessui/react';
 import * as React from 'react';
 import LinkWrapper from './LinkWrapper';
+import { CustomMenuItem } from '@ui/MenuItem';
 
 type props = {
   showCreateDeckForm: () => void;
@@ -26,7 +27,7 @@ const CreateButton = React.forwardRef(
                   as="button"
                   // @ts-ignore
                   ref={ref}
-                  className="z-10 w-10 bg-gray-300 rounded-full shadow focus:outline-none focus-visible:outline-black"
+                  className="z-10 w-10 text-gray-100 rounded-full shadow bg-brand-500 focus:outline-none focus-visible:outline-black"
                   aria-label="Create a new deck or new flashcard"
                 >
                   <svg
@@ -34,6 +35,7 @@ const CreateButton = React.forwardRef(
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
+                    aria-hidden="true"
                   >
                     <motion.path
                       animate={open ? 'open' : 'closed'}
@@ -52,32 +54,14 @@ const CreateButton = React.forwardRef(
                     as={motion.div}
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="absolute -mt-8 text-right border shadow right-1/4 focus:outline-none -top-full"
+                    className="absolute z-10 mb-1 text-right bg-white border shadow bottom-full right-2/4 focus:outline-none "
                   >
-                    <Menu.Item>
-                      {({ active }) => (
-                        <button
-                          onClick={() => showCreateDeckForm()}
-                          className={`${
-                            active ? 'bg-gray-300' : ''
-                          } w-full text-right px-2 py-1`}
-                        >
-                          Create Deck
-                        </button>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <LinkWrapper
-                          href="/create-flashcard"
-                          className={`${
-                            active ? 'bg-gray-300' : ''
-                          } block whitespace-nowrap hover:bg-gray-300 px-2 py-1`}
-                        >
-                          Create Flashcard
-                        </LinkWrapper>
-                      )}
-                    </Menu.Item>
+                    <CustomMenuItem onClick={() => showCreateDeckForm()}>
+                      Create Deck
+                    </CustomMenuItem>
+                    <CustomMenuItem as="link" href="/create-flashcard">
+                      Create Flashcard
+                    </CustomMenuItem>
                   </Menu.Items>
                 )}
               </>

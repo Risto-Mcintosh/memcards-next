@@ -4,6 +4,7 @@ import { useFlashcardContext } from '@context/flashcard';
 import { motion } from 'framer-motion';
 import { useFlashcardDelete } from '@utils/client';
 import { Button } from '@ui/Buttons';
+import { CustomMenuItem } from '@ui/MenuItem';
 
 const KeyboardCtrl = {
   flip: 'Space',
@@ -79,32 +80,12 @@ export function Controls() {
                   animate={{ height: 'auto', opacity: 1 }}
                   transition={{ bounce: 0, duration: 0.15 }}
                   static
-                  className="absolute z-10 bg-white border shadow -top-14 focus:outline-none"
+                  className="absolute z-10 text-left bg-white border shadow -top-14 focus:outline-none"
                 >
-                  <Menu.Item>
-                    {({ active }) => (
-                      <button
-                        onClick={() => editFlashcard()}
-                        className={`text-lg p-1 text-left w-full ${
-                          active ? 'bg-gray-400' : ''
-                        }`}
-                      >
-                        Edit
-                      </button>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <button
-                        onClick={handleDelete}
-                        className={`text-lg p-1 text-left w-full ${
-                          active ? 'bg-gray-400' : ''
-                        }`}
-                      >
-                        Delete
-                      </button>
-                    )}
-                  </Menu.Item>
+                  <CustomMenuItem onClick={() => editFlashcard()}>
+                    Edit
+                  </CustomMenuItem>
+                  <CustomMenuItem onClick={handleDelete}>Delete</CustomMenuItem>
                 </Menu.Items>
               )}
             </>

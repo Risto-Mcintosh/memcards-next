@@ -5,13 +5,14 @@
 import Link from 'next/link';
 import React from 'react';
 
-type props = {
+export type LinkWrapperProps = {
   href: string;
   children: React.ReactNode;
 } & React.AnchorHTMLAttributes<HTMLAnchorElement>;
+
 const LinkWrapper = React.forwardRef(
   (
-    { href, children, ...delegated }: props,
+    { href, children, ...delegated }: LinkWrapperProps,
     ref: React.RefObject<HTMLAnchorElement>
   ) => {
     return (
