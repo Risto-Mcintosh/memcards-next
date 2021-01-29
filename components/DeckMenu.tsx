@@ -5,7 +5,8 @@ import { Popover } from './Popover';
 import { DeckUpdateForm } from './DeckUpdateForm';
 import { useDeckDelete } from '@utils/client';
 import { Button } from '@ui/Buttons';
-import { CustomMenuItem } from '@ui/MenuItem';
+import { MenuItem } from '@ui/MenuItem';
+import { MenuItems } from '@ui/MenuItems';
 
 type props = {
   deck: any;
@@ -40,21 +41,17 @@ export default function DeckMenu({ deck }: props) {
             </Menu.Button>
 
             {open && (
-              <Menu.Items
-                as={motion.div}
+              <MenuItems
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 transition={{ bounce: 0, duration: 0.15 }}
-                static
-                className="absolute top-0 right-0 z-10 bg-white border shadow focus:outline-none"
+                className="absolute top-0 right-0 z-10"
               >
-                <CustomMenuItem onClick={() => setEdit(true)}>
-                  Rename
-                </CustomMenuItem>
-                <CustomMenuItem onClick={() => setDeleteConfirm(true)}>
+                <MenuItem onClick={() => setEdit(true)}>Rename</MenuItem>
+                <MenuItem onClick={() => setDeleteConfirm(true)}>
                   Delete
-                </CustomMenuItem>
-              </Menu.Items>
+                </MenuItem>
+              </MenuItems>
             )}
           </>
         )}

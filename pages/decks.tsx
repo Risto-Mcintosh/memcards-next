@@ -23,11 +23,11 @@ export default function Decks() {
                 return (
                   <div
                     key={i}
-                    className="flex items-center text-2xl border-b-2 border-gray-200"
+                    className="flex items-center pl-2 mb-1 text-2xl border-b-2 border-gray-200"
                   >
                     <Link href={`deck/${deck.id}`}>
                       <a
-                        className={`flex items-center justify-between flex-1 pl-2 ${
+                        className={`flex items-center justify-between flex-1 ${
                           isDeckEmpty && 'pointer-events-none'
                         }`}
                         aria-disabled={isDeckEmpty ? true : false}

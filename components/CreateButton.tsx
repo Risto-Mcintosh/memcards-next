@@ -2,7 +2,8 @@ import { motion } from 'framer-motion';
 import { Menu } from '@headlessui/react';
 import * as React from 'react';
 import LinkWrapper from './LinkWrapper';
-import { CustomMenuItem } from '@ui/MenuItem';
+import { MenuItem } from '@ui/MenuItem';
+import { MenuItems } from '@ui/MenuItems';
 
 type props = {
   showCreateDeckForm: () => void;
@@ -27,7 +28,7 @@ const CreateButton = React.forwardRef(
                   as="button"
                   // @ts-ignore
                   ref={ref}
-                  className="z-10 w-10 text-gray-100 rounded-full shadow bg-brand-500 focus:outline-none focus-visible:outline-black"
+                  className="z-10 w-10 text-gray-900 rounded-full shadow-lg bg-brand-500 focus:outline-none focus-visible:outline-black"
                   aria-label="Create a new deck or new flashcard"
                 >
                   <svg
@@ -49,20 +50,18 @@ const CreateButton = React.forwardRef(
                 </Menu.Button>
 
                 {open && (
-                  <Menu.Items
-                    static
-                    as={motion.div}
+                  <MenuItems
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="absolute z-10 mb-1 text-right bg-white border shadow bottom-full right-2/4 focus:outline-none "
+                    className="absolute z-10 mb-1 text-right bottom-full right-2/4"
                   >
-                    <CustomMenuItem onClick={() => showCreateDeckForm()}>
+                    <MenuItem onClick={() => showCreateDeckForm()}>
                       Create Deck
-                    </CustomMenuItem>
-                    <CustomMenuItem as="link" href="/create-flashcard">
+                    </MenuItem>
+                    <MenuItem as="link" href="/create-flashcard">
                       Create Flashcard
-                    </CustomMenuItem>
-                  </Menu.Items>
+                    </MenuItem>
+                  </MenuItems>
                 )}
               </>
             )}

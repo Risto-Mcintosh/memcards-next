@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Link, { LinkWrapperProps } from '@components/LinkWrapper';
 import { Menu } from '@headlessui/react';
+import Link, { LinkWrapperProps } from '@components/LinkWrapper';
 
 type ElementProps =
   | ({
@@ -16,22 +16,18 @@ type MenuItemProps = {
 
 type props = MenuItemProps & ElementProps;
 
-export const CustomMenuItem = ({
-  children,
-  as = 'button',
-  ...delegated
-}: props) => {
+export const MenuItem = ({ children, as = 'button', ...delegated }: props) => {
   const isButton = as === 'button';
   const Component = isButton ? 'button' : Link;
-  const classes = isButton
-    ? 'w-full p-2 whitespace-nowrap'
-    : 'block whitespace-nowrap p-2';
+  const classes = isButton ? 'w-full' : 'block';
 
   return (
     <Menu.Item>
       {({ active }) => (
         <Component
-          className={`${active ? 'bg-gray-300 ' : ''} ${classes} text-base`}
+          className={`${
+            active ? 'bg-brand-500 bg-opacity-60' : ''
+          } ${classes} text-base whitespace-nowrap p-2 border-b-2 last:border-0 border-brand-500 border-opacity-60`}
           style={{
             textAlign: 'inherit'
           }}

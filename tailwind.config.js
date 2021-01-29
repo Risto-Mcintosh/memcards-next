@@ -15,15 +15,15 @@ module.exports = {
       black: colors.black,
       gray: colors.gray,
       brand: {
-        100: '#ECD9FC',
-        200: '#D7B4F9',
-        300: '#B98AEC',
-        400: '#9A69DB',
-        500: '#713CC3',
-        600: '#572BA7',
-        700: '#401E8C',
-        800: '#2C1371',
-        900: '#1E0B5D'
+        100: '#CEFAEF',
+        200: '#9EF6E7',
+        300: '#6AE4DA',
+        400: '#43C9C9',
+        500: '#139AA6',
+        600: '#0D798E',
+        700: '#095C77',
+        800: '#064260',
+        900: '#03304F'
       },
       info: {
         100: '#CEEBFD',
@@ -76,7 +76,8 @@ module.exports = {
       outline: ['focus-visible'],
       ringColor: ['focus-visible'],
       ringOpacity: ['focus-visible'],
-      ringWidth: ['focus-visible']
+      ringWidth: ['focus-visible'],
+      borderWidth: ['last']
     }
   },
   plugins: [require('@tailwindcss/forms')]
