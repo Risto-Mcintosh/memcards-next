@@ -29,7 +29,7 @@ export function DeckFormPopover({
           autoFocus
           name="deckName"
           labelId="deck-name"
-          label="Deck Name"
+          label="Deck Name:"
         />
       </form>
       <div className="flex justify-around">

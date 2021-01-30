@@ -11,12 +11,16 @@ export default function Navigation() {
         <ul className="flex">
           <li className="mr-3">
             <Link href="/decks">
-              <a>Decks</a>
+              <a className="py-1 px-1.5 rounded-lg ring-brand-600 hover:ring-4">
+                Decks
+              </a>
             </Link>
           </li>
           <li>
             <Link href="/logout">
-              <a>Logout</a>
+              <a className="py-1 px-1.5 rounded-lg ring-brand-600 hover:ring-4">
+                Logout
+              </a>
             </Link>
           </li>
         </ul>

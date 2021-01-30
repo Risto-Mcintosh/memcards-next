@@ -14,7 +14,7 @@ const TextInput = React.forwardRef(
   ) => {
     return (
       <>
-        <label className="block mb-2" htmlFor={labelId}>
+        <label className="block mb-2 text-base" htmlFor={labelId}>
           {label}
         </label>
         <input

@@ -74,9 +74,9 @@ module.exports = {
   variants: {
     extend: {
       outline: ['focus-visible'],
-      ringColor: ['focus-visible'],
-      ringOpacity: ['focus-visible'],
-      ringWidth: ['focus-visible'],
+      ringColor: ['hover'],
+      ringOpacity: ['hover'],
+      ringWidth: ['hover'],
       borderWidth: ['last']
     }
   },

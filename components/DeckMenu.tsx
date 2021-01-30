@@ -57,24 +57,36 @@ export default function DeckMenu({ deck }: props) {
         )}
       </Menu>
       {isDeleteConfirmOpen && (
-        <Popover onClose={() => setDeleteConfirm(false)} container>
-          <p className="text-center">
-            Are you sure you want to delete <strong>{deck.name}</strong>?
-          </p>
-          <div className="flex justify-around mt-2">
-            <Button
-              onClick={() =>
-                onDeckDelete(deck.id, {
-                  onSuccess: () => setDeleteConfirm(false)
-                })
-              }
+        <Popover onClose={() => setDeleteConfirm(false)}>
+          {(containerRef) => (
+            <div
+              ref={containerRef}
+              className="absolute inset-x-0 top-0 z-10 px-3 py-3 bg-white border-4 rounded-lg shadow-lg border-danger-500"
             >
-              Yes
-            </Button>
-            <Button variant="outline" onClick={() => setDeleteConfirm(false)}>
-              Cancel
-            </Button>
-          </div>
+              <p className="text-center">
+                Are you sure you want to delete <strong>{deck.name}</strong>?
+              </p>
+              <div className="flex justify-around mt-2">
+                <Button
+                  className="text-white bg-danger-500"
+                  onClick={() =>
+                    onDeckDelete(deck.id, {
+                      onSuccess: () => setDeleteConfirm(false)
+                    })
+                  }
+                >
+                  Yes
+                </Button>
+                <Button
+                  className="font-semibold text-danger-500"
+                  variant="text"
+                  onClick={() => setDeleteConfirm(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          )}
         </Popover>
       )}
 

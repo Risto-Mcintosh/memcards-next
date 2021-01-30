@@ -95,8 +95,10 @@ export function Flashcard() {
                 >
                   <p className="mb-2 text-4xl">{flashcard.back}</p>
                   {flashcard.image && (
-                    <div className="max-w-xxs">
+                    <div className="bg-gray-400 max-w-xxs">
                       <img
+                        className="object-contain"
+                        width="400"
                         src={flashcard.image.src}
                         alt={flashcard.image.alt}
                       />

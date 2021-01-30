@@ -6,13 +6,19 @@ import { useFlashcards } from '@utils/useFlashcards';
 import { DeckCompleted } from '@components/DeckCompleted';
 import { EditFlashcard } from '@components/EditFlashcard';
 import { useDeck } from '@utils/client';
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 
-export default function FlashcardPage() {
+type props = InferGetServerSidePropsType<typeof getServerSideProps>;
+
+export default function FlashcardPage({ params }: props) {
   const router = useRouter();
-
-  const { data, isFetchedAfterMount, isSuccess, remove: clearCache } = useDeck(
-    router.query.deckId
-  );
+  const {
+    data,
+    isFetchedAfterMount,
+    isSuccess,
+    isError,
+    remove: clearCache
+  } = useDeck(params.deckId);
 
   const {
     isDeckEmpty,
@@ -32,12 +38,12 @@ export default function FlashcardPage() {
   React.useEffect(() => {
     // console.count('effect2');
 
-    if (isDeckEmpty && isFetchedAfterMount) {
+    if ((isDeckEmpty && isFetchedAfterMount) || isError) {
       router.push('/decks');
 
       return () => clearCache();
     }
-  }, [isFetchedAfterMount, isDeckEmpty]);
+  }, [isFetchedAfterMount, isDeckEmpty, isError]);
 
   return (
     <FlashcardProvider state={{ deck: data?.deck, initialize, ...rest }}>
@@ -50,4 +56,11 @@ export default function FlashcardPage() {
       )}
     </FlashcardProvider>
   );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { params } = context;
+  return {
+    props: { params }
+  };
 }

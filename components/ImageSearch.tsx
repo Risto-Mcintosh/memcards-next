@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Image from 'next/image';
 import Portal from '@reach/portal';
 import { FlashcardImage } from 'types';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -34,7 +35,7 @@ export default function ImageSearch({
     return () => document.removeEventListener('keydown', handleSlashKeyPress);
   }, []);
 
-  const { status, images, getImages, hasMore } = useUnsplash();
+  const { status, images, getImages, hasMore } = useUnsplash({ limit: 14 });
 
   const { register, handleSubmit } = useForm<FormValues>();
 
@@ -55,7 +56,6 @@ export default function ImageSearch({
       src: urls.small,
       thumb: urls.thumb
     });
-    console.log('called');
     closeSearch();
   }
   return (
@@ -64,12 +64,12 @@ export default function ImageSearch({
         {(containerRef) => (
           <div
             ref={containerRef}
-            className="absolute top-0 bottom-0 right-0 flex flex-col w-full max-w-screen-sm py-4 bg-gray-200"
+            className="absolute top-0 bottom-0 right-0 z-10 flex flex-col w-full max-w-screen-sm py-4 bg-gray-200"
           >
             <div className="relative flex px-4 mb-4">
               <button
                 onClick={() => closeSearch()}
-                className="absolute px-3 py-2 bg-gray-300"
+                className="absolute px-1 py-0.5 text-white rounded bg-danger-500"
               >
                 Close
               </button>
@@ -99,26 +99,26 @@ export default function ImageSearch({
               className="flex-1 px-4 overflow-y-auto"
               ref={imagesContainerRef}
             >
-              <div className="grid min-h-full gap-4 md:grid-cols-3">
+              <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
                 {images &&
                   images.map(({ urls, alt_description: alt }, i) => {
                     return (
-                      <div
+                      <button
                         key={i}
-                        className=""
-                        tabIndex={0}
-                        role="button"
+                        className="relative"
+                        style={{ paddingTop: '100%' }}
                         onClick={() => handleImageSelect({ urls, alt })}
                         onKeyUp={(e) =>
                           e.key === 'Enter' && handleImageSelect({ urls, alt })
                         }
                       >
-                        <img
-                          className="object-fill h-full"
+                        <Image
+                          layout="fill"
+                          className="object-fill pointer-events-none"
                           src={urls.small}
                           alt={alt}
                         />
-                      </div>
+                      </button>
                     );
                   })}
                 {status === 'loading' && <span>Loading...</span>}

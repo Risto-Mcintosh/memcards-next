@@ -5,7 +5,8 @@ const baseStyles =
 
 const variants = {
   default: 'bg-gray-400',
-  outline: 'border-2 border-gray-400'
+  outline: 'border-2 border-gray-400',
+  text: ''
 };
 
 const sizes = {
@@ -16,7 +17,7 @@ const sizes = {
 
 type props = {
   size?: 'md' | 'lg' | 'sm';
-  variant?: 'default' | 'outline';
+  variant?: keyof typeof variants;
   children: React.ReactChild;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -27,13 +28,21 @@ export const Button = React.forwardRef(
       variant = 'default',
       children,
       className,
+      style,
       ...delegated
     }: props,
     ref: React.MutableRefObject<HTMLButtonElement>
   ) => {
-    const classes = `${baseStyles} ${sizes[size]} ${variants[variant]} ${className}`;
+    const classes = `${baseStyles} ${sizes[size]} ${variants[variant]} ${
+      className ?? ''
+    }`;
     return (
-      <button ref={ref} className={classes} {...delegated}>
+      <button
+        ref={ref}
+        className={classes}
+        style={{ minWidth: '5.5rem', ...style }}
+        {...delegated}
+      >
         {children}
       </button>
     );

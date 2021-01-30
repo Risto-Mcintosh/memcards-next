@@ -13,13 +13,7 @@ if (typeof window !== 'undefined') {
 const queryCache = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false,
-      retry(count, err) {
-        if (err === 'no endpoint' || count >= 3) {
-          return false;
-        }
-        return true;
-      }
+      refetchOnWindowFocus: false
     }
   }
 });

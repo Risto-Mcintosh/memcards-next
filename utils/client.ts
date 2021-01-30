@@ -17,11 +17,7 @@ interface ClientTypes {
 export type DeckQuery = Partial<Deck> & { flashcards: Flashcard[] };
 
 function useDeck(deckId: string | string[]) {
-  return useQuery(`deck ${deckId}`, () => {
-    if (!deckId) return Promise.reject('no endpoint');
-
-    return client(`/deck/${deckId}`);
-  });
+  return useQuery(`deck ${deckId}`, () => client(`/deck/${deckId}`));
 }
 
 function useDeckList() {

@@ -15,11 +15,12 @@ function client(
 
   return fetch(`${process.env.NEXT_PUBLIC_CLIENT_API}${endpoint}`, config).then(
     async (response) => {
-      const data = await response.json().catch((err) => console.log);
+      const data = await response.json();
+
       if (response.ok) {
         return data;
       } else {
-        return Promise.reject(data);
+        return Promise.reject(new Error(data?.message ?? 'unknown'));
       }
     }
   );

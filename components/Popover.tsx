@@ -32,7 +32,7 @@ export function Popover({
       {container ? (
         <div
           ref={containerRef}
-          className="absolute inset-x-0 top-0 z-10 px-3 py-6 bg-white border-2 rounded shadow-lg"
+          className="absolute inset-x-0 top-0 z-10 px-3 py-6 bg-white rounded-lg shadow-lg"
         >
           {content}
         </div>
