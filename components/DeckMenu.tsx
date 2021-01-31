@@ -61,7 +61,7 @@ export default function DeckMenu({ deck }: props) {
           {(containerRef) => (
             <div
               ref={containerRef}
-              className="absolute inset-x-0 top-0 z-10 px-3 py-3 bg-white border-4 rounded-lg shadow-lg border-danger-500"
+              className="absolute inset-x-0 top-0 z-10 px-3 py-3 bg-white border-2 rounded-lg shadow-lg border-danger-500"
             >
               <p className="text-center">
                 Are you sure you want to delete <strong>{deck.name}</strong>?

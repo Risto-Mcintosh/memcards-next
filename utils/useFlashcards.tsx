@@ -12,7 +12,7 @@ const actionTypes = {
   clear: 'CLEAR_CARD'
 };
 
-function getFlashCardFromDeck(deck) {
+function getFlashCardFromDeck(deck: Flashcard[]) {
   const shuffledDeck = deck;
   const flashcard = shuffledDeck.pop();
   return {
@@ -30,9 +30,14 @@ function getNextCard(state: flashcardState) {
     flashcard,
     isShowingFrontOfCard: true,
     isDeckEmpty: currentDeckLength === 0,
-    noCardsLeftToStudy: currentDeckLength >= 1 && !flashcard ? true : false
+    noCardsLeftToStudy: currentDeckLength >= 1 && !flashcard ? true : false,
+    progress: getProgress(shuffledDeck.length, currentDeckLength)
   };
 }
+
+const getProgress = (cardsLeft: number, deckSize: number) => {
+  return ((deckSize - cardsLeft) * 100) / deckSize;
+};
 
 type flashcardState = {
   currentDeck: Flashcard[];
@@ -42,6 +47,7 @@ type flashcardState = {
   isShowingFrontOfCard: boolean;
   isEditing: boolean;
   noCardsLeftToStudy: boolean;
+  progress: number;
 };
 
 function flashcardReducer(state: flashcardState, action) {
@@ -56,7 +62,8 @@ function flashcardReducer(state: flashcardState, action) {
         flashcard,
         isShowingFrontOfCard: true,
         noCardsLeftToStudy: false,
-        isDeckEmpty: state.currentDeck.length === 0
+        isDeckEmpty: state.currentDeck.length === 0,
+        progress: getProgress(shuffledDeck.length, state.currentDeck.length)
       };
     }
     case actionTypes.nextCard: {
@@ -92,7 +99,8 @@ function useFlashcards(currentDeck = []) {
       isEditing,
       noCardsLeftToStudy,
       isShowingFrontOfCard,
-      isDeckEmpty
+      isDeckEmpty,
+      progress
     },
     dispatch
   ] = React.useReducer(flashcardReducer, {
@@ -102,7 +110,8 @@ function useFlashcards(currentDeck = []) {
     isDeckEmpty: false,
     isShowingFrontOfCard: true,
     isEditing: false,
-    noCardsLeftToStudy: false
+    noCardsLeftToStudy: false,
+    progress: 0
   });
 
   const initialize = React.useCallback(
@@ -128,13 +137,13 @@ function useFlashcards(currentDeck = []) {
       dispatch({ type: actionTypes.setCurrentDeck, currentDeck });
     }
   }, [currentDeckLength, prevDeckLength, dispatch, currentDeck]);
-
   return {
     isShowingFrontOfCard,
     isDeckEmpty,
     isEditing,
     noCardsLeftToStudy,
     flashcard,
+    progress,
     flipCard,
     nextCard,
     deleteCard,

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Layout from '@components/Layout';
 import { motion, useAnimation, Variants } from 'framer-motion';
 import { useFlashcardContext } from '@context/flashcard';
 import { Controls } from './Controls';
+import { LearningLayout } from '@components/LearningLayout';
 
 const flashcardContent: Variants = {
   hidden: {
@@ -55,7 +55,7 @@ export function Flashcard() {
     animateControl.start('show');
   }, [flashcard]);
   return (
-    <Layout>
+    <LearningLayout>
       {!flashcard ? (
         <p>Loading....</p>
       ) : (
@@ -111,6 +111,6 @@ export function Flashcard() {
           <Controls />
         </div>
       )}
-    </Layout>
+    </LearningLayout>
   );
 }

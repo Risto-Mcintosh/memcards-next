@@ -13,7 +13,17 @@ module.exports = {
       current: 'currentColor',
       white: colors.white,
       black: colors.black,
-      gray: colors.gray,
+      gray: {
+        100: '#F3F5F4',
+        200: '#E8EBEB',
+        300: '#C1C5C5',
+        400: '#898C8C',
+        500: '#3E4040',
+        600: '#2D3637',
+        700: '#1F2B2E',
+        800: '#132025',
+        900: '#0B181E'
+      },
       brand: {
         100: '#CEFAEF',
         200: '#9EF6E7',

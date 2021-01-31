@@ -8,6 +8,7 @@ type flashcardContextType = {
   };
   flashcard: Flashcard;
   isShowingFrontOfCard: boolean;
+  progress: number;
   flipCard: () => void;
   nextCard: () => void;
   deleteCard: () => void;
