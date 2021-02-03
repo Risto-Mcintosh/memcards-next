@@ -56,7 +56,7 @@ export function EditFlashcard() {
               value={deck.name}
               readOnly
               disabled
-              className="border-0 border-b"
+              className="bg-transparent border-0 border-b"
               style={{
                 borderRadius: 0
               }}

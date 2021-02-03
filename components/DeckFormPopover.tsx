@@ -36,7 +36,11 @@ export function DeckFormPopover({
         <Button type="submit" form="create-deck-form">
           Submit
         </Button>
-        <Button variant="outline" onClick={() => hideForm()}>
+        <Button
+          variant="text"
+          className="text-brand-800"
+          onClick={() => hideForm()}
+        >
           Cancel
         </Button>
       </div>

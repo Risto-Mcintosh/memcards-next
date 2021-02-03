@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { motion, useAnimation, Variants } from 'framer-motion';
 import { useFlashcardContext } from '@context/flashcard';
-import { Controls } from './Controls';
 import { LearningLayout } from '@components/LearningLayout';
 
 const flashcardContent: Variants = {
@@ -69,7 +68,7 @@ export function Flashcard() {
             <motion.div
               variants={flashcardAnimationVariants}
               animate={sideToShow}
-              className="relative flex flex-col items-center justify-center w-3/4 max-w-md border-2 border-gray-100 shadow-lg rounded-xl"
+              className="relative flex flex-col items-center justify-center w-3/4 max-w-md bg-white shadow-lg rounded-xl"
               style={{ minHeight: '250px' }}
             >
               {isShowingFrontOfCard ? (
@@ -108,7 +107,6 @@ export function Flashcard() {
               )}
             </motion.div>
           </motion.section>
-          <Controls />
         </div>
       )}
     </LearningLayout>

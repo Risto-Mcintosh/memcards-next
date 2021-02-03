@@ -6,7 +6,7 @@ type props = HTMLMotionProps<'div'> & { children: React.ReactNode };
 
 export function MenuItems({ children, className, ...delegated }: props) {
   const baseStyles =
-    'border rounded shadow border-brand-400 bg-brand-100 focus:outline-none';
+    'border rounded shadow border-brand-700 bg-brand-500 focus:outline-none text-gray-100';
   return (
     <Menu.Items
       as={motion.div}

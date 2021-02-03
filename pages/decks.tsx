@@ -23,7 +23,7 @@ export default function Decks() {
                 return (
                   <div
                     key={i}
-                    className="flex items-center pl-2 mb-1 text-2xl border-b-2 border-gray-200"
+                    className="flex items-center pl-2 mb-2 text-2xl border-b-2 border-gray-300 last:mb-0"
                   >
                     <Link href={`deck/${deck.id}`}>
                       <a

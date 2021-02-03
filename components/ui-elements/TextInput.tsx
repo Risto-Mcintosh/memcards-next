@@ -19,7 +19,7 @@ const TextInput = React.forwardRef(
         </label>
         <input
           ref={ref}
-          className={`w-full h-12 mb-5 text-xl rounded md:h-auto ${className}`}
+          className={`w-full h-12 mb-5 text-xl py-1 rounded md:h-auto ${className}`}
           type={type}
           name={name}
           id={labelId}

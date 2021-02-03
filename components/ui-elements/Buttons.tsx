@@ -1,17 +1,18 @@
 import * as React from 'react';
 
 const baseStyles =
-  'px-4 py-2 rounded whitespace-nowrap no-underline h-12 md:h-auto';
+  'px-4 py-1 rounded whitespace-nowrap shadow no-underline md:h-auto';
 
 const variants = {
-  default: 'bg-gray-400',
-  outline: 'border-2 border-gray-400',
-  text: ''
+  default: 'bg-brand-600 text-white',
+  outline: 'border-2 border-brand-600 text-brand-800 ',
+  text: 'font-semibold shadow-none',
+  warn: 'bg-danger-500 text-white'
 };
 
 const sizes = {
-  sm: 'text-base',
-  md: 'text-2xl md:text-xl',
+  sm: 'text-base h-12',
+  md: 'text-2xl md:text-xl h-12',
   lg: 'text-3xl h-14'
 };
 

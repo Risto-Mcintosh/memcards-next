@@ -44,7 +44,7 @@ export default function CreateFlashcard() {
           <div className="w-full max-w-xs">
             <form onSubmit={handleSubmit(onSubmit)}>
               <select
-                className="w-full mb-5 text-xl rounded"
+                className="w-full py-1 mb-5 text-xl rounded"
                 name="deckName"
                 ref={register}
               >

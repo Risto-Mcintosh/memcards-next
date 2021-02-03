@@ -26,8 +26,8 @@ export const MenuItem = ({ children, as = 'button', ...delegated }: props) => {
       {({ active }) => (
         <Component
           className={`${
-            active ? 'bg-brand-500 bg-opacity-60' : ''
-          } ${classes} text-base whitespace-nowrap p-2 border-b-2 last:border-0 border-brand-500 border-opacity-60`}
+            active ? 'bg-brand-800 bg-opacity-60' : ''
+          } ${classes} text-base whitespace-nowrap p-2 border-b-2 last:border-0 border-brand-700 border-opacity-60`}
           style={{
             textAlign: 'inherit'
           }}
