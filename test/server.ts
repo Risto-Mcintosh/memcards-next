@@ -26,7 +26,7 @@ const handlers = [
   rest.delete('/api/deck/:deckId', (req, res, ctx) => {
     const deckId = req.params.deckId;
     decks = decks.filter((deck) => deck.id !== deckId);
-    return res(ctx.status(204), ctx.json({ message: 'card deleted' }));
+    return res(ctx.status(204));
   }),
   rest.put<{ deckName: string }>('/api/deck/:deckId', (req, res, ctx) => {
     const deckId = req.params.deckId;

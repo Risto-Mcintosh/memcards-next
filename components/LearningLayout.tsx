@@ -32,7 +32,9 @@ export function LearningLayout({ children }) {
     mutate(
       { deckId: deck.id, cardId: flashcard.id },
       {
-        onSuccess: () => deleteCard()
+        onSuccess: () => {
+          deleteCard();
+        }
       }
     );
   }

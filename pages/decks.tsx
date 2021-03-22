@@ -10,7 +10,6 @@ export default function Decks() {
   const { data: deckList, isLoading } = useDeckList();
   const [isCreateDeckFormOpen, showCreateDeckFrom] = React.useState(false);
   const createButtonRef = React.useRef(null);
-
   return (
     <Layout>
       <div className="relative max-w-2xl min-h-full py-4 mx-auto">

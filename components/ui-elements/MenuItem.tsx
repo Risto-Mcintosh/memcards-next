@@ -24,6 +24,7 @@ export const MenuItem = ({ children, as = 'button', ...delegated }: props) => {
   return (
     <Menu.Item>
       {({ active }) => (
+          //@ts-ignore
         <Component
           className={`${
             active ? 'bg-brand-800 bg-opacity-60' : ''
