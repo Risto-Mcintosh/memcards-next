@@ -1,14 +1,14 @@
 import 'tailwindcss/tailwind.css';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-if (typeof window !== 'undefined') {
-  const { server } = require('test/server');
-  server.start();
-}
 
-// if (process.env.NODE_ENV === 'development') {
-//   makeServer({ environment: 'development' });
-// }
+
+if (process.env.NODE_ENV === 'development') {
+  if (typeof window !== 'undefined') {
+    const { server } = require('test/server');
+    server.start();
+  }
+}
 
 const queryCache = new QueryClient({
   defaultOptions: {

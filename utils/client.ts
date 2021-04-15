@@ -16,7 +16,7 @@ interface ClientTypes {
 export type DeckQuery = Partial<Deck> & { flashcards: Flashcard[] };
 
 function useDeck(deckId: string | string[]) {
-  return useQuery(`deck ${deckId}`, () => client(`/deck/${deckId}`));
+  return useQuery(`deck ${deckId}`, () => client(`/decks/${deckId}`));
 }
 
 function useDeckList() {
@@ -29,7 +29,7 @@ function useDeckDelete() {
   const queryClient = useQueryClient();
   return useMutation(
     (deckId: string) =>
-      client(`/deck/${deckId}`, {
+      client(`/decks/${deckId}`, {
         method: 'Delete'
       }),
     {
@@ -47,7 +47,7 @@ function useDeckCreate() {
   const queryClient = useQueryClient();
   return useMutation(
     (newDeck: Pick<ClientTypes, 'deckName'>) => {
-      return client('/deck', { data: newDeck });
+      return client('/decks', { data: {...newDeck, name: newDeck.deckName} });
     },
     {
       onSuccess(data) {
@@ -64,8 +64,8 @@ function useDeckUpdate() {
   const queryClient = useQueryClient();
   return useMutation(
     ({ deckId, deckName }: Pick<ClientTypes, 'deckId' | 'deckName'>) =>
-      client(`/deck/${deckId}`, {
-        data: { deckName },
+      client(`/decks/${deckId}`, {
+        data: { deckName, name: deckName },
         method: 'Put'
       }),
     {
@@ -107,7 +107,7 @@ function useFlashcardCreate() {
   const queryClient = useQueryClient();
   return useMutation(
     ({ deckId, flashcard }: Pick<ClientTypes, 'deckId' | 'flashcard'>) =>
-      client(`/deck/${deckId}/card`, {
+      client(`/decks/${deckId}/flashcards`, {
         data: flashcard
       }),
     {

@@ -5,6 +5,7 @@ import { Flashcard } from 'types';
 
 let decks = [...deckData];
 let flashcards = [...flashcardData];
+const API_URL = process.env.NEXT_PUBLIC_CLIENT_API
 
 const handlers = [
   rest.get('/api/decks', (req, res, ctx) => {
@@ -23,12 +24,12 @@ const handlers = [
       })
     );
   }),
-  rest.delete('/api/deck/:deckId', (req, res, ctx) => {
+  rest.delete('/api/decks/:deckId', (req, res, ctx) => {
     const deckId = req.params.deckId;
     decks = decks.filter((deck) => deck.id !== deckId);
     return res(ctx.status(204));
   }),
-  rest.put<{ deckName: string }>('/api/deck/:deckId', (req, res, ctx) => {
+  rest.put<{ deckName: string }>('/api/decks/:deckId', (req, res, ctx) => {
     const deckId = req.params.deckId;
     const { deckName: name, ...rest } = req.body;
     const oldDeckIdx = decks.findIndex((deck) => deck.id === deckId);
@@ -36,7 +37,7 @@ const handlers = [
     decks[oldDeckIdx] = newDeck;
     return res(ctx.status(200), ctx.json(newDeck));
   }),
-  rest.post<{ deckName: string }>('/api/deck', (req, res, ctx) => {
+  rest.post<{ deckName: string }>('/api/decks', (req, res, ctx) => {
     const { deckName } = req.body;
     const newDeck = {
       id: (decks.length + 1).toString(),
@@ -46,7 +47,7 @@ const handlers = [
     decks.push(newDeck);
     return res(ctx.status(201), ctx.json(newDeck));
   }),
-  rest.post<Flashcard>('/api/deck/:deckId/card', (req, res, ctx) => {
+  rest.post<Flashcard>('/api/decks/:deckId/flashcards', (req, res, ctx) => {
     const newFlashcard = {
       id: flashcards.length.toString(),
       deckId: req.params.deckId,
