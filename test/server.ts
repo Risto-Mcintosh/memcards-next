@@ -2,6 +2,7 @@ import { rest, setupWorker } from "msw";
 import deckData from "test/data/decks.json";
 import flashcardData from "test/data/flashcards.json";
 import { Flashcard } from "types";
+import faker from "faker";
 
 let decks = [...deckData];
 let flashcards = [...flashcardData];
@@ -43,7 +44,7 @@ const handlers = [
   rest.post<{ deckName: string }>(`${API_BASE_URL}/decks`, (req, res, ctx) => {
     const { deckName } = req.body;
     const newDeck = {
-      id: (decks.length + 1).toString(),
+      id: faker.datatype.uuid(),
       cardCount: 0,
       name: deckName,
     };
@@ -54,7 +55,7 @@ const handlers = [
     `${API_BASE_URL}/decks/:deckId/flashcards`,
     (req, res, ctx) => {
       const newFlashcard = {
-        id: flashcards.length.toString(),
+        id: faker.datatype.uuid(),
         deckId: req.params.deckId,
         ...req.body,
       };
