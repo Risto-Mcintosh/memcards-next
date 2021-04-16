@@ -9,9 +9,10 @@ import { Button } from '@components/ui-elements/Buttons';
 
 export default function CreateFlashcard() {
   const { data, isLoading } = useDeckList();
-  const { register, handleSubmit, reset } = useForm<FlashcardFormInputs>();
+  const { register, handleSubmit, reset, setFocus  } = useForm<FlashcardFormInputs>();
   const [image, setImage] = React.useState<FlashcardImage | null>();
   const { mutate } = useFlashcardCreate();
+
   const onSubmit: SubmitHandler<FlashcardFormInputs> = (
     { deckName, ...card },
     e
@@ -29,6 +30,7 @@ export default function CreateFlashcard() {
         onSuccess: () => {
           reset({ deckName });
           setImage(null);
+          setFocus("front")
         }
       }
     );
@@ -46,7 +48,7 @@ export default function CreateFlashcard() {
               <select
                 className="w-full py-1 mb-5 text-xl rounded"
                 name="deckName"
-                ref={register}
+                {...register("deckName")}
               >
                 {data.map((deck) => (
                   <option value={deck.name} key={deck.id} data-deckid={deck.id}>
@@ -59,7 +61,7 @@ export default function CreateFlashcard() {
                 name="front"
                 labelId="card-front"
                 label="Front:"
-                ref={register}
+                {...register("front")}
               />
 
               <ImageField image={image} setImage={setImage} />
@@ -69,6 +71,7 @@ export default function CreateFlashcard() {
                 labelId="card-back"
                 label="Back:"
                 ref={register}
+                {...register("back")}
               />
 
               <Button className="w-full" type="submit">

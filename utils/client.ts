@@ -83,7 +83,7 @@ function useFlashcardUpdate() {
   const queryClient = useQueryClient();
   return useMutation(
     ({ deckId, flashcard }: Pick<ClientTypes, 'deckId' | 'flashcard'>) =>
-      client(`/deck/${deckId}/card/${flashcard.id}`, {
+      client(`/decks/${deckId}/flashcards/${flashcard.id}`, {
         method: 'put',
         data: flashcard
       }),
@@ -128,7 +128,7 @@ function useFlashcardDelete() {
   const queryClient = useQueryClient();
   return useMutation(
     ({ deckId, cardId }: Pick<ClientTypes, 'deckId' | 'cardId'>) =>
-      client(`/deck/${deckId}/card/${cardId}`, {
+      client(`/decks/${deckId}/flashcards/${cardId}`, {
         method: 'delete'
       }),
     {

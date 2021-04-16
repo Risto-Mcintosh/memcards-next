@@ -1,14 +1,14 @@
-import * as React from 'react';
-import { useFlashcardContext } from '@context/flashcard';
-import { useFlashcardUpdate } from '@utils/client';
-import Layout from '@components/Layout';
-import TextInput from '@ui/TextInput';
-import Head from 'next/head';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { FlashcardFormInputs, FlashcardImage } from 'types';
-import { ImageField } from './ImageField';
-import { Button } from '@ui/Buttons';
-import { Spacer } from '@ui/Spacer';
+import * as React from "react";
+import { useFlashcardContext } from "@context/flashcard";
+import { useFlashcardUpdate } from "@utils/client";
+import Layout from "@components/Layout";
+import TextInput from "@ui/TextInput";
+import Head from "next/head";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { FlashcardFormInputs, FlashcardImage } from "types";
+import { ImageField } from "./ImageField";
+import { Button } from "@ui/Buttons";
+import { Spacer } from "@ui/Spacer";
 
 export function EditFlashcard() {
   const { flashcard, deck, editFlashcard } = useFlashcardContext();
@@ -20,8 +20,8 @@ export function EditFlashcard() {
     defaultValues: {
       deckName: deck.name,
       front: flashcard.front,
-      back: flashcard.back
-    }
+      back: flashcard.back,
+    },
   });
 
   const onSubmit: SubmitHandler<FlashcardFormInputs> = (data, event) => {
@@ -30,10 +30,10 @@ export function EditFlashcard() {
     mutate(
       {
         deckId: deck.id,
-        flashcard: { id: flashcard.id, ...data, image }
+        flashcard: { id: flashcard.id, ...data, image },
       },
       {
-        onSuccess: (newFlashcard) => editFlashcard(newFlashcard)
+        onSuccess: (newFlashcard) => editFlashcard(newFlashcard),
       }
     );
   };
@@ -42,14 +42,12 @@ export function EditFlashcard() {
     <Layout>
       <Head>
         <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex flex-col items-center py-4">
         <h1 className="mb-6 text-3xl">Edit Flashcard</h1>
         <div className="w-full max-w-xs">
           <form onSubmit={handleSubmit(onSubmit)}>
             <TextInput
-              ref={register}
               labelId="deck-name"
               name="deckName"
               label="Deck Name:"
@@ -58,15 +56,16 @@ export function EditFlashcard() {
               disabled
               className="bg-transparent border-0 border-b"
               style={{
-                borderRadius: 0
+                borderRadius: 0,
               }}
+              {...register("deckName")}
             />
 
             <TextInput
-              ref={register}
               labelId="card-front"
               name="front"
               label="Front:"
+              {...register("front")}
             />
 
             <ImageField image={image} setImage={setImage} />
@@ -76,6 +75,7 @@ export function EditFlashcard() {
               labelId="card-back"
               name="back"
               label="Back:"
+              {...register("back")}
             />
             <div className="flex flex-col justify-around">
               <Button type="submit">Edit</Button>

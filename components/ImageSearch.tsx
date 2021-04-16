@@ -1,11 +1,11 @@
-import * as React from 'react';
-import Image from 'next/image';
-import Portal from '@reach/portal';
-import { FlashcardImage } from 'types';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useUnsplash } from '@utils/useUnsplash';
-import { Popover } from './Popover';
-import { useObserver } from '@utils/useObserver';
+import * as React from "react";
+import Image from "next/image";
+import Portal from "@reach/portal";
+import { FlashcardImage } from "types";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useUnsplash } from "@utils/useUnsplash";
+import { Popover } from "./Popover";
+import { useObserver } from "@utils/useObserver";
 type props = {
   closeSearch: () => void;
   anchorEl: React.MutableRefObject<any>;
@@ -19,20 +19,20 @@ type FormValues = {
 export default function ImageSearch({
   closeSearch,
   anchorEl,
-  setImage
+  setImage,
 }: props) {
   const inputRef = React.useRef<HTMLInputElement>();
   const imagesContainerRef = React.useRef<HTMLDivElement>();
 
   function handleSlashKeyPress(e: KeyboardEvent) {
-    if (e.code === 'Slash' && document.activeElement !== inputRef.current) {
+    if (e.code === "Slash" && document.activeElement !== inputRef.current) {
       inputRef.current.focus();
     }
   }
 
   React.useEffect(() => {
-    document.addEventListener('keydown', handleSlashKeyPress);
-    return () => document.removeEventListener('keydown', handleSlashKeyPress);
+    document.addEventListener("keydown", handleSlashKeyPress);
+    return () => document.removeEventListener("keydown", handleSlashKeyPress);
   }, []);
 
   const { status, images, getImages, hasMore } = useUnsplash({ limit: 14 });
@@ -47,14 +47,14 @@ export default function ImageSearch({
 
   const { observerEl } = useObserver({
     onIntersect: getImages,
-    canRun: hasMore && status === 'idle'
+    canRun: hasMore && status === "idle",
   });
 
   function handleImageSelect({ urls, alt }) {
     setImage({
       alt,
       src: urls.small,
-      thumb: urls.thumb
+      thumb: urls.thumb,
     });
     closeSearch();
   }
@@ -81,16 +81,14 @@ export default function ImageSearch({
                   Image Search
                 </label>
                 <input
-                  ref={(ref) => {
-                    inputRef.current = ref;
-                    register(ref);
-                  }}
+                  ref={inputRef}
                   autoFocus
                   className="py-1"
                   type="search"
                   name="imageSearch"
                   id="image-search"
                   aria-describedby="describe-search"
+                  {...register("imageSearch")}
                 />
                 <p id="describe-search">Search for an image...</p>
               </form>
@@ -106,10 +104,10 @@ export default function ImageSearch({
                       <button
                         key={i}
                         className="relative"
-                        style={{ paddingTop: '100%' }}
+                        style={{ paddingTop: "100%" }}
                         onClick={() => handleImageSelect({ urls, alt })}
                         onKeyUp={(e) =>
-                          e.key === 'Enter' && handleImageSelect({ urls, alt })
+                          e.key === "Enter" && handleImageSelect({ urls, alt })
                         }
                       >
                         <Image
@@ -121,10 +119,10 @@ export default function ImageSearch({
                       </button>
                     );
                   })}
-                {status === 'loading' && <span>Loading...</span>}
+                {status === "loading" && <span>Loading...</span>}
               </div>
-              <div className={`w-full ${hasMore && 'mt-8'}`}>
-                {hasMore && status === 'idle' && (
+              <div className={`w-full ${hasMore && "mt-8"}`}>
+                {hasMore && status === "idle" && (
                   <button
                     ref={observerEl}
                     className="block"
